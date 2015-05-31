@@ -1,0 +1,12 @@
+GET     /assets/*file           controllers.Assets.at(path="/public", file)
+GET     /                       controllers.Application.index()
+GET 	/index					controllers.Application.index()
+GET 	/signIn					controllers.Application.signIn()
+GET 	/admin					controllers.Application.admin()
+
+POST 	/logIn					controllers.Application.logIn()
+
+GET     /pars          			controllers.Parsing.pars()
+POST    /insertLessons          controllers.Application.insertLessons()
+POST    /findLessons            controllers.Application.findLessons()
+

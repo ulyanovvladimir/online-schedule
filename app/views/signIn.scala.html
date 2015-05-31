@@ -1,0 +1,30 @@
+@import helper._
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Админ, объявись!</title>
+		<link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
+        
+		<!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="@routes.Assets.at("dist/css/bootstrap.css")">
+
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>		
+  </head>
+
+  <body>
+    <div class="container marketing">
+        <h1>Пожалуйста, входите:</h1>
+		<form method="POST" action="@routes.Application.logIn()">
+		<div class="col-xs-2"><input type=text class="form-control" name="username" placeholder="Логин"/></div>
+		<div class="col-xs-2"><input type=password class="form-control" name="userpass" placeholder="Пароль"/></div>
+        <p><input type="submit" class="btn btn-default" value="Войти"></p>
+		</form>
+    </div>
+  </body>
+
+</html>

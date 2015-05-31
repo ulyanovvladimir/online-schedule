@@ -1,0 +1,58 @@
+@(lessons: List[Lesson])
+
+@import helper._
+
+@main("Расписание") {
+
+    <h2>Поиск:</h2>
+    
+    <form action="@routes.Application.findLessons()" method="POST">
+        <div class="col-xs-2">
+			<input type=text class="form-control" name="groupNumber" placeholder="Номер группы"/>
+		</div>
+		<div class="col-xs-2">
+			<input type=text class="form-control" name="day" placeholder="День недели"/>
+		</div>
+		<div class="col-xs-2">
+			<input type=text class="form-control" name="hours" placeholder="Время занятия"/>
+		</div>
+		<div class="col-xs-2">
+			<input type=text class="form-control" name="lecture" placeholder="Название предмета"/>
+		</div>
+		<div class="col-xs-2">
+			<input type=text class="form-control" name="teacher" placeholder="ФИО преподавателя"/>
+		</div>
+		<div class="col-xs-2">
+			<input type=text class="form-control" name="room" placeholder="Номер аудитории"/>
+		</div>
+		<br><br>
+        <div class="col-xs-2"><input type="submit" class="btn btn-default" value="Найти"></div>
+    </form>
+
+	<br><br>
+	@if(lessons.size()>0){
+		<table class="table table-striped" width="700px">
+			<tr>
+				<td width="100px">Номер группы</td>
+				<td width="100px">День недели</td>
+				<td width="100px">Часы</td>
+				<td width="100px">Предмет</td>
+				<td width="100px">Преподаватель</td>
+				<td width="100px">Аудитория</td>
+			</tr>
+			@for(lesson <- lessons) {
+				<tr>
+					<td>@lesson.groupNumber</td>
+					<td>@lesson.day</td>
+					<td>@lesson.hours</td>
+					<td>@lesson.lecture</td>
+					<td>@lesson.teacher</td>
+					<td>@lesson.room</td>
+				</tr>
+			}
+		</table>
+	}else{
+	<h2>Нет данных для вывода.</h2>
+	}
+
+}
