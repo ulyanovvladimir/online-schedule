@@ -1,7 +1,5 @@
 @(lessons: List[Lesson])
 
-@import helper._
-
 <!DOCTYPE html>
 <html>
 	
@@ -51,6 +49,7 @@
 		<form action="@routes.Parsing.pars()" method="GET">
 			<h2>Или получите их автоматически из Excel:</h2>
 			<div class="col-xs-2"><input type="submit" class="btn btn-default" value="Получить"></div>
+			<br><br>
 			(Убедитесь, что не делали этого ранее!)
 		</form>
 				

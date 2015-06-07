@@ -93,8 +93,3 @@ public class Application extends Controller {
   
   
   }
-  
-// Admin newadmin = new Admin();
-// newadmin.username = requestData.get("username");
-// newadmin.userpass = Crypto.encryptAES(requestData.get("userpass"));
-// newadmin.save();

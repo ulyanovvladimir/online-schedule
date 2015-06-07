@@ -81,7 +81,7 @@ public class Parsing extends Controller {
 		};
           while(true){
             if(dataBase[x][1] != null){
-              Lesson lesson( = new Lesson();
+              Lesson lesson = new Lesson();
               lesson.groupNumber = gN;
               lesson.day = d;
               lesson.hours = dataBase[x][1];
@@ -95,7 +95,7 @@ public class Parsing extends Controller {
                 lesson.groupNumber = gN;
                 lesson.day = d;
                 lesson.hours = dataBase[x][1];
-                lesson.lection = dataBase[x][y];
+                lesson.lecture = dataBase[x][y];
                 lesson.teacher = dataBase[x][y + 1];
                 lesson.room = dataBase[x][y + 2];
                 lesson.save();
