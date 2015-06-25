@@ -10,3 +10,7 @@ GET     /pars          			controllers.Parsing.pars()
 POST    /insertLessons          controllers.Application.insertLessons()
 POST    /findLessons            controllers.Application.findLessons()
 
+GET     /api/findLessons		controllers.ClientAPI.findLessons(groupNumber, day, hours, lecture, teacher, room: String)
+
+#http://localhost:9000/api/findLessons?groupNumber=2341&day=&hours=&lecture=&teacher=&room=
+

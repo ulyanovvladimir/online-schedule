@@ -2,3 +2,23 @@
 org.h2.jdbc.JdbcSQLException: Таблица "PLAY_EVOLUTIONS" не найдена
 Table "PLAY_EVOLUTIONS" not found; SQL statement:
 select id, hash, apply_script, revert_script, state, last_problem from play_evolutions where state like 'applying_%' [42102-175]
+06-25 15:44:08 jdbc[6]: exception
+org.h2.jdbc.JdbcSQLException: База данных уже закрыта (чтобы отключить автоматическое закрытие базы данных при останове JVM, добавьте ";DB_CLOSE_ON_EXIT=FALSE" в URL)
+Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-175]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:332)
+	at org.h2.message.DbException.get(DbException.java:172)
+	at org.h2.message.DbException.get(DbException.java:149)
+	at org.h2.message.DbException.get(DbException.java:138)
+	at org.h2.jdbc.JdbcConnection.checkClosed(JdbcConnection.java:1413)
+	at org.h2.jdbc.JdbcConnection.checkClosed(JdbcConnection.java:1388)
+	at org.h2.jdbc.JdbcConnection.getMetaData(JdbcConnection.java:309)
+	at com.jolbox.bonecp.ConnectionHandle.getMetaData(ConnectionHandle.java:814)
+	at com.jolbox.bonecp.BoneCP.isConnectionHandleAlive(BoneCP.java:713)
+	at com.jolbox.bonecp.ConnectionTesterThread.run(ConnectionTesterThread.java:103)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Unknown Source)
+	at java.util.concurrent.FutureTask.run(Unknown Source)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$201(Unknown Source)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
+	at java.lang.Thread.run(Unknown Source)
