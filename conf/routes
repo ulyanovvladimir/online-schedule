@@ -12,5 +12,7 @@ POST    /findLessons            controllers.Application.findLessons()
 
 GET     /api/findLessons		controllers.ClientAPI.findLessons(groupNumber, day, hours, lecture, teacher, room: String)
 
+GET     /support/addAdmin		controllers.Support.addAdmin()
+
 #http://localhost:9000/api/findLessons?groupNumber=2341&day=&hours=&lecture=&teacher=&room=
 

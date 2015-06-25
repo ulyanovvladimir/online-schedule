@@ -22,4 +22,12 @@ public class Admin extends Model {
     String.class, Admin.class
   );
   
+  public void setUsername(String username){
+	this.username = username;
+  }
+  
+  public void setUserpass(String userpass){
+	this.userpass = userpass;
+  }
+  
 }
