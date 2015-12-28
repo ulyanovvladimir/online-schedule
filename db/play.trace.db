@@ -22,3 +22,161 @@ Database is already closed (to disable automatic closing at VM shutdown, add ";D
 	at java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source)
 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source)
 	at java.lang.Thread.run(Unknown Source)
+06-26 16:28:25 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Таблица "PLAY_EVOLUTIONS" не найдена
+Table "PLAY_EVOLUTIONS" not found; SQL statement:
+select id, hash, apply_script, revert_script, state, last_problem from play_evolutions where state like 'applying_%' [42102-175]
+12-11 00:55:46 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Таблица "LESSON" не найдена
+Table "LESSON" not found; SQL statement:
+select t0.group_number c0, t0.day c1, t0.hours c2, t0.lecture c3, t0.teacher c4, t0.room c5 from lesson t0 where lower(t0.group_number) like ?  and lower(t0.day) like ?  and lower(t0.hours) like ?  and lower(t0.lecture) like ?  and lower(t0.teacher) like ?  and lower(t0.room) like ?  [42102-175]
+12-11 17:01:01 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Таблица "LESSON" не найдена
+Table "LESSON" not found; SQL statement:
+insert into lesson (group_number, day, hours, lecture, teacher, room) values (?,?,?,?,?,?) [42102-175]
+12-11 17:06:53 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLException: Таблица "LESSON" не найдена
+Table "LESSON" not found; SQL statement:
+insert into lesson (group_number, day, hours, lecture, teacher, room) values (?,?,?,?,?,?) [42102-175]
+12-28 22:25:55 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLException: Синтаксическая ошибка в выражении SQL " 
+ +[*] CREATE TABLE LESSON (
+  ID                        INTEGER NOT NULL,
+  GROUP_NUMBER              VARCHAR(255),
+  DAY                       VARCHAR(255),
+  HOURS                     VARCHAR(255),
+  LECTURE                   VARCHAR(255),
+  TEACHER                   VARCHAR(255),
+  ROOM                      VARCHAR(255),
+  CONSTRAINT PK_LESSON PRIMARY KEY (ID))
+; "
+Syntax error in SQL statement " 
+ +[*] CREATE TABLE LESSON (
+  ID                        INTEGER NOT NULL,
+  GROUP_NUMBER              VARCHAR(255),
+  DAY                       VARCHAR(255),
+  HOURS                     VARCHAR(255),
+  LECTURE                   VARCHAR(255),
+  TEACHER                   VARCHAR(255),
+  ROOM                      VARCHAR(255),
+  CONSTRAINT PK_LESSON PRIMARY KEY (ID))
+; "; SQL statement:
+ 
+ + create table lesson (
+  id                        integer not null,
+  group_number              varchar(255),
+  day                       varchar(255),
+  hours                     varchar(255),
+  lecture                   varchar(255),
+  teacher                   varchar(255),
+  room                      varchar(255),
+  constraint pk_lesson primary key (id))
+; [42000-175]
+12-28 22:25:55 jdbc[6]: exception
+org.h2.jdbc.JdbcSQLException: Таблица "LESSON" не найдена
+Table "LESSON" not found; SQL statement:
+select t0.id c0, t0.group_number c1, t0.day c2, t0.hours c3, t0.lecture c4, t0.teacher c5, t0.room c6 from lesson t0 [42102-175]
+12-28 22:31:46 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Таблица "LESSON" не найдена
+Table "LESSON" not found; SQL statement:
+select t0.id c0, t0.group_number c1, t0.day c2, t0.hours c3, t0.lecture c4, t0.teacher c5, t0.room c6 from lesson t0 [42102-175]
+12-28 22:31:46 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLException: Таблица "LESSON" не найдена
+Table "LESSON" not found; SQL statement:
+select t0.id c0, t0.group_number c1, t0.day c2, t0.hours c3, t0.lecture c4, t0.teacher c5, t0.room c6 from lesson t0 [42102-175]
+12-28 22:35:10 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Таблица "LESSON" не найдена
+Table "LESSON" not found; SQL statement:
+select t0.id c0, t0.group_number c1, t0.day c2, t0.hours c3, t0.lecture c4, t0.teacher c5, t0.room c6 from lesson t0 [42102-175]
+12-28 22:35:10 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLException: Таблица "LESSON" не найдена
+Table "LESSON" not found; SQL statement:
+select t0.id c0, t0.group_number c1, t0.day c2, t0.hours c3, t0.lecture c4, t0.teacher c5, t0.room c6 from lesson t0 [42102-175]
+12-28 22:36:27 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Таблица "LESSON" не найдена
+Table "LESSON" not found; SQL statement:
+select t0.id c0, t0.group_number c1, t0.day c2, t0.hours c3, t0.lecture c4, t0.teacher c5, t0.room c6 from lesson t0 [42102-175]
+12-28 22:36:27 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLException: Таблица "LESSON" не найдена
+Table "LESSON" not found; SQL statement:
+select t0.id c0, t0.group_number c1, t0.day c2, t0.hours c3, t0.lecture c4, t0.teacher c5, t0.room c6 from lesson t0 [42102-175]
+12-28 22:37:27 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Таблица "LESSON" не найдена
+Table "LESSON" not found; SQL statement:
+select t0.id c0, t0.group_number c1, t0.day c2, t0.hours c3, t0.lecture c4, t0.teacher c5, t0.room c6 from lesson t0 [42102-175]
+12-28 22:37:27 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLException: Таблица "LESSON" не найдена
+Table "LESSON" not found; SQL statement:
+select t0.id c0, t0.group_number c1, t0.day c2, t0.hours c3, t0.lecture c4, t0.teacher c5, t0.room c6 from lesson t0 [42102-175]
+12-28 22:40:59 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Таблица "LESSON" не найдена
+Table "LESSON" not found; SQL statement:
+select t0.id c0, t0.group_number c1, t0.day c2, t0.hours c3, t0.lecture c4, t0.teacher c5, t0.room c6 from lesson t0 [42102-175]
+12-28 22:40:59 jdbc[5]: exception
+org.h2.jdbc.JdbcSQLException: Таблица "LESSON" не найдена
+Table "LESSON" not found; SQL statement:
+select t0.id c0, t0.group_number c1, t0.day c2, t0.hours c3, t0.lecture c4, t0.teacher c5, t0.room c6 from lesson t0 [42102-175]
+12-29 04:35:33 jdbc[4]: exception
+org.h2.jdbc.JdbcSQLException: Столбец "LESSON.HOURS" не найден
+Column "LESSON.HOURS" not found; SQL statement:
+select t0.id c0, t0.group_number c1, t0.day c2, t0.hours c3, t0.lecture c4, t0.teacher c5, t0.room c6 from lesson t0 where lower(t0.group_number) like ?  order by lesson.hours, t0.hours [42122-175]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:332)
+	at org.h2.message.DbException.get(DbException.java:172)
+	at org.h2.message.DbException.get(DbException.java:149)
+	at org.h2.expression.ExpressionColumn.optimize(ExpressionColumn.java:144)
+	at org.h2.command.dml.Select.prepare(Select.java:810)
+	at org.h2.command.Parser.prepareCommand(Parser.java:240)
+	at org.h2.engine.Session.prepareLocal(Session.java:436)
+	at org.h2.engine.Session.prepareCommand(Session.java:379)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1138)
+	at org.h2.jdbc.JdbcPreparedStatement.<init>(JdbcPreparedStatement.java:70)
+	at org.h2.jdbc.JdbcConnection.prepareStatement(JdbcConnection.java:267)
+	at com.jolbox.bonecp.ConnectionHandle.prepareStatement(ConnectionHandle.java:1024)
+	at com.avaje.ebeaninternal.server.query.CQuery.prepareBindExecuteQueryWithOption(CQuery.java:391)
+	at com.avaje.ebeaninternal.server.query.CQuery.prepareBindExecuteQuery(CQuery.java:368)
+	at com.avaje.ebeaninternal.server.query.CQueryEngine.findMany(CQueryEngine.java:165)
+	at com.avaje.ebeaninternal.server.query.DefaultOrmQueryEngine.findMany(DefaultOrmQueryEngine.java:77)
+	at com.avaje.ebeaninternal.server.core.OrmQueryRequest.findList(OrmQueryRequest.java:263)
+	at com.avaje.ebeaninternal.server.core.DefaultServer.findList(DefaultServer.java:1502)
+	at com.avaje.ebeaninternal.server.querydefn.DefaultOrmQuery.findList(DefaultOrmQuery.java:890)
+	at controllers.Application.foo(Application.java:99)
+	at controllers.Application.smartSearch(Application.java:118)
+	at Routes$$anonfun$routes$1$$anonfun$applyOrElse$9$$anonfun$apply$9.apply(routes_routing.scala:186)
+	at Routes$$anonfun$routes$1$$anonfun$applyOrElse$9$$anonfun$apply$9.apply(routes_routing.scala:186)
+	at play.core.Router$HandlerInvokerFactory$$anon$4.resultCall(Router.scala:264)
+	at play.core.Router$HandlerInvokerFactory$JavaActionInvokerFactory$$anon$15$$anon$1.invocation(Router.scala:255)
+	at play.core.j.JavaAction$$anon$1.call(JavaAction.scala:55)
+	at play.GlobalSettings$1.call(GlobalSettings.java:67)
+	at play.core.j.JavaAction$$anonfun$11.apply(JavaAction.scala:82)
+	at play.core.j.JavaAction$$anonfun$11.apply(JavaAction.scala:82)
+	at scala.concurrent.impl.Future$PromiseCompletingRunnable.liftedTree1$1(Future.scala:24)
+	at scala.concurrent.impl.Future$PromiseCompletingRunnable.run(Future.scala:24)
+	at play.core.j.HttpExecutionContext$$anon$2.run(HttpExecutionContext.scala:40)
+	at play.api.libs.iteratee.Execution$trampoline$.execute(Execution.scala:46)
+	at play.core.j.HttpExecutionContext.execute(HttpExecutionContext.scala:32)
+	at scala.concurrent.impl.Future$.apply(Future.scala:31)
+	at scala.concurrent.Future$.apply(Future.scala:492)
+	at play.core.j.JavaAction$class.apply(JavaAction.scala:82)
+	at play.core.Router$HandlerInvokerFactory$JavaActionInvokerFactory$$anon$15$$anon$1.apply(Router.scala:252)
+	at play.api.mvc.Action$$anonfun$apply$1$$anonfun$apply$4$$anonfun$apply$5.apply(Action.scala:130)
+	at play.api.mvc.Action$$anonfun$apply$1$$anonfun$apply$4$$anonfun$apply$5.apply(Action.scala:130)
+	at play.utils.Threads$.withContextClassLoader(Threads.scala:21)
+	at play.api.mvc.Action$$anonfun$apply$1$$anonfun$apply$4.apply(Action.scala:129)
+	at play.api.mvc.Action$$anonfun$apply$1$$anonfun$apply$4.apply(Action.scala:128)
+	at scala.Option.map(Option.scala:145)
+	at play.api.mvc.Action$$anonfun$apply$1.apply(Action.scala:128)
+	at play.api.mvc.Action$$anonfun$apply$1.apply(Action.scala:121)
+	at play.api.libs.iteratee.Iteratee$$anonfun$mapM$1.apply(Iteratee.scala:483)
+	at play.api.libs.iteratee.Iteratee$$anonfun$mapM$1.apply(Iteratee.scala:483)
+	at play.api.libs.iteratee.Iteratee$$anonfun$flatMapM$1.apply(Iteratee.scala:519)
+	at play.api.libs.iteratee.Iteratee$$anonfun$flatMapM$1.apply(Iteratee.scala:519)
+	at play.api.libs.iteratee.Iteratee$$anonfun$flatMap$1$$anonfun$apply$14.apply(Iteratee.scala:496)
+	at play.api.libs.iteratee.Iteratee$$anonfun$flatMap$1$$anonfun$apply$14.apply(Iteratee.scala:496)
+	at scala.concurrent.impl.Future$PromiseCompletingRunnable.liftedTree1$1(Future.scala:24)
+	at scala.concurrent.impl.Future$PromiseCompletingRunnable.run(Future.scala:24)
+	at akka.dispatch.TaskInvocation.run(AbstractDispatcher.scala:41)
+	at akka.dispatch.ForkJoinExecutorConfigurator$AkkaForkJoinTask.exec(AbstractDispatcher.scala:393)
+	at scala.concurrent.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:260)
+	at scala.concurrent.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1339)
+	at scala.concurrent.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1979)
+	at scala.concurrent.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107)

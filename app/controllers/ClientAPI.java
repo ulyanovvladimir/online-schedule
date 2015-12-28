@@ -32,7 +32,7 @@ public class ClientAPI extends Controller {
 	
 	result.put("objects", lessonsListJson);
 	
-	return ok(result);	
+	return ok(result);
   }
   
   
