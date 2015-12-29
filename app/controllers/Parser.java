@@ -28,42 +28,25 @@ public class Parser {
 
   public static void downloadSchedule() {
     List<ScheduleURL> urlList = ScheduleURL.all();
+    int i = 1;
     try{
       Iterator iterator = urlList.iterator();
       while (iterator.hasNext()) {
-        System.out.println("LOOOOOOOOOOOOOOOOOOOOOGGGGGGGGGGGGG "+iterator.next());
-        ScheduleURL url = (ScheduleURL) iterator.next().;
+        ScheduleURL scheduleUrl = (ScheduleURL) iterator.next();
+        URL url = new URL(scheduleUrl.url);
+        File destination = new File("sched" + i + ".xls");
+        FileUtils.copyURLToFile(url,destination);
+        i++;
       }
     } catch(Exception e) {
-      System.out.println("UNACCEPTABLE URL! + " + e.getMessage());
+      System.out.println("ERROR WHILE DOWNLOADING! " + e.getMessage());
     }
   }
 
-  public static void parseSchedule() throws Exception {
+  public static void parseSchedule(File f) throws Exception {
 
-    //очищаем имеющуюся базу данных
-    Lesson.clearBase();
-
-    downloadSchedule();
-    //сохраняем все файлы расписания
-    URL url1 = new URL("http://math.isu.ru/ru/students/docs/schedule_2015-2016/1_2015.08.31.xls");
-    URL url2 = new URL("http://math.isu.ru/ru/students/docs/schedule_2015-2016/2_2015.08.31.xls");
-    URL url3 = new URL("http://math.isu.ru/ru/students/docs/schedule_2015-2016/3_2015.08.31.xls");
-    URL url4 = new URL("http://math.isu.ru/ru/students/docs/schedule_2015-2016/4_2015.08.31.xls");
-
-    File destination1 = new File("sched1.xls");
-    File destination2 = new File("sched2.xls");
-    File destination3 = new File("sched3.xls");
-    File destination4 = new File("sched4.xls");
-
-    FileUtils.copyURLToFile(url1,destination1);
-    FileUtils.copyURLToFile(url2,destination2);
-    FileUtils.copyURLToFile(url3,destination3);
-    FileUtils.copyURLToFile(url4,destination4);
-
-    // на примере разбора расписания моего курса
     org.apache.poi.poifs.filesystem.POIFSFileSystem fs =
-            new org.apache.poi.poifs.filesystem.POIFSFileSystem(new FileInputStream("sched4.xls"));
+            new org.apache.poi.poifs.filesystem.POIFSFileSystem(new FileInputStream(f));
     org.apache.poi.hssf.usermodel.HSSFWorkbook workbook =
             new org.apache.poi.hssf.usermodel.HSSFWorkbook(fs);
     org.apache.poi.hssf.usermodel.HSSFSheet sheet1 = workbook.getSheetAt(0);
