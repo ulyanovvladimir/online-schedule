@@ -17,7 +17,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MathfacAPI extends Controller {
+public class MathFacAPI extends Controller {
 
     private class Foo {
         List<String> teachers;
@@ -25,9 +25,7 @@ public class MathfacAPI extends Controller {
 
     public static Result smartSearch(String parameters) {
 
-        List<Lesson> teahersList = new ArrayList<Lesson>();
-
-        System.out.println(parameters);
+        List<Lesson> teachersList = new ArrayList<>();
 
         JSONParser parser = new JSONParser();
 
@@ -35,7 +33,7 @@ public class MathfacAPI extends Controller {
             JSONObject jsonObject = (JSONObject) parser.parse(parameters);
             JSONArray teachersArray = (JSONArray) jsonObject.get("teachers");
             for(int i=0; i<teachersArray.size();i++){
-                teahersList.addAll(Lesson.find.where().ilike("teacher", "%" + teachersArray.get(i) + "%")
+                teachersList.addAll(Lesson.find.where().ilike("teacher", "%" + teachersArray.get(i) + "%")
                         .orderBy("teacher asc, day asc, hours asc").findList() );
             }
         } catch (Exception e) {
@@ -45,12 +43,15 @@ public class MathfacAPI extends Controller {
         String table =
                 "<div>\n" +
                 "<table>\n" ;
-        for (int i=0; i < teahersList.size(); i++) {
-            Lesson lesson = teahersList.get(i);
+        for (int i=0; i < teachersList.size(); i++) {
+            Lesson lesson = teachersList.get(i);
             table += "<tr><td>" + lesson.teacher + "</td><td>" + lesson.day + " " + lesson.hours + "</td><td>" + lesson.room + "</td></tr>\n";
         }
         table += "</table>\n" +
                 "</div>\n";
+
+
+        response().setContentType("text/html; charset=utf-8");
 
         return ok(table);
     }

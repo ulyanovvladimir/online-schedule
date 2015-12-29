@@ -1,0 +1,70 @@
+@(lessons: List[Lesson], urls: List[ScheduleURL], urlForm: Form[ScheduleURL])
+
+@import helper._
+
+@main("Страница администрирования") {
+
+	<style>
+		.col-xs-2{
+			padding-left: 5px !important;
+			padding-right: 5px !important;
+		}
+	</style>
+
+	<form action="@routes.Application.insertLessons()" method="POST">
+		<h2>Внести новое занятие:</h2>
+		<div class="col-xs-2" style="padding-left: 15px !important;">
+			<input type=text class="form-control" name="groupNumber" placeholder="Номер группы"/>
+		</div>
+		<div class="col-xs-2">
+			<input type=text class="form-control" name="day" placeholder="День недели"/>
+		</div>
+		<div class="col-xs-2">
+			<input type=text class="form-control" name="hours" placeholder="Время занятия"/>
+		</div>
+		<div class="col-xs-2">
+			<input type=text class="form-control" name="lecture" placeholder="Название предмета"/>
+		</div>
+		<div class="col-xs-2">
+			<input type=text class="form-control" name="teacher" placeholder="ФИО преподавателя"/>
+		</div>
+		<div class="col-xs-2">
+			<input type=text class="form-control" name="room" placeholder="Номер аудитории"/>
+		</div>
+		<br><br>
+		<div class="col-xs-2"><input type="submit" class="btn btn-default" value="Внести" style="margin-left: 15px;"></div>
+		<br><br>
+	</form>
+
+
+	@if(urls.size() > 0){
+		<h2>Ссылки обрабатываются:</h2>
+
+		<table class="table table-striped" style="max-width: 700px;margin-left: 15px;">
+			@for(url <- urls) {
+				<tr>
+					<td style="min-width: 500px;">@url.url</td>
+					<td style="min-width: 100px;">@url.id
+						@form(routes.Application.editURLPage(url.id)) {
+						<input type="submit" class="btn btn-default" value="Изменить">
+					}
+					</td>
+					<td style="min-width: 100px;">@form(routes.Application.deleteURL(url.id)) {
+						<input type="submit" class="btn btn-default" value="Удалить">
+					}
+					</td>
+				</tr>
+			}
+		</table>
+	}
+
+	<h2>Внести новый URL:</h2>
+	<form action="@routes.Application.insertURL()" method="POST">
+		<div class="col-xs-12">
+			<input type=text class="form-control" name="urlFieldValue" placeholder="Ссылка на файл расписания"/>
+		</div>
+		<br><br>
+		<div class="col-xs-2"><input type="submit" class="btn btn-default" value="Внести" style="margin-left: 15px;"></div>
+	</form>
+
+}

@@ -15,12 +15,13 @@ public class Support extends Controller {
   
   public static Result addAdmin() {
 
+	  Admin.clearBase();
 	  Admin newadmin = new Admin();
-	  newadmin.setUsername("root2");
-	  newadmin.setUserpass(Crypto.encryptAES("root2"));
+	  newadmin.setUsername("root3");
+	  newadmin.setUserpass(Crypto.encryptAES("root3"));
 	  newadmin.save();
 
-	  return ok(signIn.render());
+	  return ok(signInPage.render());
   }
 
 }

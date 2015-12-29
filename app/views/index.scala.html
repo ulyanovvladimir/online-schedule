@@ -5,31 +5,6 @@
 @main("Расписание") {
 
     <h2>Поиск:</h2>
-    
-    @*<form action="@routes.Application.findLessons()" method="POST">
-        <div class="col-xs-2">
-			<input type=text class="form-control" name="groupNumber" placeholder="Номер группы"/>
-		</div>
-		<div class="col-xs-2">
-			<input type=text class="form-control" name="day" placeholder="День недели"/>
-		</div>
-		<div class="col-xs-2">
-			<input type=text class="form-control" name="hours" placeholder="Время занятия"/>
-		</div>
-		<div class="col-xs-2">
-			<input type=text class="form-control" name="lecture" placeholder="Название предмета"/>
-		</div>
-		<div class="col-xs-2">
-			<input type=text class="form-control" name="teacher" placeholder="ФИО преподавателя"/>
-		</div>
-		<div class="col-xs-2">
-			<input type=text class="form-control" name="room" placeholder="Номер аудитории"/>
-		</div>
-		<br><br>
-        <div class="col-xs-2"><input type="submit" class="btn btn-default" value="Найти"></div>
-    </form>
-
-	<br><br><br><br>*@
 
 	<form action="@routes.Application.smartSearch()" method="POST">
 		<div class="col-xs-12">

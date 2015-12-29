@@ -1,15 +1,14 @@
 package controllers;
 
 import models.Lesson;
+import models.ScheduleURL;
 import play.*;
 import play.mvc.*;
 import views.html.*;
 import play.data.*;
 import java.io.*;
-import static play.data.Form.form;
-
-import java.net.URL;
 import java.util.*;
+import java.net.URL;
 import play.db.ebean.*;
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -27,11 +26,25 @@ import org.apache.poi.ss.usermodel.Row;
 
 public class Parser {
 
-  public static void parsing() throws Exception {
+  public static void downloadSchedule() {
+    List<ScheduleURL> urlList = ScheduleURL.all();
+    try{
+      Iterator iterator = urlList.iterator();
+      while (iterator.hasNext()) {
+        System.out.println("LOOOOOOOOOOOOOOOOOOOOOGGGGGGGGGGGGG "+iterator.next());
+        ScheduleURL url = (ScheduleURL) iterator.next().;
+      }
+    } catch(Exception e) {
+      System.out.println("UNACCEPTABLE URL! + " + e.getMessage());
+    }
+  }
+
+  public static void parseSchedule() throws Exception {
 
     //очищаем имеющуюся базу данных
     Lesson.clearBase();
 
+    downloadSchedule();
     //сохраняем все файлы расписания
     URL url1 = new URL("http://math.isu.ru/ru/students/docs/schedule_2015-2016/1_2015.08.31.xls");
     URL url2 = new URL("http://math.isu.ru/ru/students/docs/schedule_2015-2016/2_2015.08.31.xls");
@@ -91,20 +104,20 @@ public class Parser {
 
       String dbxy = dataBase[x][y];
       String gN = ""; //gN -> groupNumber
-      System.out.println("111 UNACCEPTABLE!!!! + " + dataBase[x][y]);
-      System.out.println("222 UNACCEPTABLE!!!! + " + dataBase[x+1][y]);
-      System.out.println("333 UNACCEPTABLE!!!! + " + x);
+      //System.out.println("111 UNACCEPTABLE!!!! + " + dataBase[x][y]);
+      //System.out.println("222 UNACCEPTABLE!!!! + " + dataBase[x+1][y]);
+      //System.out.println("333 UNACCEPTABLE!!!! + " + x);
       if (dataBase[x][y] != null) {
         if ("02".equals(dbxy.substring(0, 2))){
           gN = dataBase[x][y];
-          System.out.println("444 UNACCEPTABLE!!!! + " + dataBase[x][y]);
+          //System.out.println("444 UNACCEPTABLE!!!! + " + dataBase[x][y]);
         } else {
           gN = dataBase[x+1][y];
-          System.out.println("555 UNACCEPTABLE!!!! + " + dataBase[x+1][y]);
+          //System.out.println("555 UNACCEPTABLE!!!! + " + dataBase[x+1][y]);
         }
       } else {
         gN = dataBase[x+1][y];
-        System.out.println("555 UNACCEPTABLE!!!! + " + dataBase[x+1][y]);
+        //System.out.println("555 UNACCEPTABLE!!!! + " + dataBase[x+1][y]);
       }
 
         while (true) {

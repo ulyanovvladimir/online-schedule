@@ -1,6 +1,9 @@
 package models;
 
 import java.util.*;
+
+import com.avaje.ebean.Ebean;
+import com.avaje.ebean.SqlUpdate;
 import play.db.ebean.*;
 import play.data.validation.Constraints.*;
 import javax.persistence.*;
@@ -29,5 +32,15 @@ public class Admin extends Model {
   public void setUserpass(String userpass){
 	this.userpass = userpass;
   }
-  
+
+  public static void clearBase() {
+    SqlUpdate rebuildTable = Ebean.createSqlUpdate("TRUNCATE TABLE admin");
+    try {
+      rebuildTable.execute();
+    } catch (Exception e) {
+      System.out.println("LOGGGGG"+e.getMessage());
+    }
+
+  }
+
 }

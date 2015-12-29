@@ -20,33 +20,14 @@ public class Global extends GlobalSettings {
             public void run() {
                 Parser parser = new Parser();
                 try{
-                    parser.parsing();
+                    parser.parseSchedule();
                 } catch(Exception e) {
-                    System.out.println("UNACCEPTABLE EXCEL!!!!" + e.getMessage());
+                    System.out.println("UNACCEPTABLE EXCEL! + " + e.getMessage());
                 }
             }
         },
         Akka.system().dispatcher()
       );
-    }
-
-    public static int nextExecutionInSeconds(int hour, int minute){
-        return Seconds.secondsBetween(
-                new DateTime(),
-                nextExecution(hour, minute)
-        ).getSeconds();
-    }
-
-    public static DateTime nextExecution(int hour, int minute){
-        DateTime next = new DateTime()
-                .withHourOfDay(hour)
-                .withMinuteOfHour(minute)
-                .withSecondOfMinute(0)
-                .withMillisOfSecond(0);
-
-        return (next.isBeforeNow())
-                ? next.plusHours(24)
-                : next;
     }
 
 }

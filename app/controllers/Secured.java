@@ -10,7 +10,7 @@ public class Secured extends Security.Authenticator {
     }
     @Override
     public Result onUnauthorized(play.mvc.Http.Context ctx) {
-        return redirect("/signIn");
+        return redirect("/signInPage");
     }
 
 

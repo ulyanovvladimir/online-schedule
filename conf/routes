@@ -1,17 +1,24 @@
 GET         /assets/*file            controllers.Assets.at(path="/public", file)
 GET         /                        controllers.Application.index()
 GET         /index                   controllers.Application.index()
-GET         /signIn                  controllers.Application.signIn()
-GET         /admin                   controllers.Application.admin()
+GET         /signInPage              controllers.Application.signInPage()
+GET         /adminPage               controllers.Application.adminPage()
+GET         /editURLPage             controllers.Application.editURLPage(id: Integer)
 
 POST        /logIn                   controllers.Application.logIn()
 
+#Lessons
 POST        /insertLessons           controllers.Application.insertLessons()
-POST        /findLessons             controllers.Application.findLessons()
 POST        /smartSearch             controllers.Application.smartSearch()
 
+#URLs
+POST        /insertURL               controllers.Application.insertURL()
+POST        /deleteURL               controllers.Application.deleteURL(id: Integer)
+POST        /editURL                 controllers.Application.editURL()
+
+#API
 GET         /api/findLessons         controllers.ClientAPI.findLessons(groupNumber, day, hours, lecture, teacher, room: String)
-GET         /api/getTable            controllers.MathfacAPI.smartSearch(parameters: String)
+GET         /api/getTable            controllers.MathFacAPI.smartSearch(parameters: String)
 
 GET         /support/addAdmin        controllers.Support.addAdmin()
 

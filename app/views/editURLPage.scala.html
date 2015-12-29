@@ -1,0 +1,17 @@
+@(urlForm: Form[ScheduleURL])
+
+@import helper._
+
+@main("Редактировать URL") {
+    
+    <h2>Внести изменения:</h2>
+    
+    @form(controllers.routes.Application.editURL()) {
+		<input type="hidden" name="id" value="@urlForm.get().id"/>
+        <div class="col-xs-12">
+        <input type=text class="form-control" name="name" placeholder="Ссылка" value="@urlForm.get().url"/>
+		</div>
+        <input type="submit" value="Сохранить" class="btn btn-default">
+    }
+    
+}
