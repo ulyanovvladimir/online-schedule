@@ -130,7 +130,6 @@ public class Application extends Controller {
   }
 
   public static Result editURLPage(Integer id) {
-    System.out.println("LOGGGGG"+id);
     ScheduleURL url = ScheduleURL.find.ref(id);
 
   	if (url==null) {

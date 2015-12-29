@@ -122,7 +122,7 @@ public class Parser {
               lesson.room = dataBase[x][y + 2];
               lesson.save();
             } else {
-              if (!"".equals(dataBase[x][y]) && dataBase[x][y] != null) {
+              if (!"".equals(dataBase[x][y]) && dataBase[x][y] != null && !"".equals(dataBase[x][y+1]) && dataBase[x][y+1] != null) {
                 Lesson lesson = new Lesson();
                 lesson.groupNumber = gN;
                 lesson.day = d;

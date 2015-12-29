@@ -3,7 +3,7 @@ GET         /                        controllers.Application.index()
 GET         /index                   controllers.Application.index()
 GET         /signInPage              controllers.Application.signInPage()
 GET         /adminPage               controllers.Application.adminPage()
-GET         /editURLPage             controllers.Application.editURLPage(id: Integer)
+GET         /editURLPage/:id         controllers.Application.editURLPage(id: Integer)
 
 POST        /logIn                   controllers.Application.logIn()
 
