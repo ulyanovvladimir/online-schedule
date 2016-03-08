@@ -1,3 +1,4 @@
+import controllers.Downloader;
 import controllers.Parser;
 import models.Lesson;
 import models.ScheduleURL;
@@ -22,16 +23,17 @@ public class Global extends GlobalSettings {
         new Runnable() {
             @Override
             public void run() {
-                Parser parser = new Parser();
-                parser.downloadSchedule();
-                System.out.println("11111111");
-                Lesson.clearBase();
-                for(int i=1; i <= ScheduleURL.all().size();i++) {
-                    try {
-                        File destination = new File("sched" + i + ".xls");
-                        parser.parseSchedule(destination);
-                    } catch (Exception e) {
-                        System.out.println("UNACCEPTABLE EXCEL! PLACED IN URL #" + i + ". ERROR: " + e.getMessage());
+                Downloader downloader = new Downloader();
+                if(downloader.downloadSchedule()){
+                    Lesson.clearBase();
+                    for(int i=1; i <= ScheduleURL.all().size();i++) {
+                        try {
+                            Parser parser = new Parser();
+                            File destination = new File("sched" + i + ".xls");
+                            parser.parseSchedule(destination);
+                        } catch (Exception e) {
+                            System.out.println("UNACCEPTABLE EXCEL! PLACED IN URL #" + i + ". ERROR: " + e.getMessage());
+                        }
                     }
                 }
             }

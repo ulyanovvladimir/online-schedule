@@ -26,23 +26,6 @@ import org.apache.poi.ss.usermodel.Row;
 
 public class Parser {
 
-  public static void downloadSchedule() {
-    List<ScheduleURL> urlList = ScheduleURL.all();
-    int i = 1;
-    try{
-      Iterator iterator = urlList.iterator();
-      while (iterator.hasNext()) {
-        ScheduleURL scheduleUrl = (ScheduleURL) iterator.next();
-        URL url = new URL(scheduleUrl.url);
-        File destination = new File("sched" + i + ".xls");
-        FileUtils.copyURLToFile(url,destination);
-        i++;
-      }
-    } catch(Exception e) {
-      System.out.println("ERROR WHILE DOWNLOADING! " + e.getMessage());
-    }
-  }
-
   public static void parseSchedule(File f) throws Exception {
 
     org.apache.poi.poifs.filesystem.POIFSFileSystem fs =
