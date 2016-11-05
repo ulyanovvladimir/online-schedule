@@ -9,16 +9,16 @@ import java.util.List;
 
 public class Downloader {
 
-    public static Boolean downloadSchedule() {
+    public static Boolean downloadSchedule() { //todo return List<File>
         try{
             List<ScheduleURL> urlList = ScheduleURL.all();
             int i = 1;
-            Iterator iterator = urlList.iterator();
-            while (iterator.hasNext()) {
-                ScheduleURL scheduleUrl = (ScheduleURL) iterator.next();
-                URL url = new URL(scheduleUrl.url);
+            for (ScheduleURL scheduleURL : urlList) {
+                URL url = new URL(scheduleURL.url);
                 File destination = new File("sched" + i + ".xls");
+                //if (destination.exists()) FileUtils.forceDelete(destination);
                 FileUtils.copyURLToFile(url, destination);
+                System.out.println("url " +url+" downloaded to file "+destination.getName());
                 i++;
             }
             return true;
@@ -27,5 +27,4 @@ public class Downloader {
             return false;
         }
     }
-
 }
