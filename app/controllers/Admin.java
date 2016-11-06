@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class Admin extends Controller {
 
-    public static Result reload(){
+    public static Result reload() {
         Akka.system().scheduler().scheduleOnce(
                 Duration.create(0, TimeUnit.SECONDS),
                 new Runnable() {
@@ -29,7 +29,7 @@ public class Admin extends Controller {
                                     Parser parser = new Parser();
                                     File destination = new File("sched" + i + ".xls");
                                     parser.parseAndStore(destination);
-                                    System.out.println("File "+ destination.getName()+" has been parsed");
+                                    System.out.println("File " + destination.getName() + " has been parsed");
                                 } catch (Exception e) {
                                     System.out.println("UNACCEPTABLE EXCEL! PLACED IN URL #" + i + ". ERROR: " + e.getMessage());
                                     e.printStackTrace();
@@ -42,7 +42,7 @@ public class Admin extends Controller {
         );
 
 
-        return redirect(controllers.routes.Application.adminPage());
+        return ok("reloaded");//redirect(controllers.routes.Application.adminPage());
     }
 
 }

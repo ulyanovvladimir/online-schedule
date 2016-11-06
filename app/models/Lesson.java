@@ -3,10 +3,8 @@ package models;
 import java.util.*;
 
 import com.avaje.ebean.Ebean;
-import com.avaje.ebean.SqlQuery;
 import com.avaje.ebean.SqlUpdate;
 import play.db.ebean.*;
-import play.data.validation.Constraints.*;
 
 import javax.persistence.*;
 
@@ -17,11 +15,9 @@ public class Lesson extends Model {
     @Id
     private Integer id;
     private String groupNumber;
-    private String day;
     private Integer dayOfWeek;
-    private String hours;
     private String lecture;
-    private String teacher;
+    private String instructor;
     private String room;
 
     private Integer fromHours;
@@ -56,19 +52,71 @@ public class Lesson extends Model {
     }
 
     public String getDay() {
-        return day;
+        switch(dayOfWeek){
+            case 1: return "Пн";
+            case 2: return "Вт";
+            case 3: return "Ср";
+            case 4: return "Чт";
+            case 5: return "Пт";
+            case 6: return "Сб";
+            case 7: return "Вс";
+            default: return "";
+        }
     }
 
     public void setDay(String day) {
-        this.day = day;
+        switch(day){
+            case "ПОНЕДЕЛЬНИК":
+                this.dayOfWeek=1;
+                break;
+            case "ВТОРНИК":
+                this.dayOfWeek=2;
+                break;
+            case "СРЕДА":
+                this.dayOfWeek=3;
+                break;
+            case "ЧЕТВЕРГ":
+                this.dayOfWeek=4;
+                break;
+            case "ПЯТНИЦА":
+                this.dayOfWeek=5;
+                break;
+            case "СУББОТА":
+                this.dayOfWeek=6;
+                break;
+            case "ВОСКРЕСЕНЬЕ":
+                this.dayOfWeek=6;
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown day of week:"+day);
+        }
     }
 
     public String getHours() {
-        return hours;
+        if (fromMinutes == null) return ""; //todo BUG FIX
+        return fromHours+":"+fromMinutes+"-"+toHours+":"+toMinutes;
     }
 
     public void setHours(String hours) {
-        this.hours = hours;
+        //this.hours = hours;
+        if (hours == null) {
+            //System.out.println("NULL HOURS"); //todo remove STUB!!!! DEBUG null hours
+            return;
+        }
+        //parse from and to hours "08.30-10.00"
+        String[] fromTo = hours.split("-");
+        String from = fromTo[0];
+        int point = from.indexOf(".");
+        if (point != -1){
+            this.fromHours = Integer.valueOf(from.substring(0,point).trim());
+            this.fromMinutes= Integer.valueOf(from.substring(point+1).trim());
+        }
+        String to = fromTo[1];
+        point = to.indexOf(".");
+        if (point != -1){
+            this.toHours = Integer.valueOf(to.substring(0,point).trim());
+            this.toMinutes= Integer.valueOf(to.substring(point+1).trim());
+        }
     }
 
     public String getLecture() {
@@ -79,12 +127,12 @@ public class Lesson extends Model {
         this.lecture = lecture;
     }
 
-    public String getTeacher() {
-        return teacher;
+    public String getInstructor() {
+        return instructor;
     }
 
-    public void setTeacher(String teacher) {
-        this.teacher = teacher;
+    public void setInstructor(String instructor) {
+        this.instructor = instructor;
     }
 
     public String getRoom() {

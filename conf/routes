@@ -16,13 +16,13 @@ POST        /admin/url/delete          controllers.Application.deleteURL(id: Int
 POST        /admin/url/edit            controllers.Application.editURL()
 
 #API
-GET         /api/lessons               controllers.ClientAPI.findLessons(groupNumber, day, hours, lecture, teacher, room: String)
+GET         /api/lessons               controllers.ClientAPI.findLessons(groupNumber, day, hours, lecture, instructor, room: String)
 GET         /api/table                 controllers.MathFacAPI.smartSearch(parameters: String)
-GET         /api/calendar.ics          controllers.Application.calendar()
+GET         /api/instructor/:instructor.ics          controllers.Application.instructorCalendar(instructor: String)
 
 GET         /support/addAdmin          controllers.Support.addAdmin()
 
-#http://localhost:9000/api/findLessons?groupNumber=2341&day=&hours=&lecture=&teacher=&room=
+#http://localhost:9000/api/findLessons?groupNumber=2341&day=&hours=&lecture=&instructor=&room=
 #http://localhost:9000/api/getTable?parameters=2441%20203
 #http://localhost:9000/api/getTable?parameters={%22teachers%22:[%22%D0%90%D0%B1%D0%B4%D1%80%D0%B0%D1%85%D0%B8%D0%BC%D0%BE%D0%B2%22,%22%D0%9F%D0%B5%D1%82%D1%83%D1%85%D0%B8%D0%BD%22,%22%D0%A3%D0%BB%D1%8C%D1%8F%D0%BD%D0%BE%D0%B2%22]}
 

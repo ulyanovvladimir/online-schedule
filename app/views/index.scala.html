@@ -17,7 +17,7 @@
 
 	<br><br><br><br>
 	@if(lessons.size()>0){
-		<table class="table table-striped" width="700px">
+		<table class="table table-striped" width="100%" border ="1">
 			<tr>
 				<td width="100px">Номер группы</td>
 				<td width="100px">День недели</td>
@@ -30,9 +30,9 @@
 				<tr>
 					<td>@lesson.getGroupNumber</td>
 					<td>@lesson.getDay</td>
-					<td>@lesson.getFromHours</td>
+					<td>@lesson.getHours</td>
 					<td>@lesson.getLecture</td>
-					<td>@lesson.getTeacher</td>
+					<td>@lesson.getInstructor</td>
 					<td>@lesson.getRoom</td>
 				</tr>
 			}

@@ -3,22 +3,19 @@ package controllers;
 import models.Lesson;
 import models.Admin;
 import models.ScheduleURL;
-import play.*;
 import play.libs.Akka;
 import play.mvc.*;
-import scala.collection.immutable.Stream;
 import scala.concurrent.duration.Duration;
-import views.html.*;
 import play.data.*;
 
 import java.io.*;
 
 import static play.data.Form.form;
 
+import java.nio.charset.Charset;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-import play.db.ebean.*;
 import play.libs.Crypto;
 import play.mvc.Security.Authenticated;
 
@@ -118,7 +115,7 @@ public class Application extends Controller {
         lesson.setDay(requestData.get("day"));
         lesson.setHours(requestData.get("hours"));
         lesson.setLecture(requestData.get("lecture"));
-        lesson.setTeacher(requestData.get("teacher"));
+        lesson.setInstructor(requestData.get("teacher"));
         lesson.setRoom(requestData.get("room"));
         lesson.save();
         return redirect(controllers.routes.Application.adminPage());
@@ -195,10 +192,10 @@ public class Application extends Controller {
         );
     }
 
-    public static Result calendar() {
-        String teacher = "Ульянов Владимир";
-        List<Lesson> lessons = Lesson.find.where().ilike("teacher", "%" + teacher + "%")
-                .orderBy("day asc, hours asc").findList(); //todo filter
-        return ok(views.html.calendar.render(lessons)); //todo custom file format
+    public static Result instructorCalendar(String instructor) {
+        List<Lesson> lessons = Lesson.find.where().ilike("instructor", "%" + instructor + "%")
+                .orderBy("dayOfWeek asc, fromHours asc").findList(); //todo filter
+        //render as UTF-8 binary
+        return ok(views.txt.calendar.render(lessons).body().getBytes(Charset.forName("UTF-8")))/*.as("text/instructorCalendar")*/; //todo custom file format
     }
 }

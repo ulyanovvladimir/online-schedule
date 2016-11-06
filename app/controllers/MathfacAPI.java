@@ -1,21 +1,14 @@
 package controllers;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import models.Lesson;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import play.data.DynamicForm;
-import play.data.Form;
-import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 public class MathFacAPI extends Controller {
 
@@ -45,7 +38,7 @@ public class MathFacAPI extends Controller {
                 "<table>\n" ;
         for (int i=0; i < teachersList.size(); i++) {
             Lesson lesson = teachersList.get(i);
-            table += "<tr><td>" + lesson.getTeacher() + "</td><td>" + lesson.getDay() + " " + lesson.getHours() + "</td><td>" + lesson.getRoom() + "</td></tr>\n";
+            table += "<tr><td>" + lesson.getInstructor() + "</td><td>" + lesson.getDay() + " " + lesson.getHours() + "</td><td>" + lesson.getRoom() + "</td></tr>\n";
         }
         table += "</table>\n" +
                 "</div>\n";

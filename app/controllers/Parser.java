@@ -1,30 +1,14 @@
 package controllers;
 
 import models.Lesson;
-import models.ScheduleURL;
-import play.*;
-import play.mvc.*;
-import views.html.*;
-import play.data.*;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.*;
-import java.net.URL;
 
-import play.db.ebean.*;
-import org.apache.commons.io.FileUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.CellReference;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.ss.util.CellRangeAddressBase;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
 
 
 public class Parser {
@@ -121,7 +105,7 @@ public class Parser {
                             lesson.setDay(day);
                             lesson.setHours(dataBase[x][1]);
                             lesson.setLecture(dataBase[x][y]);
-                            lesson.setTeacher(dataBase[x][y + 1]);
+                            lesson.setInstructor(dataBase[x][y + 1]);
                             lesson.setRoom(dataBase[x][y + 2]);
                             list.add(lesson);
                         } else {
@@ -131,7 +115,7 @@ public class Parser {
                                 lesson.setDay(day);
                                 lesson.setHours(dataBase[x][1]);
                                 lesson.setLecture(dataBase[x][y]);
-                                lesson.setTeacher(dataBase[x][y + 1]);
+                                lesson.setInstructor(dataBase[x][y + 1]);
                                 lesson.setRoom(dataBase[x][y + 2]);
                                 list.add(lesson);
                             }
