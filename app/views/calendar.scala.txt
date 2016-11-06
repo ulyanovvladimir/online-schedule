@@ -1,5 +1,5 @@
 @(lessons: List[Lesson])BEGIN:VCALENDAR
-PRODID:-//Google Inc//Google Calendar 70.9054//EN
+PRODID:-//Irkutsk State University//Education Schedule 1.0//EN
 VERSION:2.0
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
@@ -18,16 +18,19 @@ DTSTART:19700101T000000
 END:STANDARD
 END:VTIMEZONE@for(lesson <- lessons) {
 BEGIN:VEVENT
-DTSTART;TZID=Asia/Irkutsk:20160914T080000
-DTEND;TZID=Asia/Irkutsk:20160914T090000
+UID:@lesson.getId
+DTSTAMP:@lesson.getNextFrom
+ORGANIZER;CN=Vladimir Ulyanov:MAILTO:dedushka.lenin@@gmail.com
+DTSTART;TZID=Asia/Irkutsk:@lesson.getNextFrom
+DTEND;TZID=Asia/Irkutsk:@lesson.getNextTo
+SUMMARY:@lesson.getLecture
+DESCRIPTION:Занятия по предмету "@lesson.getLecture" у группы @lesson.getGroupNumber
+LOCATION:@lesson.getRoom
 RRULE:FREQ=WEEKLY;INTERVAL=1
-DTSTAMP:20161106T032424Z
-CREATED:20160913T080230Z
-SUMMARY:@lesson.getLecture (@lesson.getGroupNumber)
 TRANSP:OPAQUE
 BEGIN:VALARM
 ACTION:DISPLAY
-DESCRIPTION:Следующее занятие
+DESCRIPTION:Следующее занятие через 10 минут
 TRIGGER:-P0DT0H10M0S
 END:VALARM
 END:VEVENT}

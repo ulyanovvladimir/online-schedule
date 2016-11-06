@@ -1,5 +1,7 @@
 package models;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.avaje.ebean.Ebean;
@@ -43,6 +45,10 @@ public class Lesson extends Model {
 
     }
 
+    public Integer getId() {
+        return id;
+    }
+
     public String getGroupNumber() {
         return groupNumber;
     }
@@ -67,25 +73,25 @@ public class Lesson extends Model {
     public void setDay(String day) {
         switch(day){
             case "ПОНЕДЕЛЬНИК":
-                this.dayOfWeek=1;
+                this.dayOfWeek= Calendar.MONDAY;
                 break;
             case "ВТОРНИК":
-                this.dayOfWeek=2;
+                this.dayOfWeek=Calendar.TUESDAY;
                 break;
             case "СРЕДА":
-                this.dayOfWeek=3;
+                this.dayOfWeek=Calendar.WEDNESDAY;
                 break;
             case "ЧЕТВЕРГ":
-                this.dayOfWeek=4;
+                this.dayOfWeek=Calendar.THURSDAY;
                 break;
             case "ПЯТНИЦА":
-                this.dayOfWeek=5;
+                this.dayOfWeek=Calendar.FRIDAY;
                 break;
             case "СУББОТА":
-                this.dayOfWeek=6;
+                this.dayOfWeek=Calendar.SATURDAY;
                 break;
             case "ВОСКРЕСЕНЬЕ":
-                this.dayOfWeek=6;
+                this.dayOfWeek=Calendar.SUNDAY;
                 break;
             default:
                 throw new IllegalArgumentException("Unknown day of week:"+day);
@@ -94,7 +100,33 @@ public class Lesson extends Model {
 
     public String getHours() {
         if (fromMinutes == null) return ""; //todo BUG FIX
-        return fromHours+":"+fromMinutes+"-"+toHours+":"+toMinutes;
+        return zs(fromHours)+":"+zs(fromMinutes)+"-"+zs(toHours)+":"+zs(toMinutes);
+    }
+
+    private String zs(Integer n){
+        return String.format("%02d", n);
+    }
+
+    private Calendar nextDay(){
+        Calendar date = Calendar.getInstance();
+
+        while (date.get(Calendar.DAY_OF_WEEK) != dayOfWeek) {
+            date.add(Calendar.DATE, 1);
+        }
+
+        return date;
+    }
+
+    public String getNextFrom(){
+        Calendar date = nextDay();
+        DateFormat dateFormat1 = new SimpleDateFormat("yyyyMMdd");
+        return dateFormat1.format(date.getTime())+"T"+zs(fromHours)+zs(fromMinutes)+"00"; //20161106T100000
+    }
+
+    public String getNextTo(){
+        Calendar date = nextDay();
+        DateFormat dateFormat1 = new SimpleDateFormat("yyyyMMdd");
+        return dateFormat1.format(date.getTime())+"T"+zs(toHours)+zs(toMinutes)+"00"; //20161106T100000
     }
 
     public void setHours(String hours) {
