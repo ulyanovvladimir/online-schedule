@@ -141,7 +141,7 @@ public class Application extends Controller {
                                 try {
                                     Parser parser = new Parser();
                                     File destination = new File("sched" + i + ".xls");
-                                    parser.parseSchedule(destination);
+                                    parser.parseAndStore(destination);
                                     System.out.println("File "+ destination.getName()+" has been parsed");
                                 } catch (Exception e) {
                                     System.out.println("UNACCEPTABLE EXCEL! PLACED IN URL #" + i + ". ERROR: " + e.getMessage());

@@ -30,7 +30,7 @@ public class Global extends GlobalSettings {
                         try {
                             Parser parser = new Parser();
                             File destination = new File("sched" + i + ".xls");
-                            parser.parseSchedule(destination);
+                            parser.parseAndStore(destination);
                         } catch (Exception e) {
                             System.out.println("UNACCEPTABLE EXCEL! PLACED IN URL #" + i + ". ERROR: " + e.getMessage());
                         }

@@ -17,8 +17,8 @@ public class Support extends Controller {
 
 	  Admin.clearBase();
 	  Admin newadmin = new Admin();
-	  newadmin.setUsername("root3");
-	  newadmin.setUserpass(Crypto.encryptAES("root3"));
+	  newadmin.setUsername("admin");
+	  newadmin.setUserpass(Crypto.encryptAES("admin"));
 	  newadmin.save();
 
 	  return ok(signInPage.render());
