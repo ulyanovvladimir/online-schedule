@@ -76,7 +76,7 @@ public class Parser {
             String dbxy = dataBase[x][y];
             String group = ""; //group -> groupNumber
             if (dataBase[x][y] != null) {
-                if ("02".equals(dbxy.substring(0, 2))) {  //todo группа начинается с 02 ???
+                if (isGroupTitle(dbxy)) {
                     group = dataBase[x][y];
                     //System.out.println("444 UNACCEPTABLE!!!! + " + dataBase[x][y]);
                 } else {
@@ -90,20 +90,17 @@ public class Parser {
             System.out.println("Group " + group);
             if (group == null) break;
 
-            while (true) {
-                if (x > 200) {
-                    break;
-                }
-
+            while (x<200) {
                 x = x + 1;
                 if (dataBase[x][0] != null) {
                     day = dataBase[x][0];
                     while (true) {
-                        if (!"".equals(dataBase[x][1]) && !"".equals(dataBase[x][y + 1]) && dataBase[x][1] != null && dataBase[x][y + 1] != null) { //todo BUG: COLUMN y OVER 60
+                        if (notEmpty(dataBase[x][1]) && notEmpty(dataBase[x][y + 1])) {
                             Lesson lesson = new Lesson();
                             lesson.setGroupNumber(group);
                             lesson.setDay(day);
-                            lesson.setHours(dataBase[x][1]);
+                            String hours = getLectureHours(x, dataBase);
+                            lesson.setHours(hours);
                             lesson.setLecture(dataBase[x][y]);
                             lesson.setInstructor(dataBase[x][y + 1]);
                             lesson.setRoom(dataBase[x][y + 2]);
@@ -113,7 +110,7 @@ public class Parser {
                                 Lesson lesson = new Lesson();
                                 lesson.setGroupNumber(group);
                                 lesson.setDay(day);
-                                lesson.setHours(dataBase[x][1]);
+                                lesson.setHours(getLectureHours(x, dataBase));
                                 lesson.setLecture(dataBase[x][y]);
                                 lesson.setInstructor(dataBase[x][y + 1]);
                                 lesson.setRoom(dataBase[x][y + 2]);
@@ -121,7 +118,7 @@ public class Parser {
                             }
                         }
 
-                        if (dataBase[x + 1][0] != null) {
+                        if (dataBase[x + 1][0] != null) {  //todo ???
                             break;
                         } else {
                             x = x + 1;
@@ -135,10 +132,28 @@ public class Parser {
 
             y = y + 3;
             x = startLine;
-            if ("Часы".equals(dataBase[x][y])) {
+            if (endOfColumns(x,y, dataBase)) {
                 break;
             }
         }
         return list;
+    }
+
+    private static boolean endOfColumns(int x, int y, String[][] dataBase) {
+        String s =  dataBase[x][y];
+        return "Часы".equals(s) || y + 2 >= dataBase[x].length;
+    }
+
+    private static String getLectureHours(int row, String[][] db) {
+        String ret = db[row][1];
+        if (notEmpty(ret)) return ret; else return getLectureHours(row-1, db);
+    }
+
+    private static boolean isGroupTitle(String cell) {
+        return "02".equals(cell.substring(0, 2));
+    }
+
+    private static boolean notEmpty(String cell){
+        return cell != null && !"".equals(cell);
     }
 }

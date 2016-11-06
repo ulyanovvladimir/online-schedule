@@ -10,6 +10,8 @@ import play.db.ebean.*;
 
 import javax.persistence.*;
 
+import static java.util.Calendar.*;
+
 
 @Entity
 public class Lesson extends Model {
@@ -58,14 +60,14 @@ public class Lesson extends Model {
     }
 
     public String getDay() {
-        switch(dayOfWeek){
-            case 1: return "Пн";
-            case 2: return "Вт";
-            case 3: return "Ср";
-            case 4: return "Чт";
-            case 5: return "Пт";
-            case 6: return "Сб";
-            case 7: return "Вс";
+        switch(dayOfWeek.intValue()){
+            case MONDAY: return "Пн";
+            case TUESDAY: return "Вт";
+            case WEDNESDAY: return "Ср";
+            case THURSDAY: return "Чт";
+            case FRIDAY: return "Пт";
+            case SATURDAY: return "Сб";
+            case SUNDAY: return "Вс";
             default: return "";
         }
     }
@@ -73,7 +75,7 @@ public class Lesson extends Model {
     public void setDay(String day) {
         switch(day){
             case "ПОНЕДЕЛЬНИК":
-                this.dayOfWeek= Calendar.MONDAY;
+                this.dayOfWeek= MONDAY;
                 break;
             case "ВТОРНИК":
                 this.dayOfWeek=Calendar.TUESDAY;
