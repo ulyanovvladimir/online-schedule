@@ -28,12 +28,12 @@
 			</tr>
 			@for(lesson <- lessons) {
 				<tr>
-					<td>@lesson.groupNumber</td>
-					<td>@lesson.day</td>
-					<td>@lesson.hours</td>
-					<td>@lesson.lecture</td>
-					<td>@lesson.teacher</td>
-					<td>@lesson.room</td>
+					<td>@lesson.getGroupNumber</td>
+					<td>@lesson.getDay</td>
+					<td>@lesson.getFromHours</td>
+					<td>@lesson.getLecture</td>
+					<td>@lesson.getTeacher</td>
+					<td>@lesson.getRoom</td>
 				</tr>
 			}
 		</table>

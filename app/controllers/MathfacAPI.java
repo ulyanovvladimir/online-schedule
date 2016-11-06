@@ -45,7 +45,7 @@ public class MathFacAPI extends Controller {
                 "<table>\n" ;
         for (int i=0; i < teachersList.size(); i++) {
             Lesson lesson = teachersList.get(i);
-            table += "<tr><td>" + lesson.teacher + "</td><td>" + lesson.day + " " + lesson.hours + "</td><td>" + lesson.room + "</td></tr>\n";
+            table += "<tr><td>" + lesson.getTeacher() + "</td><td>" + lesson.getDay() + " " + lesson.getHours() + "</td><td>" + lesson.getRoom() + "</td></tr>\n";
         }
         table += "</table>\n" +
                 "</div>\n";

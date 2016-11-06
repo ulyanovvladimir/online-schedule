@@ -14,10 +14,15 @@ create table lesson (
   id                        integer not null,
   group_number              varchar(255),
   day                       varchar(255),
+  day_of_week               integer,
   hours                     varchar(255),
   lecture                   varchar(255),
   teacher                   varchar(255),
   room                      varchar(255),
+  from_hours                integer,
+  from_minutes              integer,
+  to_hours                  integer,
+  to_minutes                integer,
   constraint pk_lesson primary key (id))
 ;
 

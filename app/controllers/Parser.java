@@ -85,15 +85,12 @@ public class Parser {
         // startLine - строка, где начинается "чистое" расписание. x и y - для обхода файла
         int startLine = x;
         int y = 2;
-        String d; //d -> day
+        String day; //day -> day
 
         while (true) {
 
             String dbxy = dataBase[x][y];
             String group = ""; //group -> groupNumber
-            //System.out.println("111 UNACCEPTABLE!!!! + " + dataBase[x][y]);
-            //System.out.println("222 UNACCEPTABLE!!!! + " + dataBase[x+1][y]);
-            //System.out.println("333 UNACCEPTABLE!!!! + " + x);
             if (dataBase[x][y] != null) {
                 if ("02".equals(dbxy.substring(0, 2))) {  //todo группа начинается с 02 ???
                     group = dataBase[x][y];
@@ -116,26 +113,26 @@ public class Parser {
 
                 x = x + 1;
                 if (dataBase[x][0] != null) {
-                    d = dataBase[x][0];
+                    day = dataBase[x][0];
                     while (true) {
                         if (!"".equals(dataBase[x][1]) && !"".equals(dataBase[x][y + 1]) && dataBase[x][1] != null && dataBase[x][y + 1] != null) { //todo BUG: COLUMN y OVER 60
                             Lesson lesson = new Lesson();
-                            lesson.groupNumber = group;
-                            lesson.day = d;
-                            lesson.hours = dataBase[x][1];
-                            lesson.lecture = dataBase[x][y];
-                            lesson.teacher = dataBase[x][y + 1];
-                            lesson.room = dataBase[x][y + 2];
+                            lesson.setGroupNumber(group);
+                            lesson.setDay(day);
+                            lesson.setHours(dataBase[x][1]);
+                            lesson.setLecture(dataBase[x][y]);
+                            lesson.setTeacher(dataBase[x][y + 1]);
+                            lesson.setRoom(dataBase[x][y + 2]);
                             list.add(lesson);
                         } else {
                             if (!"".equals(dataBase[x][y]) && dataBase[x][y] != null && !"".equals(dataBase[x][y + 1]) && dataBase[x][y + 1] != null) {
                                 Lesson lesson = new Lesson();
-                                lesson.groupNumber = group;
-                                lesson.day = d;
-                                lesson.hours = dataBase[x][1];
-                                lesson.lecture = dataBase[x][y];
-                                lesson.teacher = dataBase[x][y + 1];
-                                lesson.room = dataBase[x][y + 2];
+                                lesson.setGroupNumber(group);
+                                lesson.setDay(day);
+                                lesson.setHours(dataBase[x][1]);
+                                lesson.setLecture(dataBase[x][y]);
+                                lesson.setTeacher(dataBase[x][y + 1]);
+                                lesson.setRoom(dataBase[x][y + 2]);
                                 list.add(lesson);
                             }
                         }

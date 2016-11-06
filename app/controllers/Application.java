@@ -74,7 +74,7 @@ public class Application extends Controller {
         );
     }
 
-    //@Authenticated(Secured.class)
+    @Authenticated(Secured.class)
     public static Result adminPage() {
         List<Lesson> lessonList = new ArrayList<>();
         List<ScheduleURL> urlList = ScheduleURL.all();
@@ -110,25 +110,66 @@ public class Application extends Controller {
         return badRequest(views.html.signInPage.render());
     }
 
+    @Authenticated(Secured.class)
     public static Result insertLessons() throws Exception {
         DynamicForm requestData = Form.form().bindFromRequest();
         Lesson lesson = new Lesson();
-        lesson.groupNumber = requestData.get("groupNumber");
-        lesson.day = requestData.get("day");
-        lesson.hours = requestData.get("hours");
-        lesson.lecture = requestData.get("lecture");
-        lesson.teacher = requestData.get("teacher");
-        lesson.room = requestData.get("room");
+        lesson.setGroupNumber(requestData.get("groupNumber"));
+        lesson.setDay(requestData.get("day"));
+        lesson.setHours(requestData.get("hours"));
+        lesson.setLecture(requestData.get("lecture"));
+        lesson.setTeacher(requestData.get("teacher"));
+        lesson.setRoom(requestData.get("room"));
         lesson.save();
         return redirect(controllers.routes.Application.adminPage());
     }
 
+    @Authenticated(Secured.class)
     public static Result insertURL() {
         DynamicForm requestData = Form.form().bindFromRequest();
         ScheduleURL url = new ScheduleURL();
         url.url = requestData.get("urlFieldValue");
         url.save();
 
+        startReload();
+
+        return redirect(controllers.routes.Application.adminPage());
+    }
+
+    @Authenticated(Secured.class)
+    public static Result deleteURL(Integer id) {
+        ScheduleURL.delete(id);
+        return redirect(controllers.routes.Application.adminPage());
+    }
+
+    @Authenticated(Secured.class)
+    public static Result editURLForm(Integer id) {
+        ScheduleURL url = ScheduleURL.find.ref(id);
+
+        if (url == null) {
+            return notFound();
+        }
+        Form<ScheduleURL> filledForm = urlForm.fill(url);
+        return ok(
+                views.html.editURLPage.render(filledForm)
+        );
+    }
+
+    @Authenticated(Secured.class)
+    public static Result editURL() {
+        Form<ScheduleURL> filledForm = urlForm.bindFromRequest();
+        if (filledForm.hasErrors()) {
+            return badRequest(
+                    views.html.editURLPage.render(filledForm)
+            );
+        } else {
+            ScheduleURL.edit(filledForm.get());
+            startReload();
+            return redirect(controllers.routes.Application.adminPage());
+        }
+    }
+
+    private static void startReload() {
         Akka.system().scheduler().scheduleOnce(
                 Duration.create(0, TimeUnit.SECONDS),
                 new Runnable() {
@@ -142,7 +183,7 @@ public class Application extends Controller {
                                     Parser parser = new Parser();
                                     File destination = new File("sched" + i + ".xls");
                                     parser.parseAndStore(destination);
-                                    System.out.println("File "+ destination.getName()+" has been parsed");
+                                    System.out.println("File " + destination.getName() + " has been parsed");
                                 } catch (Exception e) {
                                     System.out.println("UNACCEPTABLE EXCEL! PLACED IN URL #" + i + ". ERROR: " + e.getMessage());
                                 }
@@ -152,38 +193,12 @@ public class Application extends Controller {
                 },
                 Akka.system().dispatcher()
         );
-
-        return redirect(controllers.routes.Application.adminPage());
     }
 
-    public static Result deleteURL(Integer id) {
-        ScheduleURL.delete(id);
-        return redirect(controllers.routes.Application.adminPage());
+    public static Result calendar() {
+        String teacher = "Ульянов Владимир";
+        List<Lesson> lessons = Lesson.find.where().ilike("teacher", "%" + teacher + "%")
+                .orderBy("day asc, hours asc").findList(); //todo filter
+        return ok(views.html.calendar.render(lessons)); //todo custom file format
     }
-
-    public static Result editURLPage(Integer id) {
-        ScheduleURL url = ScheduleURL.find.ref(id);
-
-        if (url == null) {
-            return notFound();
-        }
-        Form<ScheduleURL> filledForm = urlForm.fill(url);
-        return ok(
-                views.html.editURLPage.render(filledForm)
-        );
-    }
-
-    public static Result editURL() {
-        Form<ScheduleURL> filledForm = urlForm.bindFromRequest();
-        if (filledForm.hasErrors()) {
-            return badRequest(
-                    views.html.editURLPage.render(filledForm)
-            );
-        } else {
-            ScheduleURL.edit(filledForm.get());
-            return redirect(controllers.routes.Application.adminPage());
-        }
-    }
-
-
 }
