@@ -1,5 +1,5 @@
 GET         /assets/*file              controllers.Assets.at(path="/public", file)
-GET         /                          controllers.Application.index()
+GET         /                          controllers.App.index()
 GET         /signin                    controllers.Application.signInPage()
 GET         /admin/                    controllers.Application.adminPage()
 GET         /admin/reload              controllers.Admin.reload()

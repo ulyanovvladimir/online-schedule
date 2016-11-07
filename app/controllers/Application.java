@@ -24,13 +24,6 @@ public class Application extends Controller {
 
     static Form<ScheduleURL> urlForm = form(ScheduleURL.class);
 
-    public static Result index() {
-        List<Lesson> lessonList = Lesson.all();
-        return ok(
-                views.html.index.render(lessonList)
-        );
-    }
-
     private static void foo(Map<Lesson, Integer> map, String field, String part) {
         List<Lesson> lessonList = Lesson.find.where().ilike(field, "%" + part + "%")
                 .orderBy("groupNumber asc, day asc, hours asc").findList();
