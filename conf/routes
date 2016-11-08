@@ -1,26 +1,26 @@
-GET         /assets/*file              controllers.Assets.at(path="/public", file)
-GET         /                          controllers.App.index()
-GET         /signin                    controllers.Application.signInPage()
-GET         /admin/                    controllers.Application.adminPage()
-GET         /admin/reload              controllers.Admin.reload()
-GET         /admin/url/:id/edit        controllers.Application.editURLForm(id: Integer)
-POST        /login                     controllers.Application.logIn()
+GET         /assets/*file                          controllers.Assets.at(path="/public", file)
+GET         /                                      controllers.App.index()
+GET         /signin                                controllers.Application.signInPage()
+GET         /admin/                                controllers.Application.adminPage()
+GET         /admin/reload                          controllers.Admin.reload()
+GET         /admin/url/:id/edit                    controllers.Application.editURLForm(id: Integer)
+POST        /login                                 controllers.Application.logIn()
 
 #Lessons
-POST        /lesson                    controllers.Application.insertLessons()
-POST        /smartSearch               controllers.Application.smartSearch()
+POST        /lesson                                controllers.Application.insertLessons()
+POST        /smartSearch                           controllers.Application.smartSearch()
 
 #URLs
-POST        /admin/url/insert          controllers.Application.insertURL()
-POST        /admin/url/delete          controllers.Application.deleteURL(id: Integer)
-POST        /admin/url/edit            controllers.Application.editURL()
+POST        /admin/url/insert                      controllers.Application.insertURL()
+POST        /admin/url/delete                      controllers.Application.deleteURL(id: Integer)
+POST        /admin/url/edit                        controllers.Application.editURL()
 
 #API
-GET         /api/lessons               controllers.ClientAPI.findLessons(groupNumber, day, hours, lecture, instructor, room: String)
-GET         /api/table                 controllers.MathFacAPI.smartSearch(parameters: String)
-GET         /api/instructor/:instructor.ics          controllers.Application.instructorCalendar(instructor: String)
+GET         /api/lessons                           controllers.ClientAPI.findLessons(groupNumber, day, hours, lecture, instructor, room: String)
+GET         /api/table                             controllers.MathFacAPI.smartSearch(parameters: String)
+GET         /api/instructor/:instructor.ics        controllers.Application.instructorCalendar(instructor: String)
 
-GET         /support/addAdmin          controllers.Support.addAdmin()
+GET         /support/addAdmin                      controllers.Support.addAdmin()
 
 #http://localhost:9000/api/findLessons?groupNumber=2341&day=&hours=&lecture=&instructor=&room=
 #http://localhost:9000/api/getTable?parameters=2441%20203
