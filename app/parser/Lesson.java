@@ -1,23 +1,21 @@
-package models;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.*;
+package parser;
 
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.SqlUpdate;
-import play.db.ebean.*;
+import play.db.ebean.Model;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.List;
 
 import static java.util.Calendar.*;
 
 
-@Entity
-public class Lesson extends Model {
+public class Lesson {
 
-    @Id
-    private Integer id;
     private String groupNumber;
     private Integer dayOfWeek;
     private String lecture;
@@ -29,27 +27,6 @@ public class Lesson extends Model {
     private Integer toHours;
     private Integer toMinutes;
 
-    public static Finder<Integer, Lesson> find = new Finder(
-            Integer.class, Lesson.class
-    );
-
-    public static List<Lesson> all() {
-        return find.all();
-    }
-
-    public static void clearBase() {
-        SqlUpdate rebuildTable = Ebean.createSqlUpdate("TRUNCATE TABLE lesson");
-        try {
-            rebuildTable.execute();
-        } catch (Exception e) {
-            System.out.println("LOGGGGG" + e.getMessage());
-        }
-
-    }
-
-    public Integer getId() {
-        return id;
-    }
 
     public String getGroupNumber() {
         return groupNumber;
@@ -109,7 +86,6 @@ public class Lesson extends Model {
     }
 
     public String getHours() {
-        if (fromMinutes == null) return ""; //todo BUG FIX
         return zs(fromHours) + ":" + zs(fromMinutes) + "-" + zs(toHours) + ":" + zs(toMinutes);
     }
 
@@ -219,23 +195,5 @@ public class Lesson extends Model {
 
     public Integer getDayOfWeek() {
         return dayOfWeek;
-    }
-
-    public void setDayOfWeek(Integer dayOfWeek) {
-        this.dayOfWeek = dayOfWeek;
-    }
-
-    public static Lesson from(parser.Lesson from) {
-        Lesson to = new Lesson();
-        to.setDayOfWeek(from.getDayOfWeek());
-        to.setFromHours(from.getFromHours());
-        to.setFromMinutes(from.getFromMinutes());
-        to.setGroupNumber(from.getGroupNumber());
-        to.setInstructor(from.getInstructor());
-        to.setLecture(from.getLecture());
-        to.setRoom(from.getRoom());
-        to.setToHours(from.getToHours());
-        to.setToMinutes(from.getToMinutes());
-        return to;
     }
 }

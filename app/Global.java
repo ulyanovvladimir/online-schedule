@@ -1,13 +1,10 @@
 import controllers.Downloader;
-import controllers.Parser;
+import parser.Parser;
 import models.Lesson;
 import models.ScheduleURL;
 import scala.concurrent.duration.Duration;
-import org.joda.time.DateTime;
-import org.joda.time.Seconds;
 import play.Application;
 import play.GlobalSettings;
-import play.Logger;
 import play.libs.Akka;
 
 import java.io.File;
@@ -17,29 +14,29 @@ public class Global extends GlobalSettings {
 
     @Override
     public void onStart(Application application) {
-      Akka.system().scheduler().schedule(
-        Duration.create(0, TimeUnit.SECONDS),
-        Duration.create(24, TimeUnit.HOURS),
-        new Runnable() {
-            @Override
-            public void run() {
-                Downloader downloader = new Downloader();
-                if(downloader.downloadSchedule()){
-                    Lesson.clearBase();
-                    for(int i=1; i <= ScheduleURL.all().size();i++) {
-                        try {
-                            Parser parser = new Parser();
-                            File destination = new File("sched" + i + ".xls");
-                            parser.parseAndStore(destination);
-                        } catch (Exception e) {
-                            System.out.println("UNACCEPTABLE EXCEL! PLACED IN URL #" + i + ". ERROR: " + e.getMessage());
+        Akka.system().scheduler().schedule(
+                Duration.create(0, TimeUnit.SECONDS),
+                Duration.create(24, TimeUnit.HOURS),
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        Downloader downloader = new Downloader();
+                        if (downloader.downloadSchedule()) {
+                            Lesson.clearBase();
+                            for (int i = 1; i <= ScheduleURL.all().size(); i++) {
+                                try {
+                                    Parser parser = new Parser();
+                                    File destination = new File("sched" + i + ".xls");
+                                    parser.parseAndStore(destination);
+                                } catch (Exception e) {
+                                    System.out.println("UNACCEPTABLE EXCEL! PLACED IN URL #" + i + ". ERROR: " + e.getMessage());
+                                }
+                            }
                         }
                     }
-                }
-            }
-        },
-        Akka.system().dispatcher()
-      );
+                },
+                Akka.system().dispatcher()
+        );
     }
 
 }
