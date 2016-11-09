@@ -58,11 +58,14 @@ public class Parser {
 
         // startLine - строка, где начинается "чистое" расписание. x и y - для обхода файла  "ДНИ"
         int startLine = getStartRow(dataBase);
+        FooterInfo footer = getFooter(dataBase);
+        //todo ВЕРХНЯЯ НЕДЕЛЯ
+        //todo НИЖНЯЯ НЕДЕЛЯ
         for (int y = 2; !endOfColumns(startLine, y, dataBase); y += 3) {
             String group = getGroup(startLine, y, dataBase);
             if (group == null) break; //конец расписания, дальше столбцы не содержат групп
 
-            for (int x = startLine + 2; x < dataBase.length; x++) {
+            for (int x = startLine + 2; x < footer.minRow; x++) {
                 String lecture = dataBase[x][y];
                 if (notEmpty(lecture)) {
                     String room = getRoom(x, y, dataBase);
@@ -95,6 +98,18 @@ public class Parser {
                 }
             }
         }
+        //todo различать верхние и нижние недели
+        for (int i = 0; i < list.size() - 1; i++) {
+            Lesson lesson1 = list.get(i);
+            Lesson lesson2 = list.get(i + 1);
+            if (lesson1.getFromHours() == lesson2.getFromHours() && lesson1.getFromMinutes() == lesson2.getFromMinutes() &&
+                    lesson1.getGroupNumber().equals(lesson2.getGroupNumber()) && lesson1.getDayOfWeek() == lesson2.getDayOfWeek()) {
+                System.out.println(lesson1.toString() + " верхняя неделя");
+                System.out.println(lesson2.toString() + " нижняя неделя");
+
+            }
+        }
+
         return list;
     }
 
@@ -155,5 +170,37 @@ public class Parser {
             }
         }
         throw new IllegalArgumentException("Данный лист имеет неправильный формат,в первом столбце должны быть Дни");
+    }
+
+    private static FooterInfo getFooter(String[][] dataBase){
+        FooterInfo ret = new FooterInfo();
+        ret.minRow = dataBase.length;
+        for (int row = dataBase.length-1; row>=0; row-- ){
+            for (int j = 0; j < dataBase[row].length; j++) {
+                String value = dataBase[row][j];
+                if(value!=null && value.toLowerCase().contains("нижняя")) {
+                    ret.minRow = row;
+                    //find value of lower weak
+                    ret.lower = findFirstRightValue(row, j+1, dataBase);
+                }
+                if(value!=null && value.toLowerCase().contains("верхняя")) {
+                    ret.minRow = row;
+                    //find value of lower weak
+                    ret.upper = findFirstRightValue(row, j+1, dataBase);
+                }
+                if(ret.lower!=null && ret.upper != null) break;
+            }
+        }
+        return ret;
+    }
+
+    private static String findFirstRightValue(int row, int i, String[][] dataBase) {
+        if (notEmpty(dataBase[row][i])) return dataBase[row][i]; else return findFirstRightValue(row, i+1, dataBase);
+    }
+
+    private static class FooterInfo {
+        int minRow;
+        String upper;
+        String lower;
     }
 }

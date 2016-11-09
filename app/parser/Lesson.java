@@ -196,4 +196,9 @@ public class Lesson {
     public Integer getDayOfWeek() {
         return dayOfWeek;
     }
+
+    @Override
+    public String toString() {
+        return getDay()+" "+getHours()+" "+getGroupNumber()+" "+getLecture()+" "+getInstructor()+" "+getRoom();
+    }
 }
