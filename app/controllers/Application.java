@@ -3,19 +3,13 @@ package controllers;
 import models.Lesson;
 import models.Admin;
 import models.ScheduleURL;
-import parser.Parser;
-import play.libs.Akka;
 import play.mvc.*;
-import scala.concurrent.duration.Duration;
 import play.data.*;
-
-import java.io.*;
 
 import static play.data.Form.form;
 
 import java.nio.charset.Charset;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 import play.libs.Crypto;
 import play.mvc.Security.Authenticated;
@@ -61,7 +55,7 @@ public class Application extends Controller {
         }
 
         return ok(
-                views.html.index.render(response)
+                views.html.index.render(App.filterForm() , response, App.allGroups())
         );
     }
 

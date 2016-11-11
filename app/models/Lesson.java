@@ -29,7 +29,7 @@ public class Lesson extends Model {
     private Integer toHours;
     private Integer toMinutes;
 
-    public static Finder<Integer, Lesson> find = new Finder(
+    public static Model.Finder<Integer, Lesson> find = new Model.Finder(
             Integer.class, Lesson.class
     );
 
