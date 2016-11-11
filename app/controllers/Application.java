@@ -122,7 +122,7 @@ public class Application extends Controller {
         url.url = requestData.get("urlFieldValue");
         url.save();
 
-        startReload();
+        controllers.Admin.startReload();
 
         return redirect(controllers.routes.Application.adminPage());
     }
@@ -155,35 +155,9 @@ public class Application extends Controller {
             );
         } else {
             ScheduleURL.edit(filledForm.get());
-            startReload();
+            controllers.Admin.startReload();
             return redirect(controllers.routes.Application.adminPage());
         }
-    }
-
-    private static void startReload() {
-        Akka.system().scheduler().scheduleOnce(
-                Duration.create(0, TimeUnit.SECONDS),
-                new Runnable() {
-                    public void run() {
-                        Downloader downloader = new Downloader();
-                        if (downloader.downloadSchedule()) {
-                            Lesson.clearBase();
-                            System.out.println("Base cleared");
-                            for (int i = 1; i <= ScheduleURL.all().size(); i++) {
-                                try {
-                                    Parser parser = new Parser();
-                                    File destination = new File("sched" + i + ".xls");
-                                    parser.parseAndStore(destination);
-                                    System.out.println("File " + destination.getName() + " has been parsed");
-                                } catch (Exception e) {
-                                    System.out.println("UNACCEPTABLE EXCEL! PLACED IN URL #" + i + ". ERROR: " + e.getMessage());
-                                }
-                            }
-                        }
-                    }
-                },
-                Akka.system().dispatcher()
-        );
     }
 
     public static Result instructorCalendar(String instructor) {

@@ -1,54 +1,11 @@
-import controllers.Downloader;
-import parser.Parser;
-import models.Lesson;
-import models.ScheduleURL;
-import scala.concurrent.duration.Duration;
+import controllers.Admin;
 import play.Application;
 import play.GlobalSettings;
-import play.libs.Akka;
-
-import java.io.File;
-import java.util.concurrent.TimeUnit;
 
 public class Global extends GlobalSettings {
 
     @Override
     public void onStart(Application application) {
-        Akka.system().scheduler().schedule(
-                Duration.create(0, TimeUnit.SECONDS),
-                Duration.create(24, TimeUnit.HOURS),
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        Downloader downloader = new Downloader();
-                        if (downloader.downloadSchedule()) {
-                            Lesson.clearBase();
-                            for (int i = 1; i <= ScheduleURL.all().size(); i++) {
-                                try {
-                                    Parser parser = new Parser();
-                                    File destination = new File("sched" + i + ".xls");
-                                    parser.parseAndStore(destination);
-                                } catch (Exception e) {
-                                    System.out.println("UNACCEPTABLE EXCEL! PLACED IN URL #" + i + ". ERROR: " + e.getMessage());
-                                }
-                            }
-                        }
-                    }
-                },
-                Akka.system().dispatcher()
-        );
+        Admin.startReload();
     }
-
 }
-
-/*Akka.system().scheduler().schedule(
-                Duration.create(0, TimeUnit.MILLISECONDS),
-                Duration.create(10, TimeUnit.SECONDS),
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        System.out.println("EVERY DAY AT 0:00 ---    " + System.currentTimeMillis());
-                    }
-                },
-                Akka.system().dispatcher()
-        );*/

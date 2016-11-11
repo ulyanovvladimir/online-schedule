@@ -2,6 +2,7 @@ package parser;
 
 
 import java.io.*;
+import java.net.URL;
 import java.util.*;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -19,10 +20,23 @@ public class Parser {
         }
     }
 
-    public static List<Lesson> parseFile(File file) throws IOException {
-        List<Lesson> list = new ArrayList<Lesson>();
 
-        POIFSFileSystem fs = new POIFSFileSystem(new FileInputStream(file));
+
+
+
+    @Deprecated
+    public static List<Lesson> parseFile(File file) throws IOException {
+        return parseStream(new FileInputStream(file));
+    }
+
+    public static List<Lesson> parseURL(URL url) throws IOException {
+        return parseStream(url.openStream());
+    }
+
+
+    public static List<Lesson> parseStream(InputStream in) throws IOException {
+        List<Lesson> list = new ArrayList<Lesson>();
+        POIFSFileSystem fs = new POIFSFileSystem(in);
         HSSFWorkbook workbook = new HSSFWorkbook(fs);
 
         for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
@@ -32,6 +46,8 @@ public class Parser {
         }
         return list;
     }
+
+
 
     private static List<Lesson> parseSheet(HSSFSheet sheet) {
         List<Lesson> list = new ArrayList<Lesson>();
