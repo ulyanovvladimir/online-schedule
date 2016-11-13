@@ -55,7 +55,7 @@ public class Application extends Controller {
         }
 
         return ok(
-                views.html.index.render(App.filterForm() , response, App.allGroups())
+                views.html.index.render(App.filterForm() , response, App.allGroups(), App.allInstructors())
         );
     }
 

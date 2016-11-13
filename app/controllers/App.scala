@@ -13,17 +13,19 @@ import scala.collection.JavaConversions._
   */
 object App extends Controller {
 
-  case class FilterData(groupNumber: Option[String], instructor: Option[String])
+  case class FilterData(groupNumber: Option[String], instructor: List[String])
 
 
   val filterForm = Form(
     mapping(
       "groupNumber" -> optional(text),
-      "instructor" -> optional(text)
+      "instructor" -> list(text)
     )(FilterData.apply)(FilterData.unapply)
   )
 
-  def allGroups = Lesson.all().toList.map(lesson => lesson.getGroupNumber).distinct
+  def allGroups = Lesson.all().toList.map(lesson => lesson.getGroupNumber).distinct.sorted
+
+  def allInstructors = Lesson.all().toList.map(lesson => lesson.getInstructor).distinct.sorted
 
   def groupSchedule() = Action {
     Ok("todo")
@@ -39,19 +41,24 @@ object App extends Controller {
       },
       userData => {
         userData match {
-          case FilterData(None, _) =>
-            Logger.debug("NO GROUP")
-            val lessonList = Lesson.all()
+          case FilterData(None, Nil) =>
+            val lessonList = Lesson.all().sortWith(lessonSorter)
             Ok(views.html.index(filterForm.fill(userData), lessonList))
-          case FilterData(Some(group), _) =>
-            Logger.debug(group)
-            val lessonList = Lesson.find.where().ilike("groupNumber", group).findList()
+          case FilterData(Some(group), Nil) =>
+            val lessonList = Lesson.find.where().ilike("groupNumber", group).findList().sortWith(lessonSorter)
             Ok(views.html.index(filterForm.fill(userData), lessonList))
-          case _ =>
-            val lessonList = Lesson.all()
+          case FilterData(None, instructor) =>
+            val lessonList = Lesson.all().filter(lesson => instructor.contains(lesson.getInstructor)).sortWith(lessonSorter)
+            Ok(views.html.index(filterForm.fill(userData), lessonList))
+          case FilterData(Some(group), instructor) =>
+            val lessonList = Lesson.find.where().ilike("groupNumber", group).findList().filter(lesson => instructor.contains(lesson.getInstructor)).sortWith(lessonSorter)
             Ok(views.html.index(filterForm.fill(userData), lessonList))
         }
       }
     )
+  }
+
+  def lessonSorter(l1: Lesson, l2: Lesson): Boolean = {
+    if (l1.getDayOfWeek < l2.getDayOfWeek) true else l1.getFromHours < l2.getFromHours
   }
 }
