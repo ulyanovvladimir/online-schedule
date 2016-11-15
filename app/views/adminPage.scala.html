@@ -2,68 +2,56 @@
 
 @import helper._
 
-@main("Страница администрирования") {
+@main("Страница администрирования")("admin") {
+    <div id="content">
+        <div id="content-header">
+                <!--<div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="tip-bottom">Form elements</a> <a href="#" class="current">Common elements</a> </div>-->
+            <h1>Страница администрирования</h1>
+        </div>
+        <div class="container-fluid">
+            <hr>
+            <div class="row-fluid">
+                <div class="span6">
 
-	<style>
-		.col-xs-2{
-			padding-left: 5px !important;
-			padding-right: 5px !important;
-		}
-	</style>
+                    @if(urls.size() > 0) {
+                        <table class="table table-striped" style="max-width: 700px;
+                            margin-left: 15px;">
+                        @for(url <- urls) {
+                            <tr>
+                                <td style="min-width: 500px;">@url.url</td>
+                                <td style="min-width: 100px;">@form(routes.Application.editURLForm(url.id)) {
+                                    <input type="submit" class="btn btn-info" value="Изменить">
+                                    }
+                                </td>
+                                <td style="min-width: 100px;">@form(routes.Application.deleteURL(url.id)) {
+                                    <input type="submit" class="btn btn-danger" value="Удалить">
+                                    }
+                                </td>
+                            </tr>
+                        }
+                        </table>
+                    }
 
-	<form action="@routes.Application.insertLessons()" method="POST">
-		<h2>Внести новое занятие:</h2>
-		<div class="col-xs-2" style="padding-left: 15px !important;">
-			<input type=text class="form-control" name="groupNumber" placeholder="Номер группы"/>
-		</div>
-		<div class="col-xs-2">
-			<input type=text class="form-control" name="day" placeholder="День недели"/>
-		</div>
-		<div class="col-xs-2">
-			<input type=text class="form-control" name="hours" placeholder="Время занятия"/>
-		</div>
-		<div class="col-xs-2">
-			<input type=text class="form-control" name="lecture" placeholder="Название предмета"/>
-		</div>
-		<div class="col-xs-2">
-			<input type=text class="form-control" name="instructor" placeholder="ФИО преподавателя"/>
-		</div>
-		<div class="col-xs-2">
-			<input type=text class="form-control" name="room" placeholder="Номер аудитории"/>
-		</div>
-		<br><br>
-		<div class="col-xs-2"><input type="submit" class="btn btn-default" value="Внести" style="margin-left: 15px;"></div>
-		<br><br>
-	</form>
-
-
-	@if(urls.size() > 0){
-		<h2>Ссылки обрабатываются:</h2>
-
-		<table class="table table-striped" style="max-width: 700px;margin-left: 15px;">
-			@for(url <- urls) {
-				<tr>
-					<td style="min-width: 500px;">@url.url</td>
-					<td style="min-width: 100px;">@form(routes.Application.editURLForm(url.id)) {
-						<input type="submit" class="btn btn-default" value="Изменить">
-					}
-					</td>
-					<td style="min-width: 100px;">@form(routes.Application.deleteURL(url.id)) {
-						<input type="submit" class="btn btn-default" value="Удалить">
-					}
-					</td>
-				</tr>
-			}
-		</table>
-	}
-
-	<h2>Внести новый URL:</h2>
-	<form action="@routes.Application.insertURL()" method="POST">
-		<div class="col-xs-12">
-			<input type=text class="form-control" name="urlFieldValue" placeholder="Ссылка на файл расписания"/>
-		</div>
-		<br><br>
-		<div class="col-xs-2"><input type="submit" class="btn btn-default" value="Внести" style="margin-left: 15px;"></div>
-	</form>
-
+                    <div class="widget-box">
+                        <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
+                            <h5>Добавление нового URL</h5>
+                        </div>
+                        <div class="widget-content nopadding">
+                            <form action="@routes.Application.insertURL()" method="POST" class="form-horizontal">
+                                <div class="control-groupNumber">
+                                    <label class="control-label">URL</label>
+                                    <div class="controls">
+                                        <input type="text" class="span11" name="urlFieldValue" placeholder="Ссылка на файл расписания"/>
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-success">Добавить</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 }
