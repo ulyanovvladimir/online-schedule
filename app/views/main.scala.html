@@ -29,14 +29,9 @@
         <!--sidebar-menu-->
         <div id="sidebar"> <a href="#" class="visible-phone"><i class="icon icon-list"></i>Forms</a>
             <ul>
-                <li class="active"><a href="index.html"><i class="icon icon-th"></i> <span>Расписание</span></a> </li>
-                <li class="submenu"> <a href="#"><i class="icon icon-list"></i> <span>
-                    Экспорт в формате ICal</span> <span class="label label-important">2</span></a>
-                    <ul>
-                        <li><a href="form-common.html">Расписание группы</a></li>
-                        <li><a href="form-validation.html">Расписание преподавателя</a></li>
-                    </ul>
-                </li>
+                <li id="home" class="active"><a href="@routes.App.index()"><i class="icon icon-calendar"></i> <span>Расписание</span></a> </li>
+                <li id="group-calendar"><a href=""><i class="icon icon-list"></i>Расписание группы</a></li>
+                <li id="instructor-calendar"><a href=""><i class="icon icon-user"></i> Расписание преподавателя</a></li>
             </ul>
         </div>
         <!--close-left-menu-stats-sidebar-->

@@ -42,16 +42,18 @@ object App extends Controller {
       userData => {
         userData match {
           case FilterData(None, Nil) =>
-            val lessonList = Lesson.all().sortWith(lessonSorter)
+            val lessonList = Lesson.find.orderBy("dayOfWeek asc, fromHours asc").findList()
             Ok(views.html.index(filterForm.fill(userData), lessonList))
           case FilterData(Some(group), Nil) =>
-            val lessonList = Lesson.find.where().ilike("groupNumber", group).findList().sortWith(lessonSorter)
+            val lessonList = Lesson.find.where().ilike("groupNumber", group).orderBy("dayOfWeek asc, fromHours asc").findList()
             Ok(views.html.index(filterForm.fill(userData), lessonList))
-          case FilterData(None, instructor) =>
-            val lessonList = Lesson.all().filter(lesson => instructor.contains(lesson.getInstructor)).sortWith(lessonSorter)
+          case FilterData(None, instructors) =>
+            val lessonList = Lesson.find.orderBy("dayOfWeek asc, fromHours asc").findList().
+              filter(lesson => instructors.contains(lesson.getInstructor))
             Ok(views.html.index(filterForm.fill(userData), lessonList))
-          case FilterData(Some(group), instructor) =>
-            val lessonList = Lesson.find.where().ilike("groupNumber", group).findList().filter(lesson => instructor.contains(lesson.getInstructor)).sortWith(lessonSorter)
+          case FilterData(Some(group), instructors) =>
+            val lessonList = Lesson.find.where().ilike("groupNumber", group).orderBy("dayOfWeek asc, fromHours asc")
+              .findList().filter(lesson => instructors.contains(lesson.getInstructor))
             Ok(views.html.index(filterForm.fill(userData), lessonList))
         }
       }
