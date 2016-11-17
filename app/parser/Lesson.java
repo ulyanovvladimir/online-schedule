@@ -1,15 +1,8 @@
 package parser;
 
-import com.avaje.ebean.Ebean;
-import com.avaje.ebean.SqlUpdate;
-import play.db.ebean.Model;
-
-import javax.persistence.Entity;
-import javax.persistence.Id;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.List;
 
 import static java.util.Calendar.*;
 
@@ -26,7 +19,8 @@ public class Lesson {
     private Integer fromMinutes;
     private Integer toHours;
     private Integer toMinutes;
-
+    private String groupName;
+    private Integer week;
 
     public String getGroupNumber() {
         return groupNumber;
@@ -195,6 +189,22 @@ public class Lesson {
 
     public Integer getDayOfWeek() {
         return dayOfWeek;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
+    public Integer getWeek() {
+        return week;
+    }
+
+    public void setWeek(Integer week) {
+        this.week = week;
     }
 
     @Override

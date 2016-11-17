@@ -15,10 +15,15 @@ import static java.util.Calendar.*;
 
 @Entity
 public class Lesson extends Model {
+    public final int EVERY_WEEK = 0;
+    public final int UPPER_WEEK = 1;
+    public final int LOWER_WEEK = 2;
+
 
     @Id
     private Integer id;
     private String groupNumber;
+    private String groupName;
     private Integer dayOfWeek;
     private String lecture;
     private String instructor;
@@ -28,6 +33,7 @@ public class Lesson extends Model {
     private Integer fromMinutes;
     private Integer toHours;
     private Integer toMinutes;
+    private Integer week;
 
     public static Model.Finder<Integer, Lesson> find = new Model.Finder(
             Integer.class, Lesson.class
@@ -225,12 +231,30 @@ public class Lesson extends Model {
         this.dayOfWeek = dayOfWeek;
     }
 
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
+    public Integer getWeek() {
+        return week;
+    }
+
+    public void setWeek(Integer week) {
+        this.week = week;
+    }
+
     public static Lesson from(parser.Lesson from) {
         Lesson to = new Lesson();
         to.setDayOfWeek(from.getDayOfWeek());
+        to.setWeek(from.getWeek());
         to.setFromHours(from.getFromHours());
         to.setFromMinutes(from.getFromMinutes());
         to.setGroupNumber(from.getGroupNumber());
+        to.setGroupName(from.getGroupName());
         to.setInstructor(from.getInstructor());
         to.setLecture(from.getLecture());
         to.setRoom(from.getRoom());
@@ -238,4 +262,6 @@ public class Lesson extends Model {
         to.setToMinutes(from.getToMinutes());
         return to;
     }
+
+
 }

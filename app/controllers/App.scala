@@ -59,6 +59,6 @@ object App extends Controller {
   }
 
   def lessonSorter(l1: Lesson, l2: Lesson): Boolean = {
-    if (l1.getDayOfWeek < l2.getDayOfWeek) true else l1.getFromHours < l2.getFromHours
+    (l1.getDayOfWeek < l2.getDayOfWeek())
   }
 }
