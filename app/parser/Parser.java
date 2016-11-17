@@ -9,20 +9,10 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import play.Logger;
 
 
 public class Parser {
-
-    public static void parseAndStore(File file) throws IOException {
-        List<Lesson> ret = parseFile(file);
-        for (Lesson lesson : ret) {
-            models.Lesson.from(lesson).save();
-        }
-    }
-
-
-
-
 
     @Deprecated
     public static List<Lesson> parseFile(File file) throws IOException {
@@ -79,6 +69,8 @@ public class Parser {
         //todo НИЖНЯЯ НЕДЕЛЯ
         for (int y = 2; !endOfColumns(startLine, y, dataBase); y += 3) {
             String group = getGroup(startLine, y, dataBase);
+            String groupName = getGroupName(startLine,y,dataBase);
+            Logger.debug(groupName);
             if (group == null) break; //конец расписания, дальше столбцы не содержат групп
 
             for (int x = startLine + 2; x < footer.minRow; x++) {
@@ -94,6 +86,7 @@ public class Parser {
                         for (int i = 0; i < lecs.length; i++) {
                             Lesson lesson = new Lesson();
                             lesson.setGroupNumber(group);
+                            lesson.setGroupName(groupName);
                             lesson.setDay(getDay(x, dataBase));
                             lesson.setHours(getHours(x, dataBase));
                             lesson.setLecture(lecs[i]);
@@ -104,6 +97,7 @@ public class Parser {
                     } else {
                         Lesson lesson = new Lesson();
                         lesson.setGroupNumber(group);
+                        lesson.setGroupName(groupName);
                         lesson.setDay(getDay(x, dataBase));
                         lesson.setHours(getHours(x, dataBase));
                         lesson.setLecture(lecture);
@@ -114,19 +108,25 @@ public class Parser {
                 }
             }
         }
-        //todo различать верхние и нижние недели
+        //различаем верхние и нижние недели
         for (int i = 0; i < list.size() - 1; i++) {
             Lesson lesson1 = list.get(i);
             Lesson lesson2 = list.get(i + 1);
-            if (lesson1.getFromHours() == lesson2.getFromHours() && lesson1.getFromMinutes() == lesson2.getFromMinutes() &&
-                    lesson1.getGroupNumber().equals(lesson2.getGroupNumber()) && lesson1.getDayOfWeek() == lesson2.getDayOfWeek()) {
-                System.out.println(lesson1.toString() + " верхняя неделя");
-                System.out.println(lesson2.toString() + " нижняя неделя");
-
+            if (isUpperLowerWeekPair(lesson1, lesson2)) {
+               lesson1.setWeek(1);
+               lesson2.setWeek(2);;
+            } else {
+                lesson1.setWeek(0);
             }
         }
 
         return list;
+    }
+
+    private static boolean isUpperLowerWeekPair(Lesson lesson1, Lesson lesson2) {
+        return Objects.equals(lesson1.getFromHours(), lesson2.getFromHours()) && Objects.equals(lesson1.getFromMinutes(), lesson2.getFromMinutes()) &&
+                lesson1.getGroupNumber().equals(lesson2.getGroupNumber()) && Objects.equals(lesson1.getDayOfWeek(), lesson2.getDayOfWeek())
+                && !lesson1.getLecture().contains("по выбору") && !lesson2.getLecture().contains("по выбору");
     }
 
     private static boolean endOfColumns(int x, int y, String[][] dataBase) {
@@ -175,6 +175,17 @@ public class Parser {
             }
         } else {
             return dataBase[x + 1][y];
+        }
+    }
+    private static String getGroupName(int x, int y, String[][] dataBase) {
+        if (dataBase[x][y] != null) {
+            if (isGroupTitle(dataBase[x][y])) {
+                return dataBase[x-1][y];
+            } else {
+                return dataBase[x][y];
+            }
+        } else {
+            return null;
         }
     }
 
