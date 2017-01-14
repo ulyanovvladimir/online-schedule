@@ -209,11 +209,13 @@ public class Parser {
                     ret.minRow = row;
                     //find value of lower weak
                     ret.lower = findFirstRightValue(row, j+1, dataBase);
+                    if (ret.lower == null) ret.lower = value;
                 }
                 if(value!=null && value.toLowerCase().contains("верхняя")) {
                     ret.minRow = row;
                     //find value of lower weak
                     ret.upper = findFirstRightValue(row, j+1, dataBase);
+                    if (ret.upper == null) ret.upper = value;
                 }
                 if(ret.lower!=null && ret.upper != null) break;
             }
@@ -222,7 +224,9 @@ public class Parser {
     }
 
     private static String findFirstRightValue(int row, int i, String[][] dataBase) {
-        if (notEmpty(dataBase[row][i])) return dataBase[row][i]; else return findFirstRightValue(row, i+1, dataBase);
+        if (i >= dataBase[row].length || row >= dataBase.length) return null;
+        else if (notEmpty(dataBase[row][i])) return dataBase[row][i];
+        else return findFirstRightValue(row, i+1, dataBase);
     }
 
     private static class FooterInfo {
