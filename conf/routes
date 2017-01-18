@@ -14,6 +14,7 @@ POST        /smartSearch                           controllers.Application.smart
 POST        /admin/url/insert                      controllers.Application.insertURL()
 POST        /admin/url/delete                      controllers.Application.deleteURL(id: Integer)
 POST        /admin/url/edit                        controllers.Application.editURL()
+GET         /test                                  controllers.App.testHTMLLinks()
 
 #API
 GET         /api/lessons                           controllers.ClientAPI.findLessons(groupNumber, day, hours, lecture, instructor, room: String)

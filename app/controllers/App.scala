@@ -1,14 +1,17 @@
 package controllers
 
-import models.Lesson
+import java.util.concurrent.TimeUnit
 
+import models.{Lesson, ScheduleURL}
 import play.Logger
 import play.api.data._
 import play.api.data.Forms._
 import play.api.data.validation.Constraints._
 import play.api.mvc.{Action, Controller}
+import play.libs.Akka
 
 import scala.collection.JavaConversions._
+import scala.concurrent.duration.Duration
 
 /**
   * @author Vladimir Ulyanov
@@ -77,12 +80,15 @@ object App extends Controller {
     val browser = JsoupBrowser()
     val doc = browser.get("http://math.isu.ru/ru/students/index.html")
     //parse links
-    val links = doc >> elementList(".page_content") >> attr("href")("a")
-    for (link <-links) {
-      print(link)
-    }
-    val t = links.reduce( (s1, s2) => s1+"\n"+s2 )
 
+    val links = doc >> elementList(".page_content a") >> attr("href")("a")
+    val excelLinks = links.filter(s => s.endsWith("xls") || s.endsWith("xlsx"))
+    val fullLinks = excelLinks.map(s => if (s.startsWith("http://")) s else "http://math.isu.ru"+s )
+
+    for (link <-fullLinks) {
+      println(link)
+    }
+    val t = fullLinks.mkString("","\n","")
     Ok(t)
   }
 }
