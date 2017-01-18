@@ -115,9 +115,7 @@ public class Application extends Controller {
         ScheduleURL url = new ScheduleURL();
         url.url = requestData.get("urlFieldValue");
         url.save();
-
-        controllers.Admin.startReload();
-
+        controllers.App.reload();
         return redirect(controllers.routes.Application.adminPage());
     }
 
@@ -149,7 +147,7 @@ public class Application extends Controller {
             );
         } else {
             ScheduleURL.edit(filledForm.get());
-            controllers.Admin.startReload();
+            controllers.App.reload();
             return redirect(controllers.routes.Application.adminPage());
         }
     }

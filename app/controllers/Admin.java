@@ -18,12 +18,7 @@ import java.util.concurrent.TimeUnit;
  * @author Vladimir Ulyanov
  */
 public class Admin extends Controller {
-    public static Result reload() {
-        startReload();
-        return ok("reloaded");//redirect(controllers.routes.Application.adminPage());
-    }
-
-    public static void startReload(){
+   /* public static void startReload(){
         Akka.system().scheduler().scheduleOnce(
                 Duration.create(0, TimeUnit.SECONDS),
                 new Runnable() {
@@ -46,5 +41,5 @@ public class Admin extends Controller {
                 },
                 Akka.system().dispatcher()
         );
-    }
+    }*/
 }

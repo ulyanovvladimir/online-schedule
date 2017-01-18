@@ -1,8 +1,11 @@
 package controllers
 
+import java.io.IOException
+import java.net.URL
 import java.util.concurrent.TimeUnit
 
 import models.{Lesson, ScheduleURL}
+import parser.Parser
 import play.Logger
 import play.api.data._
 import play.api.data.Forms._
@@ -11,7 +14,7 @@ import play.api.mvc.{Action, Controller}
 import play.libs.Akka
 
 import scala.collection.JavaConversions._
-import scala.concurrent.duration.Duration
+import scala.concurrent.duration.{Duration, FiniteDuration}
 
 /**
   * @author Vladimir Ulyanov
@@ -69,7 +72,12 @@ object App extends Controller {
     (l1.getDayOfWeek < l2.getDayOfWeek())
   }
 
-  def testHTMLLinks() = Action {
+  def startReload() = Action {
+    val t: String = reload
+    Ok(t)
+  }
+
+  def reload: String = {
     import net.ruippeixotog.scalascraper.browser.JsoupBrowser
     import net.ruippeixotog.scalascraper.dsl.DSL._
     import net.ruippeixotog.scalascraper.dsl.DSL.Extract._
@@ -83,12 +91,36 @@ object App extends Controller {
 
     val links = doc >> elementList(".page_content a") >> attr("href")("a")
     val excelLinks = links.filter(s => s.endsWith("xls") || s.endsWith("xlsx"))
-    val fullLinks = excelLinks.map(s => if (s.startsWith("http://")) s else "http://math.isu.ru"+s )
+    val fullLinks = excelLinks.map(s => if (s.startsWith("http://")) s else "http://math.isu.ru" + s)
 
-    for (link <-fullLinks) {
+    for (link <- fullLinks) {
       println(link)
     }
-    val t = fullLinks.mkString("","\n","")
-    Ok(t)
+    val t = fullLinks.mkString("", "\n", "")
+
+    import play.api.libs.concurrent.Execution.Implicits._
+
+    Akka.system.scheduler.scheduleOnce(FiniteDuration(0, TimeUnit.MILLISECONDS)) {
+      println("I'm scheduled")
+      val before: Long = System.currentTimeMillis
+      Lesson.clearBase()
+      import scala.collection.JavaConversions._
+      for (url <- fullLinks) {
+        Logger.info(url)
+        try {
+          val list = Parser.parseURL(new URL(url))
+          for (lesson <- list) {
+            models.Lesson.from(lesson).save()
+          }
+        }
+        catch {
+          case e: IOException => {
+            Logger.error("Can not parse the URL:" + url)
+          }
+        }
+      }
+      Logger.info("downloaded and processed for " + (System.currentTimeMillis - before) + " ms.")
+    }
+    t
   }
 }
