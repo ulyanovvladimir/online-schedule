@@ -1,4 +1,3 @@
-import controllers.Admin;
 import controllers.App;
 import play.Application;
 import play.GlobalSettings;

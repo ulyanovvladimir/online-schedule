@@ -78,7 +78,7 @@ public class Parser {
                 if (notEmpty(lecture)) {
                     String room = getRoom(x, y, dataBase);
                     String instructor = getInstructor(x, y, dataBase);
-                    if (lecture.contains("\n") && room.contains("\n") && instructor.contains("")) {
+                    if (lecture.contains("\n") && room.contains("\n") && instructor.contains("\n")) {
                         //siam twins
                         String[] lecs = lecture.split("\n");
                         String[] rooms = room.split("\n");
@@ -91,7 +91,6 @@ public class Parser {
                             lesson.setHours(getHours(x, dataBase));
                             lesson.setLecture(lecs[i]);
                             lesson.setInstructor(inst[i]);
-                            lesson.setRoom(rooms[i]);
                             list.add(lesson);
                         }
                     } else {
