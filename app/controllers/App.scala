@@ -2,6 +2,7 @@ package controllers
 
 import java.io.IOException
 import java.net.URL
+import java.nio.charset.Charset
 import java.util.concurrent.TimeUnit
 
 import models.{Lesson, ScheduleURL}
@@ -9,10 +10,8 @@ import parser.Parser
 import play.Logger
 import play.api.data._
 import play.api.data.Forms._
-import play.api.data.validation.Constraints._
 import play.api.mvc.{Action, Controller}
 import play.libs.Akka
-import views.html.defaultpages.todo
 
 import scala.collection.JavaConversions._
 import scala.concurrent.duration.{Duration, FiniteDuration}
@@ -36,8 +35,29 @@ object App extends Controller {
 
   def allInstructors = Lesson.all().toList.map(lesson => lesson.getInstructor).distinct.sorted
 
-  def groupSchedule() = Action {
-    Ok("todo")
+  case class GroupFormData(group: Option[String])
+
+  val groupForm = Form(
+    mapping(
+      "group" -> optional(text)
+    )(GroupFormData.apply)(GroupFormData.unapply)
+  )
+
+  def groupSchedule() = Action { implicit request =>
+    groupForm.bindFromRequest.fold(
+      formWithErrors => {
+        //form contains error(s)
+        BadRequest(views.html.groups(formWithErrors))
+      },
+      userData => {
+        userData match {
+          case GroupFormData(None) =>
+            Ok(views.html.groups(groupForm.fill(userData)))
+          case GroupFormData(Some(group)) =>
+            Redirect(controllers.routes.App.groupCalendar(group))
+        }
+      }
+    )
   }
 
   def index() = Action { implicit request =>
@@ -88,10 +108,22 @@ object App extends Controller {
           case InstructorFormData(None) =>
             Ok(views.html.instructors(instructorsForm.fill(userData)))
           case InstructorFormData(Some(instructor)) =>
-            Redirect(controllers.routes.Application.instructorCalendar(instructor))
+            Redirect(controllers.routes.App.instructorCalendar(instructor))
         }
       }
     )
+  }
+
+  def instructorCalendar(instructor: String) = Action {
+    val lessons = Lesson.find.where.ilike("instructor", "%" + instructor + "%").orderBy("dayOfWeek asc, fromHours asc").findList //todo filter
+    //render as UTF-8 binary
+    Ok(views.txt.calendar.render(lessons).body.getBytes(Charset.forName("UTF-8"))) /*.as("text/iCalendar")*/
+  }
+
+  def groupCalendar(group: String) = Action {
+    val lessons = Lesson.find.where.ilike("groupNumber", "%" + group + "%").orderBy("dayOfWeek asc, fromHours asc").findList //todo filter
+    //render as UTF-8 binary
+    Ok(views.txt.groupcalendar.render(lessons).body.getBytes(Charset.forName("UTF-8"))) /*.as("text/iCalendar")*/
   }
 
   def lessonSorter(l1: Lesson, l2: Lesson): Boolean = {

@@ -1,6 +1,7 @@
 GET         /assets/*file                          controllers.Assets.at(path="/public", file)
 GET         /                                      controllers.App.index()
 GET         /instructor                            controllers.App.instructorSchedule()
+GET         /group                                 controllers.App.groupSchedule()
 GET         /signin                                controllers.Application.signInPage()
 GET         /admin/                                controllers.Application.adminPage()
 GET         /admin/reload                          controllers.App.startReload()
@@ -20,7 +21,8 @@ POST        /admin/url/edit                        controllers.Application.editU
 #API
 GET         /api/lessons                           controllers.ClientAPI.findLessons(groupNumber, day, hours, lecture, instructor, room: String)
 GET         /api/table                             controllers.MathFacAPI.smartSearch(parameters: String)
-GET         /api/instructor/:instructor.ics        controllers.Application.instructorCalendar(instructor: String)
+GET         /api/instructor/:instructor.ics        controllers.App.instructorCalendar(instructor: String)
+GET         /api/group/:group.ics                  controllers.App.groupCalendar(group: String)
 
 #GET         /support/addAdmin                      controllers.Support.addAdmin()
 

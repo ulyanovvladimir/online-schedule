@@ -24,7 +24,7 @@ ORGANIZER;CN=Vladimir Ulyanov:MAILTO:ulyanov@@isu.ru
 DTSTART;TZID=Asia/Irkutsk:@lesson.getNextFrom
 DTEND;TZID=Asia/Irkutsk:@lesson.getNextTo
 SUMMARY:@lesson.getLecture
-DESCRIPTION:Занятия по предмету "@lesson.getLecture" у группы @lesson.getGroupNumber
+DESCRIPTION:Занятия по предмету "@lesson.getLecture" у преподавателя @lesson.getInstructor
 LOCATION:@lesson.getRoom
 RRULE:FREQ=WEEKLY;INTERVAL=1
 TRANSP:OPAQUE

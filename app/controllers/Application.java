@@ -151,11 +151,4 @@ public class Application extends Controller {
             return redirect(controllers.routes.Application.adminPage());
         }
     }
-
-    public static Result instructorCalendar(String instructor) {
-        List<Lesson> lessons = Lesson.find.where().ilike("instructor", "%" + instructor + "%")
-                .orderBy("dayOfWeek asc, fromHours asc").findList(); //todo filter
-        //render as UTF-8 binary
-        return ok(views.txt.calendar.render(lessons).body().getBytes(Charset.forName("UTF-8")))/*.as("text/instructorCalendar")*/; //todo custom file format
-    }
 }
