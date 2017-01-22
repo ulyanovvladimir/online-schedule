@@ -12,6 +12,7 @@ import play.api.data.Forms._
 import play.api.data.validation.Constraints._
 import play.api.mvc.{Action, Controller}
 import play.libs.Akka
+import views.html.defaultpages.todo
 
 import scala.collection.JavaConversions._
 import scala.concurrent.duration.{Duration, FiniteDuration}
@@ -63,6 +64,31 @@ object App extends Controller {
             val lessonList = Lesson.find.where().ilike("groupNumber", group).orderBy("dayOfWeek asc, fromHours asc")
               .findList().filter(lesson => instructors.contains(lesson.getInstructor))
             Ok(views.html.index(filterForm.fill(userData), lessonList))
+        }
+      }
+    )
+  }
+
+  case class InstructorFormData(instructor: Option[String])
+
+  val instructorsForm = Form(
+    mapping(
+      "instructor" -> optional(text)
+    )(InstructorFormData.apply)(InstructorFormData.unapply)
+  )
+
+  def instructorSchedule() = Action { implicit request =>
+    instructorsForm.bindFromRequest.fold(
+      formWithErrors => {
+        //form contains error(s)
+        BadRequest(views.html.instructors(formWithErrors))
+      },
+      userData => {
+        userData match{
+          case InstructorFormData(None) =>
+            Ok(views.html.instructors(instructorsForm.fill(userData)))
+          case InstructorFormData(Some(instructor)) =>
+            Redirect(controllers.routes.Application.instructorCalendar(instructor))
         }
       }
     )

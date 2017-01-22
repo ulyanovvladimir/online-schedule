@@ -22,7 +22,7 @@
 
         <!--Header-part-->
         <div id="header">
-            <h1><a href="dashboard.html">Schedule</a></h1>
+            <h1><a href="/">Расписание ИМЭИ ИГУ</a></h1>
         </div>
         <!--close-Header-part-->
 
@@ -30,8 +30,8 @@
         <div id="sidebar"> <a href="#" class="visible-phone"><i class="icon icon-list"></i>Forms</a>
             <ul>
                 <li id="home" @if(menu.equals("home")){class="active"}><a href="@routes.App.index()"><i class="icon icon-calendar"></i> <span>Расписание</span></a> </li>
-                <li id="group-calendar"><a href=""><i class="icon icon-list"></i>Расписание группы</a></li>
-                <li id="instructor-calendar"><a href=""><i class="icon icon-user"></i> Расписание преподавателя</a></li>
+                @*<li id="group-calendar"><a href=""><i class="icon icon-list"></i>Расписание группы</a></li>*@
+                <li id="instructor-calendar" @if(menu.equals("instructor")){class="active"}><a href="@routes.App.instructorSchedule()"><i class="icon icon-user"></i> Расписание преподавателя</a></li>
             </ul>
         </div>
         <!--close-left-menu-stats-sidebar-->
