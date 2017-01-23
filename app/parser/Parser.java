@@ -4,7 +4,10 @@ package parser;
 import java.io.*;
 import java.net.URL;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import models.WeekDays;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -65,8 +68,23 @@ public class Parser {
         // startLine - строка, где начинается "чистое" расписание. x и y - для обхода файла  "ДНИ"
         int startLine = getStartRow(dataBase);
         FooterInfo footer = getFooter(dataBase);
+
+        WeekDays.clearAll();
+        WeekDays wd = new WeekDays();
         //todo ВЕРХНЯЯ НЕДЕЛЯ
-        //todo НИЖНЯЯ НЕДЕЛЯ
+        //Logger.debug(footer.upper);
+        List<String> dd = days(footer.upper);
+        wd.setUpperStarts(dd.get(0));
+        wd.setUpperEnds(dd.get(dd.size()-1));
+
+        //НИЖНЯЯ НЕДЕЛЯ
+        //Logger.debug(footer.lower);
+        dd = days(footer.lower);
+        wd.setLowerStarts(dd.get(0));
+        wd.setLowerEnds(dd.get(dd.size()-1));
+        wd.save();
+        Logger.debug(wd.getUpperStarts()+"-"+wd.getUpperEnds()+"-"+wd.getLowerStarts()+"-"+wd.getLowerEnds());
+
         for (int y = 2; !endOfColumns(startLine, y, dataBase); y += 3) {
             String group = getGroup(startLine, y, dataBase);
             String groupName = getGroupName(startLine,y,dataBase);
@@ -91,6 +109,7 @@ public class Parser {
                             lesson.setHours(getHours(x, dataBase));
                             lesson.setLecture(lecs[i]);
                             lesson.setInstructor(inst[i]);
+                            lesson.setRoom(rooms[i]);
                             list.add(lesson);
                         }
                     } else {
@@ -126,6 +145,17 @@ public class Parser {
         return Objects.equals(lesson1.getFromHours(), lesson2.getFromHours()) && Objects.equals(lesson1.getFromMinutes(), lesson2.getFromMinutes()) &&
                 lesson1.getGroupNumber().equals(lesson2.getGroupNumber()) && Objects.equals(lesson1.getDayOfWeek(), lesson2.getDayOfWeek())
                 && !lesson1.getLecture().contains("по выбору") && !lesson2.getLecture().contains("по выбору");
+    }
+
+    private static List<String> days(String s){
+        String[] all = s.split("[,\\s]+");
+        List<String> ret = new ArrayList<>();
+        for (String a : all) {
+            if (a.trim().length()==5){
+                ret.add(a.trim());
+            }
+        }
+        return ret;
     }
 
     private static boolean endOfColumns(int x, int y, String[][] dataBase) {

@@ -35,11 +35,22 @@ create table schedule_url (
   constraint pk_schedule_url primary key (id))
 ;
 
+create table week_days (
+  id                        integer not null,
+  upper_starts              varchar(255),
+  upper_ends                varchar(255),
+  lower_starts              varchar(255),
+  lower_ends                varchar(255),
+  constraint pk_week_days primary key (id))
+;
+
 create sequence admin_seq;
 
 create sequence lesson_seq;
 
 create sequence schedule_url_seq;
+
+create sequence week_days_seq;
 
 
 
@@ -54,6 +65,8 @@ drop table if exists lesson;
 
 drop table if exists schedule_url;
 
+drop table if exists week_days;
+
 SET REFERENTIAL_INTEGRITY TRUE;
 
 drop sequence if exists admin_seq;
@@ -61,4 +74,6 @@ drop sequence if exists admin_seq;
 drop sequence if exists lesson_seq;
 
 drop sequence if exists schedule_url_seq;
+
+drop sequence if exists week_days_seq;
 

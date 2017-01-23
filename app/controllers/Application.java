@@ -77,14 +77,14 @@ public class Application extends Controller {
     public static Result logIn() {
         DynamicForm requestData = Form.form().bindFromRequest();
         List<Admin> adminList = Admin.find.where()
-                .ilike("username", requestData.get("username"))
+                .ilike("upperStarts", requestData.get("upperStarts"))
                 .findList();
         Admin admin;
         try {
             admin = adminList.get(0);
             if (admin != null) {
-                if (admin.userpass.equals(Crypto.encryptAES(requestData.get("userpass")))) {
-                    session("admin", requestData.get("username"));
+                if (admin.userpass.equals(Crypto.encryptAES(requestData.get("upperEnds")))) {
+                    session("admin", requestData.get("upperStarts"));
                     return redirect(controllers.routes.Application.adminPage());
                 }
             }
