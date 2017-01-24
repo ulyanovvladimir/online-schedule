@@ -38,7 +38,7 @@ $ sbt war
 
 для генерации с помощью Activator
 ```bash
-$ activator run
+$ activator war
 ```
 
 Сгенерированный файл будет расположен в папке target.
