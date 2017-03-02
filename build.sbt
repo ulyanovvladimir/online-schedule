@@ -21,3 +21,5 @@ libraryDependencies ++= Seq(
 )
 
 libraryDependencies += "net.ruippeixotog" %% "scala-scraper" % "1.2.0"
+
+herokuAppName in Compile := "schedule-imei-isu"
