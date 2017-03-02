@@ -20,6 +20,9 @@ libraryDependencies ++= Seq(
   javaWs
 )
 
+libraryDependencies += "postgresql" % "postgresql" % "9.1-901-1.jdbc4"
+
 libraryDependencies += "net.ruippeixotog" %% "scala-scraper" % "1.2.0"
+
 
 herokuAppName in Compile := "schedule-imei-isu"
