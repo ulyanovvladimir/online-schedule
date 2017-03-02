@@ -1,10 +1,10 @@
-@(lessons: List[Lesson])BEGIN:VCALENDAR
+@(lessons: List[Lesson], wd: WeekDays)BEGIN:VCALENDAR
 PRODID:-//Irkutsk State University//Education Schedule 1.0//EN
 VERSION:2.0
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
-X-WR-CALNAME: Экспериментальное расписание занятий в ИМЭИ ИГУ
-X-WR-CALNAME: Экспериментальное расписание занятий в ИМЭИ ИГУ
+X-WR-CALNAME: Расписание занятий в ИМЭИ ИГУ
+X-WR-CALNAME: Расписание занятий в ИМЭИ ИГУ
 X-WR-TIMEZONE:Asia/Irkutsk
 X-WR-CALDESC:
 BEGIN:VTIMEZONE
@@ -21,12 +21,12 @@ BEGIN:VEVENT
 UID:@lesson.getId
 DTSTAMP:@lesson.getNextFrom
 ORGANIZER;CN=Vladimir Ulyanov:MAILTO:ulyanov@@isu.ru
-DTSTART;TZID=Asia/Irkutsk:@lesson.getNextFrom
-DTEND;TZID=Asia/Irkutsk:@lesson.getNextTo
+DTSTART;TZID=Asia/Irkutsk:@lesson.getFormattedFrom(wd)
+DTEND;TZID=Asia/Irkutsk:@lesson.getFormattedEnd(wd)
 SUMMARY:@lesson.getLecture
 DESCRIPTION:Занятия по предмету "@lesson.getLecture" у группы @lesson.getGroupNumber
 LOCATION:@lesson.getRoom
-RRULE:FREQ=WEEKLY;INTERVAL=1
+RRULE:FREQ=WEEKLY;UNTIL=@lesson.getFormattedLast(wd);INTERVAL=@lesson.getInterval
 TRANSP:OPAQUE
 BEGIN:VALARM
 ACTION:DISPLAY

@@ -28,6 +28,10 @@ public class WeekDays extends Model {
     @Required
     public String lowerEnds;
 
+    public static Model.Finder<Integer, WeekDays> find = new Model.Finder(
+            Integer.class, WeekDays.class
+    );
+
     public void setUpperStarts(String upperStarts) {
         this.upperStarts = upperStarts;
     }

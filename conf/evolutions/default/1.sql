@@ -12,9 +12,6 @@ create table admin (
 
 create table lesson (
   id                        integer not null,
-  every_week                integer,
-  upper_week                integer,
-  lower_week                integer,
   group_number              varchar(255),
   group_name                varchar(255),
   day_of_week               integer,

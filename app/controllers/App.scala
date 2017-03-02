@@ -5,7 +5,7 @@ import java.net.URL
 import java.nio.charset.Charset
 import java.util.concurrent.TimeUnit
 
-import models.{Lesson, ScheduleURL}
+import models.{Lesson, ScheduleURL, WeekDays}
 import parser.Parser
 import play.Logger
 import play.api.data._
@@ -116,8 +116,9 @@ object App extends Controller {
 
   def instructorCalendar(instructor: String) = Action {
     val lessons = Lesson.find.where.ilike("instructor", "%" + instructor + "%").orderBy("dayOfWeek asc, fromHours asc").findList //todo filter
+    val wd = WeekDays.find.all().get(0)
     //render as UTF-8 binary
-    Ok(views.txt.calendar.render(lessons).body.getBytes(Charset.forName("UTF-8"))) /*.as("text/iCalendar")*/
+    Ok(views.txt.calendar.render(lessons, wd).body.getBytes(Charset.forName("UTF-8"))) /*.as("text/iCalendar")*/
   }
 
   def groupCalendar(group: String) = Action {

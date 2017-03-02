@@ -131,10 +131,10 @@ public class Parser {
             Lesson lesson1 = list.get(i);
             Lesson lesson2 = list.get(i + 1);
             if (isUpperLowerWeekPair(lesson1, lesson2)) {
-               lesson1.setWeek(1);
-               lesson2.setWeek(2);;
+               lesson1.setWeek(Lesson.UPPER_WEEK);
+               lesson2.setWeek(Lesson.LOWER_WEEK);;
             } else {
-                lesson1.setWeek(0);
+                lesson1.setWeek(Lesson.EVERY_WEEK);
             }
         }
 
@@ -206,6 +206,7 @@ public class Parser {
             return dataBase[x + 1][y];
         }
     }
+
     private static String getGroupName(int x, int y, String[][] dataBase) {
         if (dataBase[x][y] != null) {
             if (isGroupTitle(dataBase[x][y])) {

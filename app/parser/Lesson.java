@@ -8,6 +8,9 @@ import static java.util.Calendar.*;
 
 
 public class Lesson {
+    public static final int EVERY_WEEK = 0;
+    public static final int UPPER_WEEK = 1;
+    public static final int LOWER_WEEK = 2;
 
     private String groupNumber;
     private Integer dayOfWeek;
