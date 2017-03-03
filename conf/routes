@@ -19,7 +19,8 @@ POST        /admin/url/edit                        controllers.Application.editU
 #GET         /test                                  controllers.App.startReload()
 
 #API
-GET         /api/lessons                           controllers.ClientAPI.findLessons(groupNumber, day, hours, lecture, instructor, room: String)
+GET         /api/instructors                       controllers.API.instructors()
+GET         /api/lessons                           controllers.API.lessons()
 GET         /api/table                             controllers.MathFacAPI.smartSearch(parameters: String)
 GET         /api/instructor/:instructor.ics        controllers.App.instructorCalendar(instructor: String)
 GET         /api/group/:group.ics                  controllers.App.groupCalendar(group: String)
