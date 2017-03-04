@@ -148,7 +148,7 @@ object App extends Controller {
     val doc = browser.get("http://math.isu.ru/ru/students/index.html")
     //parse links
 
-    val links = doc >> elementList(".page_content a") >> attr("href")("a")
+    val links = doc >> elementList("a[href]") >> attr("href")("a")
     val excelLinks = links.filter(s => s.endsWith("xls") || s.endsWith("xlsx"))
     val fullLinks = excelLinks.map(s => if (s.startsWith("http://")) s else "http://math.isu.ru" + s)
 
