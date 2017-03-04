@@ -145,16 +145,18 @@ object App extends Controller {
 
     //download html
     val browser = JsoupBrowser()
-    val doc = browser.get("http://math.isu.ru/ru/students/index.html")
+    val config = play.api.Play.current.configuration
+    val page = config.getString("download.url").get
+    val doc = browser.get(page)
     //parse links
 
     val links = doc >> elementList("a[href]") >> attr("href")("a")
     val excelLinks = links.filter(s => s.endsWith("xls") || s.endsWith("xlsx"))
-    val fullLinks = excelLinks.map(s => if (s.startsWith("http://")) s else "http://math.isu.ru" + s)
 
-    for (link <- fullLinks) {
-      println(link)
-    }
+    val domain  = config.getString("download.domain").get
+    val fullLinks = excelLinks.map(s => if (s.startsWith("http://")) s else domain + s)
+    fullLinks foreach println
+
     val t = fullLinks.mkString("", "\n", "")
 
     import play.api.libs.concurrent.Execution.Implicits._
