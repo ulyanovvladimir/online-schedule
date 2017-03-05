@@ -71,23 +71,22 @@ public class Parser {
 
         WeekDays.clearAll();
         WeekDays wd = new WeekDays();
-        //todo ВЕРХНЯЯ НЕДЕЛЯ
-        //Logger.debug(footer.upper);
+        //ВЕРХНЯЯ НЕДЕЛЯ
         List<String> dd = days(footer.upper);
         wd.setUpperStarts(dd.get(0));
         wd.setUpperEnds(dd.get(dd.size()-1));
 
         //НИЖНЯЯ НЕДЕЛЯ
-        //Logger.debug(footer.lower);
         dd = days(footer.lower);
         wd.setLowerStarts(dd.get(0));
         wd.setLowerEnds(dd.get(dd.size()-1));
         wd.save();
         Logger.debug(wd.getUpperStarts()+"-"+wd.getUpperEnds()+"-"+wd.getLowerStarts()+"-"+wd.getLowerEnds());
-
+        String groupName = null;
         for (int y = 2; !endOfColumns(startLine, y, dataBase); y += 3) {
             String group = getGroup(startLine, y, dataBase);
-            String groupName = getGroupName(startLine,y,dataBase);
+            String gn = getGroupName(startLine, y, dataBase);
+            if (gn!=null) groupName = gn;
             Logger.debug(groupName);
             if (group == null) break; //конец расписания, дальше столбцы не содержат групп
 
