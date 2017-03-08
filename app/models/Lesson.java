@@ -45,13 +45,19 @@ public class Lesson extends Model {
     }
 
     public static void clearBase() {
-        SqlUpdate rebuildTable = Ebean.createSqlUpdate("TRUNCATE TABLE lesson");
+        SqlUpdate rebuildTable = Ebean.createSqlUpdate("DELETE FROM lesson");
         try {
             rebuildTable.execute();
         } catch (Exception e) {
-            System.out.println("LOGGGGG" + e.getMessage());
+            play.Logger.error("Clear lessons failed: " + e.getMessage());
         }
-
+        List<Lesson> all = Lesson.all();
+        if (all.size()>0){
+            play.Logger.warn("Normal clear has not worked");
+            for (Lesson lesson : all) {
+                lesson.delete();
+            }
+        }
     }
 
     public Integer getId() {
