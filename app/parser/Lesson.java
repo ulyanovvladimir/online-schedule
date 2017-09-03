@@ -23,7 +23,8 @@ public class Lesson {
     private Integer toHours;
     private Integer toMinutes;
     private String groupName;
-    private Integer week;
+    private Integer week = EVERY_WEEK;
+
 
     public String getGroupNumber() {
         return groupNumber;
@@ -212,6 +213,6 @@ public class Lesson {
 
     @Override
     public String toString() {
-        return getDay()+" "+getHours()+" "+getGroupNumber()+" "+getLecture()+" "+getInstructor()+" "+getRoom();
+        return getDay() + " " + getHours() + " " + getGroupNumber() + " " + getLecture() + " " + getInstructor() + " " + getRoom();
     }
 }

@@ -70,7 +70,11 @@
                             @for(lesson <- lessons) {
                                 <tr>
                                     <td>@lesson.getGroupNumber</td>
-                                    <td>@lesson.getDay</td>
+                                    <td><span class="icon">
+                                        @if(lesson.getWeek == 0){<i class="icon-ok-sign"></i>}
+                                        @if(lesson.getWeek == 1){<i class="icon-arrow-up"></i>}
+                                        @if(lesson.getWeek == 2){<i class="icon-arrow-down"></i>}</span>
+                                        @lesson.getDay</td>
                                     <td><span>@lesson.getHours</span></td>
                                     <td>@lesson.getLecture</td>
                                     <td>@lesson.getInstructor</td>
