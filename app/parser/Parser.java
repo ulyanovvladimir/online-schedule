@@ -11,29 +11,31 @@ import models.WeekDays;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.apache.poi.ss.usermodel.*;
 import play.Logger;
 
 
 public class Parser {
 
     @Deprecated
-    public static List<Lesson> parseFile(File file) throws IOException {
+    public static List<Lesson> parseFile(File file) throws IOException, InvalidFormatException {
         return parseStream(new FileInputStream(file));
     }
 
-    public static List<Lesson> parseURL(URL url) throws IOException {
+    public static List<Lesson> parseURL(URL url) throws IOException, InvalidFormatException {
         return parseStream(url.openStream());
     }
 
 
-    public static List<Lesson> parseStream(InputStream in) throws IOException {
+    public static List<Lesson> parseStream(InputStream in) throws IOException, InvalidFormatException {
         List<Lesson> list = new ArrayList<Lesson>();
-        POIFSFileSystem fs = new POIFSFileSystem(in);
-        HSSFWorkbook workbook = new HSSFWorkbook(fs);
+        Workbook workbook = WorkbookFactory.create(in);
 
+        WeekDays.clearAll();
         for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
-            HSSFSheet sheet = workbook.getSheetAt(i);
+            Sheet sheet = workbook.getSheetAt(i);
             list.addAll(parseSheet(sheet));
             System.out.println("Sheet " + i + " processed");
         }
@@ -42,17 +44,17 @@ public class Parser {
 
 
 
-    private static List<Lesson> parseSheet(HSSFSheet sheet) {
+    private static List<Lesson> parseSheet(Sheet sheet) {
         List<Lesson> list = new ArrayList<Lesson>();
-        org.apache.poi.hssf.usermodel.HSSFRow row;
-        org.apache.poi.hssf.usermodel.HSSFCell cell;
+        Cell cell;
 
-        int ROWS_COUNT = 240;   //todo Избавиться от магических чисел
+        int ROWS_COUNT = sheet.getPhysicalNumberOfRows();
         int COLUMNS_COUNT = 60; //todo Избавиться от магических чисел
         String[][] dataBase = new String[ROWS_COUNT][COLUMNS_COUNT];
         // разбираем файл Excel в массив
         for (int i = 0; i < ROWS_COUNT; i++) {
-            row = sheet.getRow(i + 1);
+            Row row = sheet.getRow(i + 1);
+            if (row == null) break;
             for (int j = 0; j < COLUMNS_COUNT; j++) {
                 cell = row.getCell(j);
                 if (cell != null) {
@@ -67,9 +69,9 @@ public class Parser {
 
         // startLine - строка, где начинается "чистое" расписание. x и y - для обхода файла  "ДНИ"
         int startLine = getStartRow(dataBase);
-        FooterInfo footer = getFooter(dataBase);
 
-        WeekDays.clearAll();
+        //Информация о верхних и нижних неделях
+        FooterInfo footer = getFooter(dataBase);
         WeekDays wd = new WeekDays();
         //ВЕРХНЯЯ НЕДЕЛЯ
         List<String> dd = days(footer.upper);
@@ -81,6 +83,7 @@ public class Parser {
         wd.setLowerStarts(dd.get(0));
         wd.setLowerEnds(dd.get(dd.size()-1));
         wd.save();
+
         Logger.debug(wd.getUpperStarts()+"-"+wd.getUpperEnds()+"-"+wd.getLowerStarts()+"-"+wd.getLowerEnds());
         String groupName = null;
         for (int y = 2; !endOfColumns(startLine, y, dataBase); y += 3) {

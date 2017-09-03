@@ -16,3 +16,4 @@ dist
 /*.xls
 db
 /db
+app/assets/
