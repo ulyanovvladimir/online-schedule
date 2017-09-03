@@ -13,14 +13,13 @@ import play.db.ebean.*;
 import javax.persistence.*;
 
 import static java.util.Calendar.*;
+import static parser.Lesson.EVERY_WEEK;
+import static parser.Lesson.LOWER_WEEK;
+import static parser.Lesson.UPPER_WEEK;
 
 
 @Entity
 public class Lesson extends Model {
-    public static final int EVERY_WEEK = 0;
-    public static final int UPPER_WEEK = 1;
-    public static final int LOWER_WEEK = 2;
-
     @Id
     private Integer id;
     private String groupNumber;
@@ -52,7 +51,7 @@ public class Lesson extends Model {
             play.Logger.error("Clear lessons failed: " + e.getMessage());
         }
         List<Lesson> all = Lesson.all();
-        if (all.size()>0){
+        if (all.size() > 0) {
             play.Logger.warn("Normal clear has not worked");
             for (Lesson lesson : all) {
                 lesson.delete();
@@ -131,7 +130,6 @@ public class Lesson extends Model {
     }
 
     /**
-     *
      * @return next date of the same day of week like in this Lesson
      */
     private Calendar nextDay() {
@@ -146,18 +144,18 @@ public class Lesson extends Model {
         return date;
     }
 
-    private Calendar getFirstLessonDate(WeekDays wd){
+    private Calendar getFirstLessonDate(WeekDays wd) {
         Calendar date;
         if (week == LOWER_WEEK) {
             date = getFirstLower(wd);
-        } else if (week == UPPER_WEEK){
+        } else if (week == UPPER_WEEK) {
             date = getFirstUpper(wd);
-        }
-        else {
+        } else {
             //EVERY_WEEK: WHO STARTS FIRST?
             Calendar lower = getFirstLower(wd);
             Calendar upper = getFirstUpper(wd);
-            if (lower.before(upper)) date = lower; else date = upper;
+            if (lower.before(upper)) date = lower;
+            else date = upper;
         }
 
         //find next date according to lesson's day of week
@@ -168,18 +166,18 @@ public class Lesson extends Model {
         return date;
     }
 
-    private Calendar getLastLessonDate(WeekDays wd){
+    private Calendar getLastLessonDate(WeekDays wd) {
         Calendar date;
         if (week == LOWER_WEEK) {
             date = parseCalendar(wd.lowerEnds);
-        } else if (week == UPPER_WEEK){
+        } else if (week == UPPER_WEEK) {
             date = parseCalendar(wd.upperEnds);
-        }
-        else {
+        } else {
             //EVERY_WEEK: WHO EBDS LAST?
             Calendar lower = parseCalendar(wd.lowerEnds);
             Calendar upper = parseCalendar(wd.upperEnds);
-            if (lower.after(upper)) date = lower; else date = upper;
+            if (lower.after(upper)) date = lower;
+            else date = upper;
         }
 
         //find next date according to lesson's day of week
@@ -201,12 +199,12 @@ public class Lesson extends Model {
     }
 
     //for example 15.01   dd.MM
-    public static Calendar parseCalendar(String formatted){
+    public static Calendar parseCalendar(String formatted) {
         SimpleDateFormat df = new SimpleDateFormat("dd.MM");
         try {
             Date date = df.parse(formatted);
             Calendar calendar = toCalendar(date);
-            calendar.set(YEAR,toCalendar(new Date()).get(YEAR)); //this year
+            calendar.set(YEAR, toCalendar(new Date()).get(YEAR)); //this year
             return calendar;
         } catch (ParseException e) {
             e.printStackTrace();
@@ -214,29 +212,30 @@ public class Lesson extends Model {
         }
     }
 
-    public static Calendar toCalendar(Date date){
+    public static Calendar toCalendar(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         return cal;
     }
 
-    public Integer getInterval(){
-        if (week == EVERY_WEEK) return 1; else return 2;
+    public Integer getInterval() {
+        if (week == EVERY_WEEK) return 1;
+        else return 2;
     }
 
-    public String getFormattedFrom(WeekDays wd){
+    public String getFormattedFrom(WeekDays wd) {
         return formatICal(getFirstLessonDate(wd), fromHours, fromMinutes);
     }
 
-    public String getFormattedEnd(WeekDays wd){
+    public String getFormattedEnd(WeekDays wd) {
         return formatICal(getFirstLessonDate(wd), toHours, toMinutes);
     }
 
-    public String getFormattedLast(WeekDays wd){
-        return formatICal(getLastLessonDate(wd), toHours,toMinutes);
+    public String getFormattedLast(WeekDays wd) {
+        return formatICal(getLastLessonDate(wd), toHours, toMinutes);
     }
 
-    public String formatICal(Calendar date, Integer hh, Integer mm){
+    public String formatICal(Calendar date, Integer hh, Integer mm) {
         DateFormat dateFormat1 = new SimpleDateFormat("yyyyMMdd");
         return dateFormat1.format(date.getTime()) + "T" + zs(hh) + zs(mm) + "00"; //20161106T100000
     }

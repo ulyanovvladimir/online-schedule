@@ -4,15 +4,9 @@ package parser;
 import java.io.*;
 import java.net.URL;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import models.WeekDays;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.*;
 import play.Logger;
 
@@ -35,13 +29,16 @@ public class Parser {
 
         WeekDays.clearAll();
         for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
-            Sheet sheet = workbook.getSheetAt(i);
-            list.addAll(parseSheet(sheet));
-            System.out.println("Sheet " + i + " processed");
+            if (!workbook.isSheetHidden(i)) {
+                Sheet sheet = workbook.getSheetAt(i);
+                list.addAll(parseSheet(sheet));
+                Logger.info("Sheet " + i + " processed");
+            } else {
+                Logger.info("Sheet " + i + " is hidden. Ignored and skipped");
+            }
         }
         return list;
     }
-
 
 
     private static List<Lesson> parseSheet(Sheet sheet) {
@@ -59,7 +56,7 @@ public class Parser {
                 cell = row.getCell(j);
                 if (cell != null) {
                     switch (cell.getCellType()) {
-                        case HSSFCell.CELL_TYPE_STRING:
+                        case Cell.CELL_TYPE_STRING:
                             dataBase[i][j] = cell.getStringCellValue().trim();
                             break;
                     }
@@ -72,24 +69,26 @@ public class Parser {
 
         //Информация о верхних и нижних неделях
         FooterInfo footer = getFooter(dataBase);
-        WeekDays wd = new WeekDays();
-        //ВЕРХНЯЯ НЕДЕЛЯ
-        List<String> dd = days(footer.upper);
-        wd.setUpperStarts(dd.get(0));
-        wd.setUpperEnds(dd.get(dd.size()-1));
+        if (footer.upper != null && footer.lower != null) {
+            WeekDays wd = new WeekDays();
+            //ВЕРХНЯЯ НЕДЕЛЯ
+            List<String> dd = days(footer.upper);
+            wd.setUpperStarts(dd.get(0));
+            wd.setUpperEnds(dd.get(dd.size() - 1));
 
-        //НИЖНЯЯ НЕДЕЛЯ
-        dd = days(footer.lower);
-        wd.setLowerStarts(dd.get(0));
-        wd.setLowerEnds(dd.get(dd.size()-1));
-        wd.save();
+            //НИЖНЯЯ НЕДЕЛЯ
+            dd = days(footer.lower);
+            wd.setLowerStarts(dd.get(0));
+            wd.setLowerEnds(dd.get(dd.size() - 1));
+            wd.save();
+            Logger.debug(wd.getUpperStarts() + "-" + wd.getUpperEnds() + "-" + wd.getLowerStarts() + "-" + wd.getLowerEnds());
+        }
 
-        Logger.debug(wd.getUpperStarts()+"-"+wd.getUpperEnds()+"-"+wd.getLowerStarts()+"-"+wd.getLowerEnds());
         String groupName = null;
         for (int y = 2; !endOfColumns(startLine, y, dataBase); y += 3) {
             String group = getGroup(startLine, y, dataBase);
             String gn = getGroupName(startLine, y, dataBase);
-            if (gn!=null) groupName = gn;
+            if (gn != null) groupName = gn;
             Logger.debug(groupName);
             if (group == null) break; //конец расписания, дальше столбцы не содержат групп
 
@@ -133,8 +132,9 @@ public class Parser {
             Lesson lesson1 = list.get(i);
             Lesson lesson2 = list.get(i + 1);
             if (isUpperLowerWeekPair(lesson1, lesson2)) {
-               lesson1.setWeek(Lesson.UPPER_WEEK);
-               lesson2.setWeek(Lesson.LOWER_WEEK);;
+                lesson1.setWeek(Lesson.UPPER_WEEK);
+                lesson2.setWeek(Lesson.LOWER_WEEK);
+                i++;
             } else {
                 lesson1.setWeek(Lesson.EVERY_WEEK);
             }
@@ -149,11 +149,11 @@ public class Parser {
                 && !lesson1.getLecture().contains("по выбору") && !lesson2.getLecture().contains("по выбору");
     }
 
-    private static List<String> days(String s){
+    private static List<String> days(String s) {
         String[] all = s.split("[,\\s]+");
         List<String> ret = new ArrayList<>();
         for (String a : all) {
-            if (a.trim().length()==5){
+            if (a.trim().length() == 5) {
                 ret.add(a.trim());
             }
         }
@@ -212,7 +212,7 @@ public class Parser {
     private static String getGroupName(int x, int y, String[][] dataBase) {
         if (dataBase[x][y] != null) {
             if (isGroupTitle(dataBase[x][y])) {
-                return dataBase[x-1][y];
+                return dataBase[x - 1][y];
             } else {
                 return dataBase[x][y];
             }
@@ -231,25 +231,25 @@ public class Parser {
         throw new IllegalArgumentException("Данный лист имеет неправильный формат,в первом столбце должны быть Дни");
     }
 
-    private static FooterInfo getFooter(String[][] dataBase){
+    private static FooterInfo getFooter(String[][] dataBase) {
         FooterInfo ret = new FooterInfo();
         ret.minRow = dataBase.length;
-        for (int row = dataBase.length-1; row>=0; row-- ){
+        for (int row = dataBase.length - 1; row >= 0; row--) {
             for (int j = 0; j < dataBase[row].length; j++) {
                 String value = dataBase[row][j];
-                if(value!=null && value.toLowerCase().contains("нижняя")) {
+                if (value != null && value.toLowerCase().contains("нижняя")) {
                     ret.minRow = row;
                     //find value of lower weak
-                    ret.lower = findFirstRightValue(row, j+1, dataBase);
+                    ret.lower = findFirstRightValue(row, j + 1, dataBase);
                     if (ret.lower == null) ret.lower = value;
                 }
-                if(value!=null && value.toLowerCase().contains("верхняя")) {
+                if (value != null && value.toLowerCase().contains("верхняя")) {
                     ret.minRow = row;
                     //find value of lower weak
-                    ret.upper = findFirstRightValue(row, j+1, dataBase);
+                    ret.upper = findFirstRightValue(row, j + 1, dataBase);
                     if (ret.upper == null) ret.upper = value;
                 }
-                if(ret.lower!=null && ret.upper != null) break;
+                if (ret.lower != null && ret.upper != null) break;
             }
         }
         return ret;
@@ -258,7 +258,7 @@ public class Parser {
     private static String findFirstRightValue(int row, int i, String[][] dataBase) {
         if (i >= dataBase[row].length || row >= dataBase.length) return null;
         else if (notEmpty(dataBase[row][i])) return dataBase[row][i];
-        else return findFirstRightValue(row, i+1, dataBase);
+        else return findFirstRightValue(row, i + 1, dataBase);
     }
 
     private static class FooterInfo {
