@@ -1,4 +1,4 @@
-@(filterForm: play.api.data.Form[App.GroupFormData], groups: Seq[String] = App.allGroups)
+@(filterForm: play.api.data.Form[App.GroupFormData], groups: List[(String,String)] = App.allGroups)
 
 @main("Главная")("group") {
     <div id="content">
@@ -23,7 +23,7 @@
                                         <select  name="group">
                                             <option value="">Выберите группу</option>
                                         @for(i <- groups) {
-                                            <option @if(i.equals(filterForm.get.group.getOrElse(""))){selected} >@i</option>
+                                            <option @if(i._1.equals(filterForm.get.group.getOrElse(""))){selected} >@i._1 @i._2</option>
                                         }
                                         </select>
                                     </div>

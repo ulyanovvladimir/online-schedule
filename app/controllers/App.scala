@@ -14,6 +14,8 @@ import play.api.mvc.{Action, Controller}
 import play.libs.Akka
 
 import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
+
 import scala.concurrent.duration.{Duration, FiniteDuration}
 
 /**
@@ -31,7 +33,8 @@ object App extends Controller {
     )(FilterData.apply)(FilterData.unapply)
   )
 
-  def allGroups = Lesson.all().toList.map(lesson => lesson.getGroupNumber).distinct.sorted
+  def allGroups = Lesson.all().toList.map(lesson => (lesson.getGroupNumber, lesson.getGroupName)).distinct.sorted
+  def allGroupsAsJava = allGroups.asJava
 
   def allInstructors = Lesson.all().toList.map(lesson => lesson.getInstructor).distinct.sorted
 

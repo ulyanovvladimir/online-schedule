@@ -8,6 +8,8 @@ import play.data.*;
 
 import static play.data.Form.form;
 
+import scala.Tuple2;
+
 import java.nio.charset.Charset;
 import java.util.*;
 
@@ -55,7 +57,7 @@ public class Application extends Controller {
         }
 
         return ok(
-                views.html.index.render(App.filterForm() , response, App.allGroups(), App.allInstructors())
+                views.html.index.render(App.filterForm() , response, App.allGroupsAsJava(), App.allInstructors())
         );
     }
 

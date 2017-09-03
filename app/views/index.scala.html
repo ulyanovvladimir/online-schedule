@@ -1,4 +1,5 @@
-@(filterForm: play.api.data.Form[App.FilterData], lessons: List[Lesson], groups: Seq[String] = App.allGroups, instructors: Seq[String] = App.allInstructors)
+@import play.libs.F.Tuple
+@(filterForm: play.api.data.Form[App.FilterData], lessons: List[Lesson], groups: List[(String,String)] = App.allGroups, instructors: Seq[String] = App.allInstructors)
 
 @main("Главная")("home") {
     <div id="content">
@@ -22,7 +23,7 @@
                                         <select name="groupNumber">
                                             <option value="">Все</option>
                                         @for(g <- groups) {
-                                            <option value="@g" @if(g.equals(filterForm.get.groupNumber.getOrElse(""))){selected} >@g</option>
+                                            <option value="@g._1" @if(g._1.equals(filterForm.get.groupNumber.getOrElse(""))){selected} >@g._1 @g._2 </option>
                                         }
                                         </select>
                                     </div>
@@ -69,11 +70,11 @@
                             <tbody>
                             @for(lesson <- lessons) {
                                 <tr>
-                                    <td>@lesson.getGroupNumber</td>
+                                    <td title="@lesson.getGroupName">@lesson.getGroupNumber</td>
                                     <td><span class="icon">
-                                        @if(lesson.getWeek == 0){<i class="icon-ok-sign"></i>}
-                                        @if(lesson.getWeek == 1){<i class="icon-arrow-up"></i>}
-                                        @if(lesson.getWeek == 2){<i class="icon-arrow-down"></i>}</span>
+                                        @if(lesson.getWeek == 0){<i class="icon-ok" title="каждую неделю"></i>}
+                                        @if(lesson.getWeek == 1){<i class="icon-arrow-up" title="верхняя неделя"></i>}
+                                        @if(lesson.getWeek == 2){<i class="icon-arrow-down" title="нижняя неделя"></i>}</span>
                                         @lesson.getDay</td>
                                     <td><span>@lesson.getHours</span></td>
                                     <td>@lesson.getLecture</td>
