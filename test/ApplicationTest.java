@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import parser.Parser;
 import org.junit.*;
 
@@ -35,6 +36,9 @@ public class ApplicationTest {
                 } catch (IOException e) {
                     fail("Проблема с чтением файла " + file.getAbsolutePath() + " ERRROR: " + e.getMessage());
                     e.printStackTrace();
+                } catch (InvalidFormatException e) {
+                    fail("Проблема с чтением формата файла " + file.getAbsolutePath() + " ERRROR: " + e.getMessage());
+                    e.printStackTrace();
                 }
             }
         });
@@ -52,6 +56,9 @@ public class ApplicationTest {
                     Parser.parseFile(file);
                 } catch (IOException e) {
                     fail("Проблема с чтением файла " + file.getAbsolutePath() + " ERRROR: " + e.getMessage());
+                    e.printStackTrace();
+                } catch (InvalidFormatException e) {
+                    fail("Проблема с чтением формата файла " + file.getAbsolutePath() + " ERRROR: " + e.getMessage());
                     e.printStackTrace();
                 }
             }
