@@ -46,24 +46,20 @@ object App extends Controller {
     )(GroupFormData.apply)(GroupFormData.unapply)
   )
 
-  def groupSchedule() = Action { implicit request =>
-    groupForm.bindFromRequest.fold(
-      formWithErrors => {
-        //form contains error(s)
-        BadRequest(views.html.groups(formWithErrors))
-      },
-      userData => {
-        userData match {
-          case GroupFormData(None) =>
-            Ok(views.html.groups(groupForm.fill(userData)))
-          case GroupFormData(Some(group)) =>
-            Redirect(controllers.routes.App.groupCalendar(group))
+  def groupSchedule(groupNumber: String) = Action { implicit request =>
+    filterForm.bindFromRequest.fold(
+        formWithErrors => {
+            val lessonList = Lesson.all()
+            BadRequest(views.html.schedule(formWithErrors, lessonList, groupNumber, allGroups))
+        },
+        userData => {
+                val lessonList = Lesson.find.where().ilike("groupNumber", groupNumber).orderBy("dayOfWeek asc, fromHours asc").findList()
+                Ok(views.html.schedule(filterForm.fill(userData), lessonList, groupNumber))
         }
-      }
     )
   }
 
-  def index() = Action { implicit request =>
+ def index() = Action { implicit request =>
 
     filterForm.bindFromRequest.fold(
       formWithErrors => {
@@ -104,15 +100,18 @@ object App extends Controller {
     instructorsForm.bindFromRequest.fold(
       formWithErrors => {
         //form contains error(s)
-        BadRequest(views.html.instructors(formWithErrors))
-      },
-      userData => {
-        userData match{
-          case InstructorFormData(None) =>
-            Ok(views.html.instructors(instructorsForm.fill(userData)))
-          case InstructorFormData(Some(instructor)) =>
-            Redirect(controllers.routes.App.instructorCalendar(instructor))
-        }
+        val lessonList = Lesson.all()
+        BadRequest(views.html.instructorSchedule(formWithErrors , lessonList, "", allInstructors))
+       },
+        userData => {
+           userData match{
+             case InstructorFormData(None) =>
+               val lessonList = Lesson.find.orderBy("dayOfWeek asc, fromHours asc").findList()
+               Ok(views.html.instructorSchedule(instructorsForm.fill(userData), lessonList,""))
+             case InstructorFormData(Some(instructor)) =>
+               val lessonList = Lesson.find.where.ilike("instructor", "%" + instructor + "%").orderBy("dayOfWeek asc, fromHours asc").findList().filter(lesson => instructor.contains(lesson.getInstructor)) //todo filter
+               Ok(views.html.instructorSchedule(instructorsForm.fill(userData), lessonList, instructor))
+         }
       }
     )
   }
@@ -187,4 +186,54 @@ object App extends Controller {
     }
     t
   }
+def search() = Action { implicit request =>
+
+        filterForm.bindFromRequest.fold(
+          formWithErrors => {
+                  // binding failure, you retrieve the form containing errors:
+                  val lessonList = Lesson.all()
+                  BadRequest(views.html.index(formWithErrors, lessonList, allGroups))
+                },
+          userData => {
+            userData match {
+                case FilterData(None, Nil) =>
+                    var lessonList = Lesson.find.orderBy("dayOfWeek asc, fromHours asc").findList()
+                    Ok(views.html.search(filterForm.fill(userData), lessonList))
+                case FilterData(Some(group), Nil) =>
+                  val lessonList = Lesson.find.where().ilike("groupNumber", group).orderBy("dayOfWeek asc, fromHours asc").findList()
+                  Ok(views.html.search(filterForm.fill(userData), lessonList))
+                case FilterData(None, instructors) =>
+                  val lessonList = Lesson.find.orderBy("dayOfWeek asc, fromHours asc").findList().
+                    filter(lesson => instructors.contains(lesson.getInstructor))
+                  Ok(views.html.search(filterForm.fill(userData), lessonList))
+                case FilterData(Some(group), instructors) =>
+                  val lessonList = Lesson.find.where().ilike("groupNumber", group).orderBy("dayOfWeek asc, fromHours asc")
+                    .findList().filter(lesson => instructors.contains(lesson.getInstructor))
+                  Ok(views.html.search(filterForm.fill(userData), lessonList))
+            }
+          }
+        )
+      }
+
+      def instructor() = Action { implicit request =>
+
+          instructorsForm.bindFromRequest.fold(
+            formWithErrors => {
+              // binding failure, you retrieve the form containing errors:
+              val lessonList = Lesson.all()
+              BadRequest(views.html.instructors(formWithErrors, lessonList, allGroups))
+            },
+            userData => {
+              userData match {
+                case InstructorFormData(None) =>
+                  val lessonList = Lesson.find.orderBy("dayOfWeek asc, fromHours asc").findList()
+                  Ok(views.html.instructors(instructorsForm.fill(userData), lessonList))
+               case InstructorFormData(Some(instructors)) =>
+                  val lessonList = Lesson.find.orderBy("dayOfWeek asc, fromHours asc").findList().
+                    filter(lesson => instructors.contains(lesson.getInstructor))
+                  Ok(views.html.instructors(instructorsForm.fill(userData), lessonList))
+                }
+            }
+          )
+        }
 }

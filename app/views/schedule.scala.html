@@ -1,0 +1,570 @@
+@(filterForm: play.api.data.Form[App.FilterData], lessons: List[Lesson], groupNumber:String, groups: List[(String,String)]= App.allGroups, instructors: Seq[String] = App.allInstructors)
+
+@main("Главная")("schedule") {
+
+
+
+<div id="content">
+    <div id="content-header">
+        <h1>Расписание занятий</h1>
+    </div>
+    <div class="container-fluid">
+        <hr>
+        <a href=/> Расписание </a>-> Группа @(groupNumber)
+        <br>
+        <br>
+
+<div class="row-fluid">
+    @if(lessons.isEmpty) {
+    <h4>Нет данных для отображения</h4>
+    } else {
+
+
+    <script type="text/javascript">
+$(document).ready(function(){
+    $("#myTab2 li:eq(0) a").tab('show');
+});
+</script>
+
+    <ul id="myTab2" class="nav nav-tabs">
+        <li><a data-toggle="tab" href="#panely1">Обе</a></li>
+        <li><a data-toggle="tab" href="#panely2">Четная</a></li>
+        <li><a data-toggle="tab" href="#panely3">Нечетная</a></li>
+        <li><form action="@routes.App.groupCalendar(groupNumber)" method="get" class="">
+            <div class="">
+                <button type="submit" class="save" >Скачать в формате .ics</button>
+            </div>
+        </form></li>
+    </ul>
+
+
+
+
+                <div class="tab-content">
+                    <div id="panely1" class="tab-pane fade in active">
+                        <div class="widget-box">
+                            <div class="widget-content nopadding">
+
+                                <table class="table table-bordered table-striped">
+                                    <thead></thead>
+                                    <tbody>
+                                        <tr><td colspan=3 class="day">Понедельник</td></tr>
+                                        @for(lesson <- lessons) {
+                                        @if(lesson.getDay.equals("Пн")){
+                                        <tr>
+                                            <td><span>@lesson.getHours</span></td>
+                                            <td>
+                                                <div>
+                                                    <span class="lecture">@lesson.getLecture</span><br>
+                                                    <span class="name">@lesson.getInstructor</span>
+                                                </div>
+                                            </td>
+                                            <td>@lesson.getRoom</td>
+                                        </tr>
+                                        }
+                                        }
+                                        <tr><td colspan=3 class="day">Вторник</td></tr>
+                                        @for(lesson <- lessons) {
+                                        @if(lesson.getDay.equals("Вт")){
+                                        <tr>
+                                            <td><span>@lesson.getHours</span></td>
+                                            <td>
+                                                <div>
+                                                    <span class="lecture">@lesson.getLecture</span><br>
+                                                    <span class="name">@lesson.getInstructor</span>
+                                                </div>
+                                            </td>
+                                            <td>@lesson.getRoom</td>
+                                        </tr>
+                                        }
+                                        }
+                                        <tr><td colspan=3 class="day">Среда</td></tr>
+                                        @for(lesson <- lessons) {
+                                        @if(lesson.getDay.equals("Ср")){
+                                        <tr>
+                                            <td><span>@lesson.getHours</span></td>
+                                            <td>
+                                                <div>
+                                                    <span class="lecture">@lesson.getLecture</span><br>
+                                                    <span class="name">@lesson.getInstructor</span>
+                                                </div>
+                                            </td>
+                                            <td>@lesson.getRoom</td>
+                                        </tr>
+                                        }
+                                        }
+                                        <tr><td colspan=3 class="day">Четверг</td></tr>
+                                        @for(lesson <- lessons) {
+                                        @if(lesson.getDay.equals("Чт")){
+                                        <tr>
+                                            <td><span>@lesson.getHours</span></td>
+                                            <td>
+                                                <div>
+                                                    <span class="lecture">@lesson.getLecture</span><br>
+                                                    <span class="name">@lesson.getInstructor</span>
+                                                </div>
+                                            </td>
+                                            <td>@lesson.getRoom</td>
+                                        </tr>
+                                        }
+                                        }
+                                        <tr><td colspan=3 class="day">Пятница</td></tr>
+                                        @for(lesson <- lessons) {
+                                        @if(lesson.getDay.equals("Пт")){
+                                        <tr>
+                                            <td><span>@lesson.getHours</span></td>
+                                            <td>
+                                                <div>
+                                                    <span class="lecture">@lesson.getLecture</span><br>
+                                                    <span class="name">@lesson.getInstructor</span>
+                                                </div>
+                                            </td>
+                                            <td>@lesson.getRoom</td>
+                                        </tr>
+                                        }
+                                        }
+                                        <tr><td colspan=3 class="day">Суббота</td></tr>
+                                        @for(lesson <- lessons) {
+                                        @if(lesson.getDay.equals("Сб")){
+                                        <tr>
+                                            <td><span>@lesson.getHours</span></td>
+                                            <td>
+                                                <div>
+                                                    <span class="lecture">@lesson.getLecture</span><br>
+                                                    <span class="name">@lesson.getInstructor</span>
+                                                </div>
+                                            </td>
+                                            <td>@lesson.getRoom</td>
+                                        </tr>
+                                        }
+                                        }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    </div>
+                    <div id="panely2" class="tab-pane fade">
+                        <div class="widget-box">
+                            <div class="widget-content nopadding">
+
+                                <table class="table table-bordered table-striped">
+                                    <thead></thead>
+                                    <tbody>
+                                    <tr><td colspan=3 class="day">Понедельник</td></tr>
+                                    @for(lesson <- lessons) {
+                                    @if(lesson.getDay.equals("Пн")){
+                                    @if(lesson.getWeek.equals(2)){
+                                    <tr>
+                                        <td><span>@lesson.getHours</span></td>
+                                        <td>
+                                            <div>
+                                                <span class="lecture">@lesson.getLecture</span><br>
+                                                <span class="name">@lesson.getInstructor</span>
+                                            </div>
+                                        </td>
+                                        <td>@lesson.getRoom</td>
+                                    </tr>
+                                    }
+                                    @if(lesson.getWeek.equals(0)){
+                                    <tr>
+                                        <td><span>@lesson.getHours</span></td>
+                                        <td>
+                                            <div>
+                                                <span class="lecture">@lesson.getLecture</span><br>
+                                                <span class="name">@lesson.getInstructor</span>
+                                            </div>
+                                        </td>
+                                        <td>@lesson.getRoom</td>
+
+                                    </tr>
+                                    }
+                                    }
+                                    }
+                                    <tr><td colspan=3 class="day">Вторник</td></tr>
+                                    @for(lesson <- lessons) {
+                                    @if(lesson.getDay.equals("Вт")){
+                                    @if(lesson.getWeek.equals(2)){
+                                    <tr>
+                                        <td><span>@lesson.getHours</span></td>
+                                        <td>
+                                            <div>
+                                                <span class="lecture">@lesson.getLecture</span><br>
+                                                <span class="name">@lesson.getInstructor</span>
+                                            </div>
+                                        </td>
+                                        <td>@lesson.getRoom</td>
+                                    </tr>
+                                    }
+                                    @if(lesson.getWeek.equals(0)){
+                                    <tr>
+                                        <td><span>@lesson.getHours</span></td>
+                                        <td>
+                                            <div>
+                                                <span class="lecture">@lesson.getLecture</span><br>
+                                                <span class="name">@lesson.getInstructor</span>
+                                            </div>
+                                        </td>
+                                        <td>@lesson.getRoom</td>
+
+                                    </tr>
+                                    }
+                                    }
+                                    }
+                                    <tr><td colspan=3 class="day">Среда</td></tr>
+                                    @for(lesson <- lessons) {
+                                    @if(lesson.getDay.equals("Ср")){
+                                    @if(lesson.getWeek.equals(2)){
+                                    <tr>
+                                        <td><span>@lesson.getHours</span></td>
+                                        <td>
+                                            <div>
+                                                <span class="lecture">@lesson.getLecture</span><br>
+                                                <span class="name">@lesson.getInstructor</span>
+                                            </div>
+                                        </td>
+                                        <td>@lesson.getRoom</td>
+                                    </tr>
+                                    }
+                                    @if(lesson.getWeek.equals(0)){
+                                    <tr>
+                                        <td><span>@lesson.getHours</span></td>
+                                        <td>
+                                            <div>
+                                                <span class="lecture">@lesson.getLecture</span><br>
+                                                <span class="name">@lesson.getInstructor</span>
+                                            </div>
+                                        </td>
+                                        <td>@lesson.getRoom</td>
+                                    </tr>
+                                    }
+                                    }
+                                    }
+                                    <tr><td colspan=3 class="day">Четверг</td></tr>
+                                    @for(lesson <- lessons) {
+                                    @if(lesson.getDay.equals("Чт")){
+                                    @if(lesson.getWeek.equals(2)){
+                                    <tr>
+                                        <td><span>@lesson.getHours</span></td>
+                                        <td>
+                                            <div>
+                                                <span class="lecture">@lesson.getLecture</span><br>
+                                                <span class="name">@lesson.getInstructor</span>
+                                            </div>
+                                        </td>
+                                        <td>@lesson.getRoom</td>
+                                    </tr>
+                                    }
+                                    @if(lesson.getWeek.equals(0)){
+                                    <tr>
+                                        <td><span>@lesson.getHours</span></td>
+                                        <td>
+                                            <div>
+                                                <span class="lecture">@lesson.getLecture</span><br>
+                                                <span class="name">@lesson.getInstructor</span>
+                                            </div>
+                                        </td>
+                                        <td>@lesson.getRoom</td>
+
+                                    </tr>
+                                    }
+                                    }
+                                    }
+                                    <tr><td colspan=3 class="day">Пятница</td></tr>
+                                    @for(lesson <- lessons) {
+                                    @if(lesson.getDay.equals("Пт")){
+                                    @if(lesson.getWeek.equals(2)){
+                                    <tr>
+                                        <td><span>@lesson.getHours</span></td>
+                                        <td>
+                                            <div>
+                                                <span class="lecture">@lesson.getLecture</span><br>
+                                                <span class="name">@lesson.getInstructor</span>
+                                            </div>
+                                        </td>
+                                        <td>@lesson.getRoom</td>
+                                    </tr>
+                                    }
+                                    @if(lesson.getWeek.equals(0)){
+                                    <tr>
+                                        <td><span>@lesson.getHours</span></td>
+                                        <td>
+                                            <div>
+                                                <span class="lecture">@lesson.getLecture</span><br>
+                                                <span class="name">@lesson.getInstructor</span>
+                                            </div>
+                                        </td>
+                                        <td>@lesson.getRoom</td>
+
+                                    </tr>
+                                    }
+                                    }
+                                    }
+                                    <tr><td colspan=3 class="day">Суббота</td></tr>
+                                    @for(lesson <- lessons) {
+                                    @if(lesson.getDay.equals("Сб")){
+                                    @if(lesson.getWeek.equals(2)){
+                                    <tr>
+                                        <td><span>@lesson.getHours</span></td>
+                                        <td>
+                                            <div>
+                                                <span class="lecture">@lesson.getLecture</span><br>
+                                                <span class="name">@lesson.getInstructor</span>
+                                            </div>
+                                        </td>
+                                        <td>@lesson.getRoom</td>
+                                    </tr>
+                                    }
+                                    @if(lesson.getWeek.equals(0)){
+                                    <tr>
+                                        <td><span>@lesson.getHours</span></td>
+                                        <td>
+                                            <div>
+                                                <span class="lecture">@lesson.getLecture</span><br>
+                                                <span class="name">@lesson.getInstructor</span>
+                                            </div>
+                                        </td>
+                                        <td>@lesson.getRoom</td>
+
+                                    </tr>
+                                    }
+                                    }
+                                    }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="panely3" class="tab-pane fade">
+                        <div class="widget-box">
+                            <div class="widget-content nopadding">
+
+                                <table class="table table-bordered table-striped">
+                                    <thead></thead>
+                                    <tbody>
+                                    <tr><td colspan=3 class="day">Понедельник</td></tr>
+                                    @for(lesson <- lessons) {
+                                    @if(lesson.getDay.equals("Пн")){
+                                    @if(lesson.getWeek.equals(1)){
+                                    <tr>
+                                        <td><span>@lesson.getHours</span></td>
+                                        <td>
+                                            <div>
+                                                <span class="lecture">@lesson.getLecture</span><br>
+                                                <span class="name">@lesson.getInstructor</span>
+                                            </div>
+                                        </td>
+                                        <td>@lesson.getRoom</td>
+                                    </tr>
+                                    }
+                                    @if(lesson.getWeek.equals(0)){
+                                    <tr>
+                                        <td><span>@lesson.getHours</span></td>
+                                        <td>
+                                            <div>
+                                                <span class="lecture">@lesson.getLecture</span><br>
+                                                <span class="name">@lesson.getInstructor</span>
+                                            </div>
+                                        </td>
+                                        <td>@lesson.getRoom</td>
+
+                                    </tr>
+                                    }
+                                    }
+                                    }
+                                    <tr><td colspan=3 class="day">Вторник</td></tr>
+                                    @for(lesson <- lessons) {
+                                    @if(lesson.getDay.equals("Вт")){
+                                    @if(lesson.getWeek.equals(1)){
+                                    <tr>
+                                        <td><span>@lesson.getHours</span></td>
+                                        <td>
+                                            <div>
+                                                <span class="lecture">@lesson.getLecture</span><br>
+                                                <span class="name">@lesson.getInstructor</span>
+                                            </div>
+                                        </td>
+                                        <td>@lesson.getRoom</td>
+                                    </tr>
+                                    }
+                                    @if(lesson.getWeek.equals(0)){
+                                    <tr>
+                                        <td><span>@lesson.getHours</span></td>
+                                        <td>
+                                            <div>
+                                                <span class="lecture">@lesson.getLecture</span><br>
+                                                <span class="name">@lesson.getInstructor</span>
+                                            </div>
+                                        </td>
+                                        <td>@lesson.getRoom</td>
+
+                                    </tr>
+                                    }
+                                    }
+                                    }
+                                    <tr><td colspan=3 class="day">Среда</td></tr>
+                                    @for(lesson <- lessons) {
+                                    @if(lesson.getDay.equals("Ср")){
+                                    @if(lesson.getWeek.equals(1)){
+                                    <tr>
+                                        <td><span>@lesson.getHours</span></td>
+                                        <td>
+                                            <div>
+                                                <span class="lecture">@lesson.getLecture</span><br>
+                                                <span class="name">@lesson.getInstructor</span>
+                                            </div>
+                                        </td>
+                                        <td>@lesson.getRoom</td>
+                                    </tr>
+                                    }
+                                    @if(lesson.getWeek.equals(0)){
+                                    <tr>
+                                        <td><span>@lesson.getHours</span></td>
+                                        <td>
+                                            <div>
+                                                <span class="lecture">@lesson.getLecture</span><br>
+                                                <span class="name">@lesson.getInstructor</span>
+                                            </div>
+                                        </td>
+                                        <td>@lesson.getRoom</td>
+
+                                    </tr>
+                                    }
+                                    }
+                                    }
+                                    <tr><td colspan=3 class="day">Четверг</td></tr>
+                                    @for(lesson <- lessons) {
+                                    @if(lesson.getDay.equals("Чт")){
+                                    @if(lesson.getWeek.equals(1)){
+                                    <tr>
+                                        <td><span>@lesson.getHours</span></td>
+                                        <td>
+                                            <div>
+                                                <span class="lecture">@lesson.getLecture</span><br>
+                                                <span class="name">@lesson.getInstructor</span>
+                                            </div>
+                                        </td>
+                                        <td>@lesson.getRoom</td>
+                                    </tr>
+                                    }
+                                    @if(lesson.getWeek.equals(0)){
+                                    <tr>
+                                        <td><span>@lesson.getHours</span></td>
+                                        <td>
+                                            <div>
+                                                <span class="lecture">@lesson.getLecture</span><br>
+                                                <span class="name">@lesson.getInstructor</span>
+                                            </div>
+                                        </td>
+                                        <td>@lesson.getRoom</td>
+
+                                    </tr>
+                                    }
+                                    }
+                                    }
+                                    <tr><td colspan=3 class="day">Пятница</td></tr>
+                                    @for(lesson <- lessons) {
+                                    @if(lesson.getDay.equals("Пт")){
+                                    @if(lesson.getWeek.equals(1)){
+                                    <tr>
+                                        <td><span>@lesson.getHours</span></td>
+                                        <td>
+                                            <div>
+                                                <span class="lecture">@lesson.getLecture</span><br>
+                                                <span class="name">@lesson.getInstructor</span>
+                                            </div>
+                                        </td>
+                                        <td>@lesson.getRoom</td>
+                                    </tr>
+                                    }
+                                    @if(lesson.getWeek.equals(0)){
+                                    <tr>
+                                        <td><span>@lesson.getHours</span></td>
+                                        <td>
+                                            <div>
+                                                <span class="lecture">@lesson.getLecture</span><br>
+                                                <span class="name">@lesson.getInstructor</span>
+                                            </div>
+                                        </td>
+                                        <td>@lesson.getRoom</td>
+
+                                    </tr>
+                                    }
+                                    }
+                                    }
+                                    <tr><td colspan=3 class="day">Суббота</td></tr>
+                                    @for(lesson <- lessons) {
+                                    @if(lesson.getDay.equals("Сб")){
+                                    @if(lesson.getWeek.equals(1)){
+                                    <tr>
+                                        <td><span>@lesson.getHours</span></td>
+                                        <td>
+                                            <div>
+                                                <span class="lecture">@lesson.getLecture</span><br>
+                                                <span class="name">@lesson.getInstructor</span>
+                                            </div>
+                                        </td>
+                                        <td>@lesson.getRoom</td>
+                                    </tr>
+                                    }
+                                    @if(lesson.getWeek.equals(0)){
+                                    <tr>
+                                        <td><span>@lesson.getHours</span></td>
+                                        <td>
+                                            <div>
+                                                <span class="lecture">@lesson.getLecture</span><br>
+                                                <span class="name">@lesson.getInstructor</span>
+                                            </div>
+                                        </td>
+                                        <td>@lesson.getRoom</td>
+
+                                    </tr>
+                                    }
+                                    }
+                                    }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    }
+    <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
+
+
+        <h5>Поиск</h5>
+    </div>
+    <div class="widget-content nopadding">
+        <form action="/search" method="get" class="form-horizontal">
+            <div class="control-groupNumber">
+                <label class="control-label">Группа</label>
+                <div class="controls">
+                    <select name="groupNumber">
+                        @for(g <- groups) {
+                        <option value="@g"{selected} >@g</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="control-groupNumber">
+                <label class="control-label">Преподаватель</label>
+                <div class="controls">
+                    <select multiple name="instructor[]">
+                        @for(i <- instructors) {
+                        <option @if(filterForm.get.instructor.contains(i)){selected} >@i</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-success">Искать</button>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+</div>
+
+}
+
