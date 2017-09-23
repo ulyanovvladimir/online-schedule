@@ -2,93 +2,66 @@
 @(filterForm: play.api.data.Form[App.FilterData], lessons: List[Lesson], groups: List[(String,String)] = App.allGroups, instructors: Seq[String] = App.allInstructors)
 
 @main("Главная")("home") {
-    <div id="content">
-        <div id="content-header">
-                <!--<div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="tip-bottom">Form elements</a> <a href="#" class="current">Common elements</a> </div>-->
-            <h1>Расписание</h1>
-        </div>
-        <div class="container-fluid">
-            <hr>
-            <div class="row-fluid">
-                <div class="span12">
-                    <div class="widget-box">
-                        <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
-                            <h5>Фильтр</h5>
-                        </div>
-                        <div class="widget-content nopadding">
-                            <form action="/" method="get" class="form-horizontal">
-                                <div class="control-groupNumber">
-                                    <label class="control-label">Группа</label>
-                                    <div class="controls">
-                                        <select name="groupNumber">
-                                            <option value="">Все</option>
-                                        @for(g <- groups) {
-                                            <option value="@g._1" @if(g._1.equals(filterForm.get.groupNumber.getOrElse(""))){selected} >@g._1 @g._2 </option>
-                                        }
-                                        </select>
-                                    </div>
-                                </div>
 
-                                <div class="control-groupNumber">
-                                    <label class="control-label">Преподаватель</label>
-                                    <div class="controls">
-                                        <select multiple name="instructor[]">
-                                        @for(i <- instructors) {
-                                            <option @if(filterForm.get.instructor.contains(i)){selected} >@i</option>
-                                        }
-                                        </select>
-                                    </div>
-                                </div>
 
-                                <div class="form-actions">
-                                    <button type="submit" class="btn btn-success">Применить</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row-fluid">
-            @if(lessons.isEmpty) {
-                <h4>Нет данных для отображения</h4>
-            } else {
-                <div class="widget-box">
-                    <div class="widget-content nopadding">
-
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th >Номер группы</th>
-                                    <th >День недели</th>
-                                    <th >Часы</th>
-                                    <th >Предмет</th>
-                                    <th >Преподаватель</th>
-                                    <th >Аудитория</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            @for(lesson <- lessons) {
-                                <tr>
-                                    <td title="@lesson.getGroupName">@lesson.getGroupNumber</td>
-                                    <td><span class="icon">
-                                        @if(lesson.getWeek == 0){<i class="icon-ok" title="каждую неделю"></i>}
-                                        @if(lesson.getWeek == 1){<i class="icon-arrow-up" title="верхняя неделя"></i>}
-                                        @if(lesson.getWeek == 2){<i class="icon-arrow-down" title="нижняя неделя"></i>}</span>
-                                        @lesson.getDay</td>
-                                    <td><span>@lesson.getHours</span></td>
-                                    <td>@lesson.getLecture</td>
-                                    <td>@lesson.getInstructor</td>
-                                    <td>@lesson.getRoom</td>
-                                </tr>
-                            }
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            }
-            </div>
-        </div>
+<div id="content">
+    <div id="content-header">
+        <!--<div id="breadcrumb"> <a href="index.html" title="Go to Home" class="tip-bottom"><i class="icon-home"></i> Home</a> <a href="#" class="tip-bottom">Form elements</a> <a href="#" class="current">Common elements</a> </div>-->
+        <h1>Расписание занятий</h1>
     </div>
+    <div class="container-fluid">
+        <hr>
+        <div class="row-fluid">
+            <div class="span12">
+                <p>Выбор группы </p><br>
+                <ul name="s">
+                    @for(g <- groups) {
+                    <li><a value="@g._1" href=schedule/@g._1>@g</a></li>
+
+                    }
+                </ul>
+
+                <div class="widget-box">
+
+
+                    <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
+
+
+                        <h5>Поиск</h5>
+                    </div>
+                    <div class="widget-content nopadding">
+                        <form action="/search" method="get" class="form-horizontal">
+                            <div class="control-groupNumber">
+                                <label class="control-label">Группа</label>
+                                <div class="controls">
+                                    <select name="groupNumber">
+                                        <option value=""{selected} >Все</option>
+                                        @for(g <- groups) {
+                                        <option value="@g" >@g</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="control-groupNumber">
+                                <label class="control-label">Преподаватель</label>
+                                <div class="controls">
+                                    <select multiple name="instructor[]">
+                                        @for(i <- instructors) {
+                                        <option @if(filterForm.get.instructor.contains(i)){selected} >@i</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-success">Искать</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
 }
 

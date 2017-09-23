@@ -2,53 +2,53 @@
 
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>@title - Расписание занятий ИМЭИ ИГУ</title>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
-        <link rel="stylesheet" href="/assets/css/bootstrap-responsive.min.css" />
-        <link rel="stylesheet" href="/assets/css/colorpicker.css" />
-        <link rel="stylesheet" href="/assets/css/datepicker.css" />
-        <link rel="stylesheet" href="/assets/css/uniform.css" />
-        <link rel="stylesheet" href="/assets/css/select2.css" />
-        <link rel="stylesheet" href="/assets/css/matrix-style.css" />
-        <link rel="stylesheet" href="/assets/css/matrix-media.css" />
-        <link rel="stylesheet" href="/assets/css/bootstrap-wysihtml5.css" />
-        <link href="/assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
-        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
-    </head>
-    <body>
+<head>
+    <title>@title - Расписание занятий ИМЭИ ИГУ</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/assets/css/bootstrap-responsive.min.css" />
+    <link rel="stylesheet" href="/assets/css/colorpicker.css" />
+    <link rel="stylesheet" href="/assets/css/datepicker.css" />
+    <link rel="stylesheet" href="/assets/css/uniform.css" />
+    <link rel="stylesheet" href="/assets/css/select2.css" />
+    <link rel="stylesheet" href="/assets/css/matrix-style.css" />
+    <link rel="stylesheet" href="/assets/css/matrix-media.css" />
+    <link rel="stylesheet" href="/assets/css/bootstrap-wysihtml5.css" />
+    <link href="/assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800' rel='stylesheet' type='text/css'>
+</head>
+<body>
 
-        <!--Header-part-->
-        <div id="header">
-            <h1><a href="/">Расписание ИМЭИ ИГУ</a></h1>
-        </div>
-        <!--close-Header-part-->
+<!--Header-part-->
+<div id="header">
+    <h1><a href="/">Расписание ИМЭИ ИГУ</a></h1>
+</div>
+<!--close-Header-part-->
 
-        <!--sidebar-menu-->
-        <div id="sidebar"> <a href="#" class="visible-phone"><i class="icon icon-list"></i>Forms</a>
-            <ul>
-                <li id="home" @if(menu.equals("home")){class="active"}><a href="@routes.App.index()"><i class="icon icon-calendar"></i> <span>Расписание</span></a> </li>
-                <li id="group-calendar" @if(menu.equals("group")){class="active"}><a href="@routes.App.groupSchedule()"><i class="icon icon-list"></i>Расписание группы</a></li>
-                <li id="instructor-calendar" @if(menu.equals("instructor")){class="active"}><a href="@routes.App.instructorSchedule()"><i class="icon icon-user"></i> Расписание преподавателя</a></li>
-            </ul>
-        </div>
-        <!--close-left-menu-stats-sidebar-->
-        @content
-        <!--Footer-part-->
-        <div class="row-fluid">
-            <div id="footer" class="span12"> &copy; <a href="mailto:ulyanov@@isu.ru">Ульянов Владимир Сергеевич</a> </div>
-        </div>
-        <!--end-Footer-part-->
-        <script src="/assets/js/jquery.min.js"></script>
-        <script src="/assets/js/jquery.ui.custom.js"></script>
-        <script src="/assets/js/bootstrap.min.js"></script>
-        <script src="/assets/js/masked.js"></script>
-        <script src="/assets/js/jquery.uniform.js"></script>
-        <script src="/assets/js/select2.min.js"></script>
-        <script src="/assets/js/matrix.js"></script>
-        <script src="/assets/js/matrix.form_common.js"></script>
-        <script src="/assets/js/jquery.peity.min.js"></script>
-    </body>
+<!--sidebar-menu-->
+<div id="sidebar"> <a href="#" class="visible-phone"><i class="icon icon-list"></i>Forms</a>
+    <ul>
+        <li id="home" @if(menu.equals("home")){class="active"}><a href="@routes.App.index()"><i class="icon icon-calendar"></i> <span>Студенты</span></a> </li>
+        <li id="instructor-calendar" @if(menu.equals("instructor")){class="active"}><a href="@routes.App.instructor()"><i class="icon icon-user"></i>Преподаватели</a></li>
+    </ul>
+</div>
+<!--close-left-menu-stats-sidebar-->
+@content
+<!--Footer-part-->
+<div class="row-fluid">
+    <div id="footer" class="span12"> &copy; <a href="mailto:ulyanov@@isu.ru">Ульянов Владимир Сергеевич</a> </div>
+</div>
+<!--end-Footer-part-->
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/jquery.ui.custom.js"></script>
+<script src="/assets/js/bootstrap.min.js"></script>
+<script src="/assets/js/masked.js"></script>
+<script src="/assets/js/jquery.uniform.js"></script>
+<script src="/assets/js/select2.min.js"></script>
+<script src="/assets/js/matrix.js"></script>
+<script src="/assets/js/matrix.form_common.js"></script>
+<script src="/assets/js/jquery.peity.min.js"></script>
+
+</body>
 </html>
