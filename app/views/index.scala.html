@@ -16,17 +16,13 @@
                 <p>Выбор группы </p><br>
                 <ul name="s">
                     @for(g <- groups) {
-                    <li><a value="@g._1" href=schedule/@g._1>@g</a></li>
+                    <li><a href="/schedule/@g._1">@g._1 @g._2</a></li>
 
                     }
                 </ul>
 
-                <div class="widget-box">
-
-
+               <div class="widget-box">
                     <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
-
-
                         <h5>Поиск</h5>
                     </div>
                     <div class="widget-content nopadding">
@@ -37,7 +33,7 @@
                                     <select name="groupNumber">
                                         <option value=""{selected} >Все</option>
                                         @for(g <- groups) {
-                                        <option value="@g" >@g</option>
+                                        <option value="@g._1" >@g._1 @g._2</option>
                                         }
                                     </select>
                                 </div>

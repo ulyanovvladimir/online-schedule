@@ -14,7 +14,7 @@
         <br>
         <br>
 
-<div class="row-fluid">
+    <div class="row-fluid">
     @if(lessons.isEmpty) {
     <h4>Нет данных для отображения</h4>
     } else {
@@ -37,20 +37,16 @@ $(document).ready(function(){
         </form></li>
     </ul>
 
-
-
-
                 <div class="tab-content">
                     <div id="panely1" class="tab-pane fade in active">
                         <div class="widget-box">
                             <div class="widget-content nopadding">
-
                                 <table class="table table-bordered table-striped">
                                     <thead></thead>
                                     <tbody>
+                                        @if(lessons.exists(lesson => lesson.getDay.equals("Пн"))){
                                         <tr><td colspan=3 class="day">Понедельник</td></tr>
-                                        @for(lesson <- lessons) {
-                                        @if(lesson.getDay.equals("Пн")){
+                                            @for(lesson <- lessons.filter(lesson => lesson.getDay.equals("Пн"))) {
                                         <tr>
                                             <td><span>@lesson.getHours</span></td>
                                             <td>
@@ -61,11 +57,11 @@ $(document).ready(function(){
                                             </td>
                                             <td>@lesson.getRoom</td>
                                         </tr>
+                                            }
                                         }
-                                        }
+                                        @if(lessons.exists(lesson => lesson.getDay.equals("Вт"))){
                                         <tr><td colspan=3 class="day">Вторник</td></tr>
-                                        @for(lesson <- lessons) {
-                                        @if(lesson.getDay.equals("Вт")){
+                                            @for(lesson <- lessons.filter(lesson => lesson.getDay.equals("Вт"))) {
                                         <tr>
                                             <td><span>@lesson.getHours</span></td>
                                             <td>
@@ -76,11 +72,11 @@ $(document).ready(function(){
                                             </td>
                                             <td>@lesson.getRoom</td>
                                         </tr>
+                                            }
                                         }
-                                        }
+                                        @if(lessons.exists(lesson => lesson.getDay.equals("Ср"))){
                                         <tr><td colspan=3 class="day">Среда</td></tr>
-                                        @for(lesson <- lessons) {
-                                        @if(lesson.getDay.equals("Ср")){
+                                            @for(lesson <- lessons.filter(lesson => lesson.getDay.equals("Ср"))) {
                                         <tr>
                                             <td><span>@lesson.getHours</span></td>
                                             <td>
@@ -91,11 +87,11 @@ $(document).ready(function(){
                                             </td>
                                             <td>@lesson.getRoom</td>
                                         </tr>
+                                            }
                                         }
-                                        }
+                                        @if(lessons.exists(lesson => lesson.getDay.equals("Чт"))){
                                         <tr><td colspan=3 class="day">Четверг</td></tr>
-                                        @for(lesson <- lessons) {
-                                        @if(lesson.getDay.equals("Чт")){
+                                            @for(lesson <- lessons.filter(lesson => lesson.getDay.equals("Чт"))) {
                                         <tr>
                                             <td><span>@lesson.getHours</span></td>
                                             <td>
@@ -106,11 +102,11 @@ $(document).ready(function(){
                                             </td>
                                             <td>@lesson.getRoom</td>
                                         </tr>
+                                            }
                                         }
-                                        }
+                                        @if(lessons.exists(lesson => lesson.getDay.equals("Чт"))){
                                         <tr><td colspan=3 class="day">Пятница</td></tr>
-                                        @for(lesson <- lessons) {
-                                        @if(lesson.getDay.equals("Пт")){
+                                            @for(lesson <- lessons.filter(lesson => lesson.getDay.equals("Пт"))) {
                                         <tr>
                                             <td><span>@lesson.getHours</span></td>
                                             <td>
@@ -121,11 +117,11 @@ $(document).ready(function(){
                                             </td>
                                             <td>@lesson.getRoom</td>
                                         </tr>
+                                            }
                                         }
-                                        }
+                                        @if(lessons.exists(p => p.getDay.equals("Сб"))) {
                                         <tr><td colspan=3 class="day">Суббота</td></tr>
-                                        @for(lesson <- lessons) {
-                                        @if(lesson.getDay.equals("Сб")){
+                                            @for(lesson <- lessons.filter(p => p.getDay.equals("Сб"))) {
                                         <tr>
                                             <td><span>@lesson.getHours</span></td>
                                             <td>
@@ -136,7 +132,7 @@ $(document).ready(function(){
                                             </td>
                                             <td>@lesson.getRoom</td>
                                         </tr>
-                                        }
+                                            }
                                         }
                                 </tbody>
                             </table>
@@ -150,10 +146,9 @@ $(document).ready(function(){
                                 <table class="table table-bordered table-striped">
                                     <thead></thead>
                                     <tbody>
+                                    @if(lessons.exists(p => p.getDay.equals("Пн") && (p.getWeek == 0 || p.getWeek == 2))){
                                     <tr><td colspan=3 class="day">Понедельник</td></tr>
-                                    @for(lesson <- lessons) {
-                                    @if(lesson.getDay.equals("Пн")){
-                                    @if(lesson.getWeek.equals(2)){
+                                        @for(lesson <- lessons.filter(p => p.getDay.equals("Пн") && (p.getWeek == 0 || p.getWeek == 2))) {
                                     <tr>
                                         <td><span>@lesson.getHours</span></td>
                                         <td>
@@ -164,26 +159,11 @@ $(document).ready(function(){
                                         </td>
                                         <td>@lesson.getRoom</td>
                                     </tr>
+                                        }
                                     }
-                                    @if(lesson.getWeek.equals(0)){
-                                    <tr>
-                                        <td><span>@lesson.getHours</span></td>
-                                        <td>
-                                            <div>
-                                                <span class="lecture">@lesson.getLecture</span><br>
-                                                <span class="name">@lesson.getInstructor</span>
-                                            </div>
-                                        </td>
-                                        <td>@lesson.getRoom</td>
-
-                                    </tr>
-                                    }
-                                    }
-                                    }
+                                    @if(lessons.exists(p => p.getDay.equals("Вт") && (p.getWeek == 0 || p.getWeek == 2))){
                                     <tr><td colspan=3 class="day">Вторник</td></tr>
-                                    @for(lesson <- lessons) {
-                                    @if(lesson.getDay.equals("Вт")){
-                                    @if(lesson.getWeek.equals(2)){
+                                        @for(lesson <- lessons.filter(p => p.getDay.equals("Вт") && (p.getWeek == 0 || p.getWeek == 2))) {
                                     <tr>
                                         <td><span>@lesson.getHours</span></td>
                                         <td>
@@ -194,26 +174,11 @@ $(document).ready(function(){
                                         </td>
                                         <td>@lesson.getRoom</td>
                                     </tr>
+                                        }
                                     }
-                                    @if(lesson.getWeek.equals(0)){
-                                    <tr>
-                                        <td><span>@lesson.getHours</span></td>
-                                        <td>
-                                            <div>
-                                                <span class="lecture">@lesson.getLecture</span><br>
-                                                <span class="name">@lesson.getInstructor</span>
-                                            </div>
-                                        </td>
-                                        <td>@lesson.getRoom</td>
-
-                                    </tr>
-                                    }
-                                    }
-                                    }
+                                    @if(lessons.exists(p => p.getDay.equals("Ср") && (p.getWeek == 0 || p.getWeek == 2))){
                                     <tr><td colspan=3 class="day">Среда</td></tr>
-                                    @for(lesson <- lessons) {
-                                    @if(lesson.getDay.equals("Ср")){
-                                    @if(lesson.getWeek.equals(2)){
+                                        @for(lesson <- lessons.filter(p => p.getDay.equals("Ср") && (p.getWeek == 0 || p.getWeek == 2))) {
                                     <tr>
                                         <td><span>@lesson.getHours</span></td>
                                         <td>
@@ -224,25 +189,11 @@ $(document).ready(function(){
                                         </td>
                                         <td>@lesson.getRoom</td>
                                     </tr>
+                                        }
                                     }
-                                    @if(lesson.getWeek.equals(0)){
-                                    <tr>
-                                        <td><span>@lesson.getHours</span></td>
-                                        <td>
-                                            <div>
-                                                <span class="lecture">@lesson.getLecture</span><br>
-                                                <span class="name">@lesson.getInstructor</span>
-                                            </div>
-                                        </td>
-                                        <td>@lesson.getRoom</td>
-                                    </tr>
-                                    }
-                                    }
-                                    }
+                                    @if(lessons.exists(p => p.getDay.equals("Чт") && (p.getWeek == 0 || p.getWeek == 2))){
                                     <tr><td colspan=3 class="day">Четверг</td></tr>
-                                    @for(lesson <- lessons) {
-                                    @if(lesson.getDay.equals("Чт")){
-                                    @if(lesson.getWeek.equals(2)){
+                                        @for(lesson <- lessons.filter(p => p.getDay.equals("Чт") && (p.getWeek == 0 || p.getWeek == 2))) {
                                     <tr>
                                         <td><span>@lesson.getHours</span></td>
                                         <td>
@@ -253,26 +204,11 @@ $(document).ready(function(){
                                         </td>
                                         <td>@lesson.getRoom</td>
                                     </tr>
+                                        }
                                     }
-                                    @if(lesson.getWeek.equals(0)){
-                                    <tr>
-                                        <td><span>@lesson.getHours</span></td>
-                                        <td>
-                                            <div>
-                                                <span class="lecture">@lesson.getLecture</span><br>
-                                                <span class="name">@lesson.getInstructor</span>
-                                            </div>
-                                        </td>
-                                        <td>@lesson.getRoom</td>
-
-                                    </tr>
-                                    }
-                                    }
-                                    }
+                                    @if(lessons.exists(p => p.getDay.equals("Пт") && (p.getWeek == 0 || p.getWeek == 2))){
                                     <tr><td colspan=3 class="day">Пятница</td></tr>
-                                    @for(lesson <- lessons) {
-                                    @if(lesson.getDay.equals("Пт")){
-                                    @if(lesson.getWeek.equals(2)){
+                                        @for(lesson <- lessons.filter(p => p.getDay.equals("Пт") && (p.getWeek == 0 || p.getWeek == 2))) {
                                     <tr>
                                         <td><span>@lesson.getHours</span></td>
                                         <td>
@@ -283,26 +219,11 @@ $(document).ready(function(){
                                         </td>
                                         <td>@lesson.getRoom</td>
                                     </tr>
+                                        }
                                     }
-                                    @if(lesson.getWeek.equals(0)){
-                                    <tr>
-                                        <td><span>@lesson.getHours</span></td>
-                                        <td>
-                                            <div>
-                                                <span class="lecture">@lesson.getLecture</span><br>
-                                                <span class="name">@lesson.getInstructor</span>
-                                            </div>
-                                        </td>
-                                        <td>@lesson.getRoom</td>
-
-                                    </tr>
-                                    }
-                                    }
-                                    }
+                                    @if(lessons.exists(p => p.getDay.equals("Сб") && (p.getWeek == 0 || p.getWeek == 2))) {
                                     <tr><td colspan=3 class="day">Суббота</td></tr>
-                                    @for(lesson <- lessons) {
-                                    @if(lesson.getDay.equals("Сб")){
-                                    @if(lesson.getWeek.equals(2)){
+                                        @for(lesson <- lessons.filter(p => p.getDay.equals("Сб") && (p.getWeek == 0 || p.getWeek == 2))) {
                                     <tr>
                                         <td><span>@lesson.getHours</span></td>
                                         <td>
@@ -313,21 +234,7 @@ $(document).ready(function(){
                                         </td>
                                         <td>@lesson.getRoom</td>
                                     </tr>
-                                    }
-                                    @if(lesson.getWeek.equals(0)){
-                                    <tr>
-                                        <td><span>@lesson.getHours</span></td>
-                                        <td>
-                                            <div>
-                                                <span class="lecture">@lesson.getLecture</span><br>
-                                                <span class="name">@lesson.getInstructor</span>
-                                            </div>
-                                        </td>
-                                        <td>@lesson.getRoom</td>
-
-                                    </tr>
-                                    }
-                                    }
+                                        }
                                     }
                                     </tbody>
                                 </table>
@@ -337,189 +244,98 @@ $(document).ready(function(){
                     <div id="panely3" class="tab-pane fade">
                         <div class="widget-box">
                             <div class="widget-content nopadding">
-
                                 <table class="table table-bordered table-striped">
                                     <thead></thead>
                                     <tbody>
-                                    <tr><td colspan=3 class="day">Понедельник</td></tr>
-                                    @for(lesson <- lessons) {
-                                    @if(lesson.getDay.equals("Пн")){
-                                    @if(lesson.getWeek.equals(1)){
-                                    <tr>
-                                        <td><span>@lesson.getHours</span></td>
-                                        <td>
-                                            <div>
-                                                <span class="lecture">@lesson.getLecture</span><br>
-                                                <span class="name">@lesson.getInstructor</span>
-                                            </div>
-                                        </td>
-                                        <td>@lesson.getRoom</td>
-                                    </tr>
+                                    @if(lessons.exists(p => p.getDay.equals("Пн") && (p.getWeek == 0 || p.getWeek == 1))){
+                                        <tr><td colspan=3 class="day">Понедельник</td></tr>
+                                        @for(lesson <- lessons.filter(p => p.getDay.equals("Пн") && (p.getWeek == 0 || p.getWeek == 1))) {
+                                            <tr>
+                                                <td><span>@lesson.getHours</span></td>
+                                                <td>
+                                                    <div>
+                                                        <span class="lecture">@lesson.getLecture</span><br>
+                                                        <span class="name">@lesson.getInstructor</span>
+                                                    </div>
+                                                </td>
+                                                <td>@lesson.getRoom</td>
+                                            </tr>
+                                        }
                                     }
-                                    @if(lesson.getWeek.equals(0)){
-                                    <tr>
-                                        <td><span>@lesson.getHours</span></td>
-                                        <td>
-                                            <div>
-                                                <span class="lecture">@lesson.getLecture</span><br>
-                                                <span class="name">@lesson.getInstructor</span>
-                                            </div>
-                                        </td>
-                                        <td>@lesson.getRoom</td>
-
-                                    </tr>
+                                    @if(lessons.exists(p => p.getDay.equals("Вт") && (p.getWeek == 0 || p.getWeek == 1))){
+                                        <tr><td colspan=3 class="day">Вторник</td></tr>
+                                        @for(lesson <- lessons.filter(p => p.getDay.equals("Вт") && (p.getWeek == 0 || p.getWeek == 1))) {
+                                            <tr>
+                                                <td><span>@lesson.getHours</span></td>
+                                                <td>
+                                                    <div>
+                                                        <span class="lecture">@lesson.getLecture</span><br>
+                                                        <span class="name">@lesson.getInstructor</span>
+                                                    </div>
+                                                </td>
+                                                <td>@lesson.getRoom</td>
+                                            </tr>
+                                        }
                                     }
+                                    @if(lessons.exists(p => p.getDay.equals("Ср") && (p.getWeek == 0 || p.getWeek == 1))){
+                                        <tr><td colspan=3 class="day">Среда</td></tr>
+                                        @for(lesson <- lessons.filter(p => p.getDay.equals("Ср") && (p.getWeek == 0 || p.getWeek == 1))) {
+                                            <tr>
+                                                <td><span>@lesson.getHours</span></td>
+                                                <td>
+                                                    <div>
+                                                        <span class="lecture">@lesson.getLecture</span><br>
+                                                        <span class="name">@lesson.getInstructor</span>
+                                                    </div>
+                                                </td>
+                                                <td>@lesson.getRoom</td>
+                                            </tr>
+                                        }
                                     }
+                                    @if(lessons.exists(p => p.getDay.equals("Чт") && (p.getWeek == 0 || p.getWeek == 1))){
+                                        <tr><td colspan=3 class="day">Четверг</td></tr>
+                                        @for(lesson <- lessons.filter(p => p.getDay.equals("Чт") && (p.getWeek == 0 || p.getWeek == 1))) {
+                                            <tr>
+                                                <td><span>@lesson.getHours</span></td>
+                                                <td>
+                                                    <div>
+                                                        <span class="lecture">@lesson.getLecture</span><br>
+                                                        <span class="name">@lesson.getInstructor</span>
+                                                    </div>
+                                                </td>
+                                                <td>@lesson.getRoom</td>
+                                            </tr>
+                                        }
                                     }
-                                    <tr><td colspan=3 class="day">Вторник</td></tr>
-                                    @for(lesson <- lessons) {
-                                    @if(lesson.getDay.equals("Вт")){
-                                    @if(lesson.getWeek.equals(1)){
-                                    <tr>
-                                        <td><span>@lesson.getHours</span></td>
-                                        <td>
-                                            <div>
-                                                <span class="lecture">@lesson.getLecture</span><br>
-                                                <span class="name">@lesson.getInstructor</span>
-                                            </div>
-                                        </td>
-                                        <td>@lesson.getRoom</td>
-                                    </tr>
+                                    @if(lessons.exists(p => p.getDay.equals("Пт") && (p.getWeek == 0 || p.getWeek == 1))){
+                                        <tr><td colspan=3 class="day">Пятница</td></tr>
+                                        @for(lesson <- lessons.filter(p => p.getDay.equals("Пт") && (p.getWeek == 0 || p.getWeek == 1))) {
+                                            <tr>
+                                                <td><span>@lesson.getHours</span></td>
+                                                <td>
+                                                    <div>
+                                                        <span class="lecture">@lesson.getLecture</span><br>
+                                                        <span class="name">@lesson.getInstructor</span>
+                                                    </div>
+                                                </td>
+                                                <td>@lesson.getRoom</td>
+                                            </tr>
+                                        }
                                     }
-                                    @if(lesson.getWeek.equals(0)){
-                                    <tr>
-                                        <td><span>@lesson.getHours</span></td>
-                                        <td>
-                                            <div>
-                                                <span class="lecture">@lesson.getLecture</span><br>
-                                                <span class="name">@lesson.getInstructor</span>
-                                            </div>
-                                        </td>
-                                        <td>@lesson.getRoom</td>
-
-                                    </tr>
-                                    }
-                                    }
-                                    }
-                                    <tr><td colspan=3 class="day">Среда</td></tr>
-                                    @for(lesson <- lessons) {
-                                    @if(lesson.getDay.equals("Ср")){
-                                    @if(lesson.getWeek.equals(1)){
-                                    <tr>
-                                        <td><span>@lesson.getHours</span></td>
-                                        <td>
-                                            <div>
-                                                <span class="lecture">@lesson.getLecture</span><br>
-                                                <span class="name">@lesson.getInstructor</span>
-                                            </div>
-                                        </td>
-                                        <td>@lesson.getRoom</td>
-                                    </tr>
-                                    }
-                                    @if(lesson.getWeek.equals(0)){
-                                    <tr>
-                                        <td><span>@lesson.getHours</span></td>
-                                        <td>
-                                            <div>
-                                                <span class="lecture">@lesson.getLecture</span><br>
-                                                <span class="name">@lesson.getInstructor</span>
-                                            </div>
-                                        </td>
-                                        <td>@lesson.getRoom</td>
-
-                                    </tr>
-                                    }
-                                    }
-                                    }
-                                    <tr><td colspan=3 class="day">Четверг</td></tr>
-                                    @for(lesson <- lessons) {
-                                    @if(lesson.getDay.equals("Чт")){
-                                    @if(lesson.getWeek.equals(1)){
-                                    <tr>
-                                        <td><span>@lesson.getHours</span></td>
-                                        <td>
-                                            <div>
-                                                <span class="lecture">@lesson.getLecture</span><br>
-                                                <span class="name">@lesson.getInstructor</span>
-                                            </div>
-                                        </td>
-                                        <td>@lesson.getRoom</td>
-                                    </tr>
-                                    }
-                                    @if(lesson.getWeek.equals(0)){
-                                    <tr>
-                                        <td><span>@lesson.getHours</span></td>
-                                        <td>
-                                            <div>
-                                                <span class="lecture">@lesson.getLecture</span><br>
-                                                <span class="name">@lesson.getInstructor</span>
-                                            </div>
-                                        </td>
-                                        <td>@lesson.getRoom</td>
-
-                                    </tr>
-                                    }
-                                    }
-                                    }
-                                    <tr><td colspan=3 class="day">Пятница</td></tr>
-                                    @for(lesson <- lessons) {
-                                    @if(lesson.getDay.equals("Пт")){
-                                    @if(lesson.getWeek.equals(1)){
-                                    <tr>
-                                        <td><span>@lesson.getHours</span></td>
-                                        <td>
-                                            <div>
-                                                <span class="lecture">@lesson.getLecture</span><br>
-                                                <span class="name">@lesson.getInstructor</span>
-                                            </div>
-                                        </td>
-                                        <td>@lesson.getRoom</td>
-                                    </tr>
-                                    }
-                                    @if(lesson.getWeek.equals(0)){
-                                    <tr>
-                                        <td><span>@lesson.getHours</span></td>
-                                        <td>
-                                            <div>
-                                                <span class="lecture">@lesson.getLecture</span><br>
-                                                <span class="name">@lesson.getInstructor</span>
-                                            </div>
-                                        </td>
-                                        <td>@lesson.getRoom</td>
-
-                                    </tr>
-                                    }
-                                    }
-                                    }
-                                    <tr><td colspan=3 class="day">Суббота</td></tr>
-                                    @for(lesson <- lessons) {
-                                    @if(lesson.getDay.equals("Сб")){
-                                    @if(lesson.getWeek.equals(1)){
-                                    <tr>
-                                        <td><span>@lesson.getHours</span></td>
-                                        <td>
-                                            <div>
-                                                <span class="lecture">@lesson.getLecture</span><br>
-                                                <span class="name">@lesson.getInstructor</span>
-                                            </div>
-                                        </td>
-                                        <td>@lesson.getRoom</td>
-                                    </tr>
-                                    }
-                                    @if(lesson.getWeek.equals(0)){
-                                    <tr>
-                                        <td><span>@lesson.getHours</span></td>
-                                        <td>
-                                            <div>
-                                                <span class="lecture">@lesson.getLecture</span><br>
-                                                <span class="name">@lesson.getInstructor</span>
-                                            </div>
-                                        </td>
-                                        <td>@lesson.getRoom</td>
-
-                                    </tr>
-                                    }
-                                    }
+                                    @if(lessons.exists(p => p.getDay.equals("Сб") && (p.getWeek == 0 || p.getWeek == 1))) {
+                                        <tr><td colspan=3 class="day">Суббота</td></tr>
+                                        @for(lesson <- lessons.filter(p => p.getDay.equals("Сб") && (p.getWeek == 0 || p.getWeek == 1))) {
+                                            <tr>
+                                                <td><span>@lesson.getHours</span></td>
+                                                <td>
+                                                    <div>
+                                                        <span class="lecture">@lesson.getLecture</span><br>
+                                                        <span class="name">@lesson.getInstructor</span>
+                                                    </div>
+                                                </td>
+                                                <td>@lesson.getRoom</td>
+                                            </tr>
+                                        }
                                     }
                                     </tbody>
                                 </table>
@@ -528,42 +344,8 @@ $(document).ready(function(){
                     </div>
                 </div>
     }
-    <div class="widget-title"> <span class="icon"> <i class="icon-align-justify"></i> </span>
-
-
-        <h5>Поиск</h5>
     </div>
-    <div class="widget-content nopadding">
-        <form action="/search" method="get" class="form-horizontal">
-            <div class="control-groupNumber">
-                <label class="control-label">Группа</label>
-                <div class="controls">
-                    <select name="groupNumber">
-                        @for(g <- groups) {
-                        <option value="@g"{selected} >@g</option>
-                        }
-                    </select>
-                </div>
-            </div>
-
-            <div class="control-groupNumber">
-                <label class="control-label">Преподаватель</label>
-                <div class="controls">
-                    <select multiple name="instructor[]">
-                        @for(i <- instructors) {
-                        <option @if(filterForm.get.instructor.contains(i)){selected} >@i</option>
-                        }
-                    </select>
-                </div>
-            </div>
-
-            <div class="form-actions">
-                <button type="submit" class="btn btn-success">Искать</button>
-            </div>
-        </form>
     </div>
-</div>
-</div>
 </div>
 
 }
