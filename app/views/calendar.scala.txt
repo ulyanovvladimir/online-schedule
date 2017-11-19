@@ -26,7 +26,7 @@ DTEND;TZID=Asia/Irkutsk:@lesson.getFormattedEnd(wd)
 SUMMARY:@lesson.getLecture
 DESCRIPTION:Занятия по предмету "@lesson.getLecture" у группы @lesson.getGroupNumber
 LOCATION:@lesson.getRoom
-RRULE:FREQ=WEEKLY;UNTIL=@lesson.getFormattedLast(wd);INTERVAL=@lesson.getInterval
+RRULE:FREQ=WEEKLY;@{/*UNTIL=@lesson.getFormattedLast(wd);*/}INTERVAL=@lesson.getInterval
 TRANSP:OPAQUE
 BEGIN:VALARM
 ACTION:DISPLAY
