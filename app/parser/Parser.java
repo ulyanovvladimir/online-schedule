@@ -92,38 +92,50 @@ public class Parser {
             Logger.debug(groupName);
             if (group == null) break; //конец расписания, дальше столбцы не содержат групп
 
+
             for (int x = startLine + 2; x < footer.minRow; x++) {
-                String lecture = dataBase[x][y];
-                if (notEmpty(lecture)) {
-                    String room = getRoom(x, y, dataBase);
-                    String instructor = getInstructor(x, y, dataBase);
-                    if (lecture.contains("\n") && room.contains("\n") && instructor.contains("\n")) {
-                        //siam twins
-                        String[] lecs = lecture.split("\n");
-                        String[] rooms = room.split("\n");
-                        String[] inst = instructor.split("\n");
-                        for (int i = 0; i < lecs.length; i++) {
+                try {
+                    String lecture = dataBase[x][y];
+                    if (notEmpty(lecture)) {
+                        String room = getRoom(x, y, dataBase);
+                        String instructor = getInstructor(x, y, dataBase);
+                        if (lecture.contains("\n") && room.contains("\n") && instructor.contains("\n")) {
+                            //siam twins
+                            String[] lecs = lecture.split("\n\\s*");
+                            String[] rooms = room.split("\n\\s*");
+                            String[] inst = instructor.split("\n\\s*");
+                            for (int i = 0; i < lecs.length; i++) {
+                                Lesson lesson = new Lesson();
+                                lesson.setGroupNumber(group);
+                                lesson.setGroupName(groupName);
+                                lesson.setDay(getDay(x, dataBase));
+                                lesson.setHours(getHours(x, dataBase));
+                                lesson.setLecture(lecs[i]);
+                                lesson.setInstructor(inst[i]);
+                                lesson.setRoom(rooms[i]);
+                                list.add(lesson);
+                            }
+                        } else {
                             Lesson lesson = new Lesson();
                             lesson.setGroupNumber(group);
                             lesson.setGroupName(groupName);
                             lesson.setDay(getDay(x, dataBase));
                             lesson.setHours(getHours(x, dataBase));
-                            lesson.setLecture(lecs[i]);
-                            lesson.setInstructor(inst[i]);
-                            lesson.setRoom(rooms[i]);
+                            lesson.setLecture(lecture);
+                            lesson.setInstructor(instructor);
+                            lesson.setRoom(room);
                             list.add(lesson);
                         }
-                    } else {
-                        Lesson lesson = new Lesson();
-                        lesson.setGroupNumber(group);
-                        lesson.setGroupName(groupName);
-                        lesson.setDay(getDay(x, dataBase));
-                        lesson.setHours(getHours(x, dataBase));
-                        lesson.setLecture(lecture);
-                        lesson.setInstructor(instructor);
-                        lesson.setRoom(room);
-                        list.add(lesson);
                     }
+                } catch (IndexOutOfBoundsException e) {
+                    Logger.error("Произошла ошибка при парсинге строки "+x+". Пропущено", e);
+
+                    String debugString="";
+                    for (int i = y; i < y+3; i++) {
+                        debugString += dataBase[x][i]+'\t';
+                    }
+                    Logger.error("row "+x+":"+debugString);
+                    e.printStackTrace();
                 }
             }
         }

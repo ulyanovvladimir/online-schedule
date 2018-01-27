@@ -27,7 +27,7 @@ $ activator run
 
 Подробнее см. документацию по PlayFramework на сайте https://www.playframework.com/
 
-#WAR-контейнер
+# WAR-контейнер
 
 Для размещения в с помощью традиционных Servlet-контейнеров добавлена поддержка генерации WAR файлов Servlet 3.1
 
